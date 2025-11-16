@@ -19,4 +19,5 @@ projectdir
 └── report
 └── presentation
 └── scripts
+└── data <- sample data, git ignored
 ```

@@ -1,0 +1,15 @@
+# Ignore OS junk
+.DS_Store
+Thumbs.db
+
+# Ignore Python stuff (if you're using Python)
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Ignore virtual environments
+venv/
+.env/
+
+# Ignore data files (if you don't want to track them)
+data/
