@@ -1,4 +1,12 @@
 def find_bad_channels(epochs, reject_criteria):
+    '''
+    Find and print channels that exceed the rejection criteria based on epoch drops.
+
+    :param epochs: MNE Epochs object
+    :param reject_criteria: rejection criteria (e.g., 0.2 for 20%)
+
+    :return: List of bad channels exceeding the rejection criteria
+    '''
     # Get the drop log which lists the channels responsible for each drop
     drop_log = epochs.drop_log
 

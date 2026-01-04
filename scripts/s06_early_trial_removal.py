@@ -2,13 +2,18 @@ import mne
 import numpy as np
 
 def exclude_early_trials(data, num_to_exclude=10):
-    """
-    Exclude first few trials (default: 10)
+    '''
+    Exclude first few trials (default: 10) for each task type from the Epochs data.
         'S  1' = start of low-value task fixation (all low cue)
         'S 11' = start of mixed task fixation(low cue)
         'S 21' = start of mixed task fixation(high cue)
         'S 31' = start of high-value task fixation(all high cue)
-    """
+
+    :param data: Epochs object
+    :param num_to_exclude: Number of early trials to exclude per task type
+
+    :return: Epochs object with early trials excluded
+    '''
     events, event_dict = mne.events_from_annotations(data)
     
     # trial counts per task type
@@ -69,26 +74,22 @@ def exclude_early_trials(data, num_to_exclude=10):
     print(trial_count)
 
     # Remove excluded events
-    if events_to_exclude:
-        # Create mask: True = keep, False = exclude
-        keep_mask = np.ones(len(events), dtype=bool)
-        keep_mask[events_to_exclude] = False
+    # Create mask: True = keep, False = exclude
+    keep_mask = np.ones(len(events), dtype=bool)
+    keep_mask[events_to_exclude] = False
 
-        # Keep only non-excluded events
-        events_filtered = events[keep_mask]
+    # Keep only non-excluded events
+    events_filtered = events[keep_mask]
 
-        data_clean = data.copy()
-        
-        # Add back the filtered events
-        new_annot = mne.annotations_from_events(
-            events_filtered,
-            data_clean.info['sfreq'],
-            event_desc={v: k for k, v in event_dict.items()}
-        )
-        data_clean.set_annotations(new_annot)
-        
-        print(f"Excluded {len(events_to_exclude)} events (first {num_to_exclude} trials of each block).")
-        return data_clean
-    else:
-        print("No trials excluded.")
-        return data.copy()
+    data_clean = data.copy()
+    
+    # Add back the filtered events
+    new_annot = mne.annotations_from_events(
+        events_filtered,
+        data_clean.info['sfreq'],
+        event_desc={v: k for k, v in event_dict.items()}
+    )
+    data_clean.set_annotations(new_annot)
+    
+    print(f"Excluded {len(events_to_exclude)} events (first {num_to_exclude} trials of each block).")
+    return data_clean

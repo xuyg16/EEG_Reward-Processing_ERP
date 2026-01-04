@@ -1,5 +1,13 @@
 
 def drop_bad_channels(subject_id, eeg):
+    '''
+    Drop bad channels based on subject ID. Bad channels are found after the first trial processing step.
+    
+    :param subject_id: subject id of the eeg data
+    :param eeg: eeg data to drop bad channels from
+
+    :return: eeg data with bad channels dropped
+    '''
     if subject_id == '27' or subject_id == '28' or subject_id == '34':
         bad_channels = []   
     elif subject_id == '28':
@@ -16,6 +24,13 @@ def drop_bad_channels(subject_id, eeg):
 
 
 def reref(eeg):
+    '''
+    Reference EEG data to average of mastoids (TP9, TP10). If one mastoid is missing, reference to the other. If both are missing, raise an error.
+
+    :param eeg: eeg data to be re-referenced
+
+    :return: re-referenced eeg data
+    '''
     has_tp9 = 'TP9' in eeg.ch_names
     has_tp10 = 'TP10' in eeg.ch_names
 

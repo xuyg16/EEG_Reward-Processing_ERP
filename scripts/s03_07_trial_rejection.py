@@ -2,9 +2,26 @@ import numpy as np
 import mne
 
 ### ------------- Customized Trial Rejection ------------------
-def trial_rejection_cust(eeg_ica, evts, evts_dict_stim, maxMin=500e-6, level=500e-6, step=40e-6, lowest=0.1e-6):
+def trial_rejection_cust(eeg, evts, evts_dict_stim, maxMin=500e-6, level=500e-6, step=40e-6, lowest=0.1e-6):
+    '''
+    Customized trial rejection based on four artifact checks:
+        1. MaxMin: whether the peak-to-peak amplitude range is over the threshold
+        2. Level: whether the max abs amplitude level is over the threhold
+        3. Step: whether the difference between adjacent timestep is over teh threshold
+        4. Lowest: whether ALL the data points are below the threshold -> if yes, dead channel
+    
+    :param eeg: eeg data in mne.Raw format
+    :param evts: event array
+    :param evts_dict_stim: event dictionary
+    :param maxMin: max-min amplitude threshold
+    :param level: amplitude level threshold
+    :param step: step threshold
+    :param lowest: lowest amplitude threshold
+
+    :return: trials after rejecting bad trials
+    '''
     # dividing the data into trials
-    trials = mne.Epochs(eeg_ica, evts, evts_dict_stim, tmin=0, tmax=3, baseline=None)    #NOTE: from 0s to 3s. maybe extend the window?
+    trials = mne.Epochs(eeg, evts, evts_dict_stim, tmin=0, tmax=3, baseline=None)    #NOTE: from 0s to 3s. maybe extend the window?
     print(trials.get_data().shape)
 
     #NOTE: parameters used are the same as the author, may consider changing them
@@ -21,16 +38,15 @@ def trial_rejection_cust(eeg_ica, evts, evts_dict_stim, maxMin=500e-6, level=500
 
 def find_artifacts(trials, maxMin, level, step, lowest):
     """
-    Four Artifacts checks:
-        1. MaxMin: whether the peak-to-peak amplitude range is over the threshold.
-        2. Level: whether the max abs amplitude level is over the threhold
-        3. Step: whether the difference between adjacent timestep is over teh threshold
-        4. Lowest: whether ALL the data points are below the threshold -> if yes, dead channel
+    Find artifacts in the given trials based on four criteria (see docstring of `trial_rejection_cust` for details).
 
-    INPUT:
-        EEG: mne.Epochs
-    OUPUTS:
-        is_artifact (n_epochs, n_channels)
+    :param trials: mne.Epochs object containing the trials to be checked
+    :param maxMin: max-min amplitude threshold
+    :param level: amplitude level threshold
+    :param step: step threshold
+    :param lowest: lowest amplitude threshold
+
+    :return: A boolean array of shape (n_epochs, n_channels) indicating whether each channel in each epoch is marked as an artifact
     """
     
     data = trials.get_data()    # shape: (n_epochs, n_channels, n_times)
@@ -63,6 +79,20 @@ def find_artifacts(trials, maxMin, level, step, lowest):
 
 ### ------------- Trial Rejection by MNE Methods------------------
 def trial_rejection_mne(eeg, evts, evts_dict_stim, max=500e-6, min=0.1e-6, tmin=0, tmax=3, baseline=None):
+    '''
+    Trial rejection using MNE built-in methods based on peak-to-peak amplitude and flat signal checks.
+    
+    :param eeg: eeg data in mne.Raw format
+    :param evts: event array
+    :param evts_dict_stim: event dictionary
+    :param max: max amplitude threshold
+    :param min: min amplitude threshold
+    :param tmin: start time of the epoch
+    :param tmax: end time of the epoch
+    :param baseline: baseline period (None for no baseline correction)
+
+    :return: trials after rejecting bad trials
+    '''
     ### peak-to-peak amp check
     reject_criteria = dict(
         eeg=max

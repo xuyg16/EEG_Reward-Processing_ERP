@@ -3,6 +3,16 @@ import numpy as np
 import mne
 
 def get_trimmed_mean(epochs, proportiontocut):
+    '''
+    Calculate the trimmed mean ERP from epochs.
+
+    :param epochs: MNE Epochs object
+    :param proportiontocut: Proportion of trials to cut from each end of the distribution
+    :return: MNE EvokedArray object containing the trimmed mean ERP
+    :rtype: mne.EvokedArray
+
+    :returns: trimmed_evoked -- the trimmed mean ERP as an Evoked object
+    '''
     data = epochs.get_data()
     trimmed_erp_data = np.apply_along_axis(
         trim_mean,
@@ -18,8 +28,18 @@ def get_trimmed_mean(epochs, proportiontocut):
     )
     return trimmed_evoked
 
-'''return the dictionary for evoked erps for different contitions'''
+
+
 def get_evoked(conditions_dict, epochs, proportiontocut=0.05):
+    '''
+    Generate evoked ERPs for different conditions using trimmed mean.
+    
+    :param conditions_dict: dictionary mapping condition names to event markers
+    :param epochs: MNE Epochs object
+    :param proportiontocut: Proportion of trials to cut from each end of the distribution
+
+    :return: Dictionary of Evoked objects for each condition
+    '''
     all_evokeds = {}
     for name, marker in conditions_dict.items():
         epoch_cond = epochs[marker]
@@ -32,7 +52,16 @@ def get_evoked(conditions_dict, epochs, proportiontocut=0.05):
 
 # using mean amplitude to measure erp amplitude
 def calculate_mean_amplitude(evoked, channel_name, tmin, tmax):
-    """Calculates the mean amplitude for a channel within a time window."""
+    '''
+    Calculate mean amplitude within a specific time window.
+    
+    :param evoked: MNE Evoked object
+    :param channel_name: Name of the channel to analyze
+    :param tmin: start time of the window (in seconds)
+    :param tmax: end time of the window (in seconds)
+
+    :return: Mean amplitude in microvolts (µV)
+    '''
     
     # Select the specific channel
     data = evoked.get_data(picks=channel_name)[0] 
@@ -45,12 +74,17 @@ def calculate_mean_amplitude(evoked, channel_name, tmin, tmax):
     
     return mean_val * 1e6 # Convert Volts to microvolts (µV)
 
-# using peak-to-peak
+
+
 def calculate_peak_to_peak(evoked, channel_name, tmin, tmax):
-    """
-    Calculates peak-to-peak within a single time window.
-    Finds the minimum (negative peak) and maximum (positive peak) in the same window.
-    """
+    '''
+    Calculate peak-to-peak amplitude within a specific time window.
+    
+    :param evoked: MNE Evoked object
+    :param channel_name: Name of the channel to analyze
+    :param tmin: start time of the window (in seconds)
+    :param tmax: end time of the window (in seconds)
+    '''
     data = evoked.get_data(picks=channel_name)[0]
     times = evoked.times
     

@@ -2,6 +2,20 @@ import mne
 from s03_07_trial_rejection import trial_rejection_cust, trial_rejection_mne
 
 def epoching(conditions_dict, eeg, max=150e-6, min=0.1e-6, tmin=-0.2, tmax=0.6, baseline=(-0.2, 0)):
+    '''
+    Epoching the continuous EEG data based on the provided conditions dictionary,
+    and applying trial rejection.
+
+    :param conditions_dict: dictionary mapping condition names to event markers
+    :param eeg: MNE Raw object containing the continuous EEG data
+    :param max: maximum threshold for trial rejection
+    :param min: minimum threshold for trial rejection
+    :param tmin: start time for epoching
+    :param tmax: end time for epoching
+    :param baseline: tuple defining the baseline correction period
+
+    :return: MNE Epochs object containing the epoched and cleaned data
+    '''
     evts, event_id = mne.events_from_annotations(eeg)
 
     all_markers = []

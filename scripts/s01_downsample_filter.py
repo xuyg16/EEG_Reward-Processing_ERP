@@ -8,7 +8,7 @@ def down_sampling(eeg, new_sfreq=250):
     :param eeg: eeg signal to be processed
     :param new_sfreq: the frequency after downsampling
 
-    output: downsampled eeg signal
+    :return: downsampled eeg signal
     '''
     eeg_down = eeg.copy().resample(new_sfreq, npad='auto')
     print(f"Original Sampling Rate: {eeg.info['sfreq']} Hz")
@@ -26,7 +26,7 @@ def band_filter(eeg, f_low=0.1, f_high=30):
     :param f_low: low cutoff frequency
     :param f_high: high cutoff frequency
 
-    output: bandpass filtered eeg signal
+    :return: bandpass filtered eeg signal
     '''
     eeg_band = eeg.copy().filter(l_freq=f_low, h_freq=f_high)
 
@@ -40,7 +40,7 @@ def notch_filter(eeg, line_freq=50):
     :param eeg: eeg signal to be processed
     :param line_freq: line frequency to be removed
 
-    output: notch filtered eeg signal
+    :return: notch filtered eeg signal
     '''
     eeg_band_notch = eeg.copy().notch_filter(line_freq)
 
@@ -54,7 +54,7 @@ def zapline_filter(eeg, line_freq=50):
     :param eeg: eeg signal to be processed
     :param line_freq: line frequency to be removed
 
-    output: zapline filtered eeg signal
+    :return: zapline filtered eeg signal
     '''
     # input & output of dss_line are of shape: (n_samples, n_channels, n_trial)
     eeg_band_zap = eeg.copy()

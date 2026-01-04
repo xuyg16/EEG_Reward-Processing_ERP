@@ -2,10 +2,18 @@ from matplotlib import pyplot as plt
 import numpy as np
 import mne
 
-'''
-help to plot psd graph of selected eeg data
-'''
+
+
 def show_single_psd(eeg_data, y_min=-50, y_max=50, picks=None, title=None):
+    '''
+    Plot the power spectral density (PSD) of EEG data.
+
+    :param eeg_data: MNE Raw or Epochs object
+    :param y_min: Minimum y-axis value for the plot
+    :param y_max: Maximum y-axis value for the plot
+    :param picks: Channels to include in the plot
+    :param title: Title for the plot
+    '''
     eeg_psd = eeg_data.compute_psd().plot(picks=picks, show=False)
     ax = eeg_psd.axes[0]
     y_min = y_min
@@ -15,10 +23,21 @@ def show_single_psd(eeg_data, y_min=-50, y_max=50, picks=None, title=None):
     plt.show()
 
 
-'''
-help to compare the psd after different preprocessing strategies
-'''
+
 def psd_compare(eegs, labels, title, figsize=(8, 6), picks=['FCz'], y_min=-46.4, y_max=-46, x_min=49.5, x_max=50.5):
+    '''
+    Compare power spectral density (PSD) of EEG data across different preprocessing strategies.
+
+    :param eegs: List of MNE Raw or Epochs objects
+    :param labels: List of labels for each EEG object
+    :param title: Title for the plot
+    :param figsize: Figure size tuple (width, height)
+    :param picks: Channels to include in the plot
+    :param y_min: Minimum y-axis value for the plot
+    :param y_max: Maximum y-axis value for the plot
+    :param x_min: Minimum x-axis value for the plot
+    :param x_max: Maximum x-axis value for the plot
+    '''
     fig, ax = plt.subplots(1, 1, figsize=figsize)
     freqs = eegs[0].compute_psd(picks=picks).freqs  # assuming the same sfreq
     
@@ -52,8 +71,15 @@ def psd_compare(eegs, labels, title, figsize=(8, 6), picks=['FCz'], y_min=-46.4,
     plt.show()
 
 
-'''help to visualize IClables'''
+
 def iclabel_visualize(ica, ic_labels, trials):
+    '''
+    Visualize Independent Component Analysis (ICA) components with their corresponding labels and probabilities.
+    
+    :param ica: ica object
+    :param ic_labels: Dictionary containing 'labels' and 'y_pred_proba'
+    :param trials: MNE Epochs object for plotting components
+    '''
     labels = ic_labels['labels'] 
     probs = ic_labels['y_pred_proba'] 
 
@@ -88,6 +114,16 @@ def iclabel_visualize(ica, ic_labels, trials):
 
 
 def plot_erp(evokeds, channel, mean_window, colors=None, linestyles=None, title=None):
+    '''
+    Plot ERP waveforms with mean amplitude window shading.
+    
+    :param evokeds: Dictionary of MNE Evoked objects
+    :param channel: Channel name to plot
+    :param mean_window: Tuple indicating the start and end of the mean amplitude window (in seconds)
+    :param colors: colors for each condition
+    :param linestyles: linestyles for each condition
+    :param title: Title for the plot
+    '''
 
     # Create figure
     fig, axes = plt.subplots(1, 1, figsize=(12, 5), sharex=True, sharey=True)
