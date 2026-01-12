@@ -8,7 +8,7 @@ def drop_bad_channels(subject_id, eeg):
 
     :return: eeg data with bad channels dropped
     '''
-    if subject_id == '27' or subject_id == '28' or subject_id == '34':
+    if subject_id == '27':
         bad_channels = []   
     elif subject_id == '28':
         bad_channels =['Fp1']
