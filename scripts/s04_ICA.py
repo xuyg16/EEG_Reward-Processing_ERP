@@ -12,7 +12,7 @@ def get_ica(trials_mne, method='picard'):
     :return: Fitted ICA object.
     '''
 
-    ica = mne.preprocessing.ICA(method=method)
+    ica = mne.preprocessing.ICA(method=method, random_state=97)     # random_state for reproducibility
     ica.fit(trials_mne,verbose=True)
 
     return ica
