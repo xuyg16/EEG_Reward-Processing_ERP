@@ -28,3 +28,32 @@ def epoching(conditions_dict, eeg, max=150e-6, min=0.1e-6, tmin=-0.2, tmax=0.6, 
     epochs_all = trial_rejection_mne(eeg, evts, evts_dict_stim, max=max, min=min,  tmin=tmin, tmax=tmax, baseline=baseline)
 
     return epochs_all
+
+
+def epoching(conditions_dict, eeg, max=150e-6, min=0.1e-6, tmin=-0.2, tmax=0.6, baseline=(-0.2, 0)):
+    '''
+    Epoching the continuous EEG data based on the provided conditions dictionary,
+    and applying trial rejection.
+
+    :param conditions_dict: dictionary mapping condition names to event markers
+    :param eeg: MNE Raw object containing the continuous EEG data
+    :param max: maximum threshold for trial rejection
+    :param min: minimum threshold for trial rejection
+    :param tmin: start time for epoching
+    :param tmax: end time for epoching
+    :param baseline: tuple defining the baseline correction period
+
+    :return: MNE Epochs object containing the epoched and cleaned data
+    '''
+    evts, event_id = mne.events_from_annotations(eeg)
+
+    all_markers = []
+    for markers in conditions_dict.values():
+        all_markers.extend(markers)
+
+    # Create the filtered event dictionary
+    evts_dict_stim = {k: event_id[k] for k in event_id.keys() if k in all_markers}
+
+    epochs_all = trial_rejection_mne(eeg, evts, evts_dict_stim, max=max, min=min,  tmin=tmin, tmax=tmax, baseline=baseline)
+
+    return epochs_all

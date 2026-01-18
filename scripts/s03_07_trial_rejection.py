@@ -2,7 +2,7 @@ import numpy as np
 import mne
 
 ### ------------- Customized Trial Rejection ------------------
-def trial_rejection_cust(eeg, evts, evts_dict_stim, maxMin=500e-6, level=500e-6, step=40e-6, lowest=0.1e-6):
+def trial_rejection_cust(eeg, evts, evts_dict_stim, maxMin=500e-6, level=500e-6, step=40e-6, lowest=0.1e-6, tmin=0, tmax=3, baseline=None):
     '''
     Customized trial rejection based on four artifact checks:
         1. MaxMin: whether the peak-to-peak amplitude range is over the threshold
@@ -18,10 +18,11 @@ def trial_rejection_cust(eeg, evts, evts_dict_stim, maxMin=500e-6, level=500e-6,
     :param step: step threshold
     :param lowest: lowest amplitude threshold
 
-    :return: trials after rejecting bad trials
+    :return trials: trials after rejecting bad trials
+    :return rejected_info: dictionary containing the info of rejected trials: reason(channel name) for each dropped trial
     '''
     # dividing the data into trials
-    trials = mne.Epochs(eeg, evts, evts_dict_stim, tmin=0, tmax=3, baseline=None)    #NOTE: from 0s to 3s. maybe extend the window?
+    trials = mne.Epochs(eeg, evts, evts_dict_stim, tmin=tmin, tmax=tmax, baseline=baseline)    #NOTE: from 0s to 3s. maybe extend the window?
     print(trials.get_data().shape)
 
     #NOTE: parameters used are the same as the author, may consider changing them
@@ -33,7 +34,18 @@ def trial_rejection_cust(eeg, evts, evts_dict_stim, maxMin=500e-6, level=500e-6,
     # drop bad trials
     trials.copy().drop(is_artifacts_idx)
 
-    return trials 
+    # dicitonary to store the info of rejected trials: reason(channel name) for each dropped trial
+    rejected_info = {}
+    for idx in is_artifacts_idx:
+        # get the artifact info for each rejected trial
+        artifact_channels = []
+        for ch_idx, is_artifact in enumerate(find_artifacts(trials[idx:idx+1], maxMin, level, step, lowest)[0]):
+            if is_artifact:
+                artifact_channels.append(trials.ch_names[ch_idx])
+        
+        rejected_info[idx] = artifact_channels
+
+    return trials, rejected_info
 
 
 def find_artifacts(trials, maxMin, level, step, lowest):

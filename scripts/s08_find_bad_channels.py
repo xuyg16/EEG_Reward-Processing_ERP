@@ -1,14 +1,27 @@
-def find_bad_channels(epochs, reject_criteria):
+def find_bad_channels(epochs, reject_criteria, custom=False, rejection_info=None):
     '''
     Find and print channels that exceed the rejection criteria based on epoch drops.
 
     :param epochs: MNE Epochs object
     :param reject_criteria: rejection criteria (e.g., 0.2 for 20%)
+    :param custom: boolean indicating whether custom trial rejection was used (default: False)
 
     :return: List of bad channels exceeding the rejection criteria
     '''
-    # Get the drop log which lists the channels responsible for each drop
-    drop_log = epochs.drop_log
+    if not custom:
+        # Get the drop log which lists the channels responsible for each drop
+        drop_log = epochs.drop_log
+    elif custom and rejection_info is not None:
+        # Construct drop log from custom rejection info
+        n_epochs = len(epochs.events)
+        drop_log = []
+        for epoch_idx in range(n_epochs):
+            if epoch_idx in rejection_info:
+                drop_log.append(tuple(rejection_info[epoch_idx]))
+            else:
+                drop_log.append(())
+    else:
+        raise ValueError("Custom rejection info must be provided when 'custom' is True.")
 
     # Initialize a dictionary to count how many times each channel caused a drop
     channel_drop_counts = {}
