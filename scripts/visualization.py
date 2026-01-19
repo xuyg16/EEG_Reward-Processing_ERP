@@ -136,7 +136,8 @@ def plot_erp(evokeds, channel, mean_window, colors=None, linestyles=None, title=
         title=title,   #NOTE: to be changed
         legend='upper right',
         ci=True,
-        show=False
+        show=False,
+        show_sensors=False,
     )
     # Add shading for Mean Amplitude window
     axes.axvspan(mean_window[0], mean_window[1], color='gray', alpha=0.2, label=f'Mean Window ({mean_window[0]*1000:.0f}-{mean_window[1]*1000:.0f}ms)')

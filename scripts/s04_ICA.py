@@ -91,3 +91,35 @@ def iccomponent_removal_author(eeg, ica):
     ica.apply(eeg)
 
     return eeg
+
+def iccomponent_removal_new(eeg, ica):
+    '''
+    Remove bad IC components based on the given criteria.
+
+    :param eeg: MNE Raw object containing EEG data.
+    :param ica: Fitted ICA object.
+    :param exclude_idx: List of indices of IC components to exclude.
+
+    :return: Cleaned MNE Raw object.
+    '''
+    # authors only remove eye components and leaves other intact
+    label_dict = {
+        'brain': 0,
+        'muscle': 1,
+        'eye blink': 2,
+        'eye movement': 3,
+        'heart': 4,
+        'line noise': 5,
+        'channel noise': 6,
+        'other': 7
+    }
+    exclude_idx = []
+    all_labels = iclabel_label_components(eeg, ica)
+    for i, probabilities in enumerate(all_labels):
+        #print(label)
+        if probabilities[label_dict['brain']] < 0.4:
+            exclude_idx.append(i)
+    ica.exclude = exclude_idx
+    ica.apply(eeg)
+
+    return eeg

@@ -30,7 +30,7 @@ def epoching(conditions_dict, eeg, max=150e-6, min=0.1e-6, tmin=-0.2, tmax=0.6, 
     return epochs_all
 
 
-def epoching(conditions_dict, eeg, max=150e-6, min=0.1e-6, tmin=-0.2, tmax=0.6, baseline=(-0.2, 0)):
+def epoching_cust(conditions_dict, eeg, maxMin=150e-6, level=150e-6, step=40e-6, lowest=0.1e-6, tmin=-0.2, tmax=0.6, baseline=(-0.2, 0)):
     '''
     Epoching the continuous EEG data based on the provided conditions dictionary,
     and applying trial rejection.
@@ -54,6 +54,7 @@ def epoching(conditions_dict, eeg, max=150e-6, min=0.1e-6, tmin=-0.2, tmax=0.6, 
     # Create the filtered event dictionary
     evts_dict_stim = {k: event_id[k] for k in event_id.keys() if k in all_markers}
 
-    epochs_all = trial_rejection_mne(eeg, evts, evts_dict_stim, max=max, min=min,  tmin=tmin, tmax=tmax, baseline=baseline)
+    epochs_all = trial_rejection_cust(eeg, evts, evts_dict_stim, maxMin=maxMin, level=level, step=step, lowest=lowest
+                                                       , tmin=tmin, tmax=tmax, baseline=baseline)
 
     return epochs_all

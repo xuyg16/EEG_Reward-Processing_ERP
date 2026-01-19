@@ -10,10 +10,10 @@ def drop_bad_channels(subject_id, eeg):
     '''
     if subject_id == '27':
         bad_channels = []   
-    elif subject_id == '28':
-        bad_channels =['Fp1']
-    # elif subject_id == '35':
-    #     bad_channels = ['Fp1', 'TP9', 'TP10']
+    # elif subject_id == '28':
+    #     bad_channels =['Fp1']
+    elif subject_id == '35':
+        bad_channels = ['TP10']
     else:
         bad_channels = []
         print(f'bad channels unknown for {subject_id}')
@@ -35,15 +35,16 @@ def reref(eeg):
     has_tp10 = 'TP10' in eeg.ch_names
 
     if has_tp9 and has_tp10:
-        print("Re-referencing to average of mastoids (TP9, TP10).")
+        print("Average Reference: Keeping both.")
         eeg.set_eeg_reference(ref_channels=['TP9', 'TP10'])
+        # No need to drop!
     elif has_tp9:
-        print("TP10 is missing. Re-referencing to TP9 only.")
+        print("Single Reference: Dropping TP9 to avoid flat line.")
         eeg.set_eeg_reference(ref_channels=['TP9'])
+        eeg.drop_channels(['TP9']) # Critical fix
     elif has_tp10:
-        print("TP9 is missing. Re-referencing to TP10 only.")
+        print("Single Reference: Dropping TP10 to avoid flat line.")
         eeg.set_eeg_reference(ref_channels=['TP10'])
-    else:
-        raise RuntimeError("No mastoid channels (TP9 or TP10) found for re-referencing")
+        eeg.drop_channels(['TP10']) # Critical fix
     
     return eeg
