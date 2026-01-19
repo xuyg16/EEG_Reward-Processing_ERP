@@ -32,7 +32,7 @@ def trial_rejection_cust(eeg, evts, evts_dict_stim, maxMin=500e-6, level=500e-6,
     #print(len(is_artifacts_idx))
 
     # drop bad trials
-    trials.copy().drop(is_artifacts_idx)
+    trials = trials.drop(is_artifacts_idx)
 
     # dicitonary to store the info of rejected trials: reason(channel name) for each dropped trial
     rejected_info = {}
