@@ -49,6 +49,33 @@ def get_evoked(conditions_dict, epochs, proportiontocut=0.05):
     return all_evokeds
 
 
+def get_evoked_difference(all_evokeds):
+    '''
+    Calculate difference waves (Win - Loss) for each condition pair.
+    
+    :param all_evokeds: Dictionary of Evoked objects for each condition
+    
+    :return: Dictionary of Evoked difference waves
+    '''
+    diff_evokeds = {}
+    cases = [
+        ('Low-Low', 'Low-Low Win', 'Low-Low Loss'),
+        ('Mid-Low', 'Mid-Low Win', 'Mid-Low Loss'),
+        ('Mid-High', 'Mid-High Win', 'Mid-High Loss'),
+        ('High-High', 'High-High Win', 'High-High Loss')
+    ]
+
+    for case_name, win_cond, loss_cond in cases:
+        # Calculate Difference: Win - Loss
+        diff = mne.combine_evoked(
+            [all_evokeds[win_cond], all_evokeds[loss_cond]],
+            weights=[1, -1]
+        )
+        diff.comment = case_name # Set name for plotting
+        diff_evokeds[case_name] = diff
+    return diff_evokeds
+
+
 
 # using mean amplitude to measure erp amplitude
 def calculate_mean_amplitude(evoked, channel_name, tmin, tmax):

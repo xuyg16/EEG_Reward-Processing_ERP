@@ -22,28 +22,24 @@ def trial_rejection_cust(eeg, evts, evts_dict_stim, maxMin=500e-6, level=500e-6,
     :return rejected_info: dictionary containing the info of rejected trials: reason(channel name) for each dropped trial
     '''
     # dividing the data into trials
-    trials = mne.Epochs(eeg, evts, evts_dict_stim, tmin=tmin, tmax=tmax, baseline=baseline)    #NOTE: from 0s to 3s. maybe extend the window?
-    print(trials.get_data().shape)
+    trials = mne.Epochs(eeg, evts, evts_dict_stim, tmin=tmin, tmax=tmax, baseline=baseline, verbose=False) 
 
-    #NOTE: parameters used are the same as the author, may consider changing them
-    is_artifacts = np.any(find_artifacts(trials, maxMin, level, step, lowest), axis=1).squeeze()
-    # get the indices of trials of artifacts
-    is_artifacts_idx = np.where(is_artifacts)[0]
-    #print(len(is_artifacts_idx))
+    # get all artifacts
+    artifact_mask = find_artifacts(trials, maxMin, level, step, lowest)  # shape: (n_epochs, n_channels)
 
-    # drop bad trials
-    trials = trials.drop(is_artifacts_idx)
+    # get the artifact info
+    is_artifact = np.any(artifact_mask, axis=1).squeeze()  # shape: (n_epochs, )
+    is_artifacts_idx = np.where(is_artifact)[0]
 
-    # dicitonary to store the info of rejected trials: reason(channel name) for each dropped trial
+    # store the info before dropping (otherwise the indices will change after dropping)
     rejected_info = {}
     for idx in is_artifacts_idx:
-        # get the artifact info for each rejected trial
-        artifact_channels = []
-        for ch_idx, is_artifact in enumerate(find_artifacts(trials[idx:idx+1], maxMin, level, step, lowest)[0]):
-            if is_artifact:
-                artifact_channels.append(trials.ch_names[ch_idx])
-        
-        rejected_info[idx] = artifact_channels
+        ch_indiced = np.where(artifact_mask[idx])[0]
+        rejected_info[idx] = [trials.ch_names[ch_idx] for ch_idx in ch_indiced]
+
+    
+    # drop bad trials
+    trials.drop(is_artifacts_idx)   # in place operation
 
     return trials, rejected_info
 
@@ -60,8 +56,8 @@ def find_artifacts(trials, maxMin, level, step, lowest):
 
     :return: A boolean array of shape (n_epochs, n_channels) indicating whether each channel in each epoch is marked as an artifact
     """
-    
-    data = trials.get_data()    # shape: (n_epochs, n_channels, n_times)
+
+    data = trials.get_data(verbose=False)    # shape: (n_epochs, n_channels, n_times)
     n_epochs, n_channels, _ = data.shape
 
     is_artifact = np.zeros((n_epochs, n_channels), dtype=bool)
@@ -90,6 +86,7 @@ def find_artifacts(trials, maxMin, level, step, lowest):
 
 
 ### ------------- Trial Rejection by MNE Methods------------------
+### NOTE: need some adjustments to fit our data structure
 def trial_rejection_mne(eeg, evts, evts_dict_stim, max=500e-6, min=0.1e-6, tmin=0, tmax=3, baseline=None):
     '''
     Trial rejection using MNE built-in methods based on peak-to-peak amplitude and flat signal checks.

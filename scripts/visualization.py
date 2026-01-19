@@ -113,7 +113,7 @@ def iclabel_visualize(ica, ic_labels, trials):
     plt.show()
 
 
-def plot_erp(evokeds, channel, mean_window, colors=None, linestyles=None, title=None):
+def plot_erp(evokeds, channel='FCz', mean_window=[0.240, 0.340], diff=False, title=None):
     '''
     Plot ERP waveforms with mean amplitude window shading.
     
@@ -124,6 +124,27 @@ def plot_erp(evokeds, channel, mean_window, colors=None, linestyles=None, title=
     :param linestyles: linestyles for each condition
     :param title: Title for the plot
     '''
+    if diff:
+        colors = {
+        'Low-Low': '#4C72B0',   # Muted Blue
+        'Mid-Low': '#64B5CD',   # Soft Cyan
+        'Mid-High': '#E1BC66',  # Sand/Gold
+        'High-High': '#C44E52'  # Muted Crimson 
+        }
+        linestyles = None
+    else:
+        colors = {
+        'Low-Low Win': 'red', 'Low-Low Loss': 'blue',
+        'Mid-Low Win': 'red', 'Mid-Low Loss': 'blue',
+        'Mid-High Win': 'red', 'Mid-High Loss': 'blue',
+        'High-High Win': 'red', 'High-High Loss': 'blue'
+        }
+        linestyles = {
+            'Low-Low Win': '-', 'Low-Low Loss': '-',
+            'Mid-Low Win': '--', 'Mid-Low Loss': '--',
+            'Mid-High Win': '-.', 'Mid-High Loss': '-.',
+            'High-High Win': ':', 'High-High Loss': ':'
+        }
 
     # Create figure
     fig, axes = plt.subplots(1, 1, figsize=(12, 5), sharex=True, sharey=True)
