@@ -131,3 +131,20 @@ def calculate_peak_to_peak(evoked, channel_name, tmin, tmax):
     peak_to_peak = (p_amplitude - n_amplitude) * 1e6
     
     return peak_to_peak, n_time * 1000, p_time* 1000, n_amplitude, p_amplitude
+
+
+def compute_grand_average(epoch_dict, group_evokeds):
+    '''
+    Compute grand average ERPs across all subjects for each condition.
+    
+    :param epoch_dict: Dictionary of conditions
+    :param group_evokeds: Dictionary mapping subject IDs to their Evoked objects
+    
+    :return: Dictionary of grand average Evoked objects for each condition
+    '''
+    grand_averages = {}
+    for condition in epoch_dict.keys():
+        evokeds_list = [group_evokeds[subject_id][condition] for subject_id in group_evokeds.keys()]
+        grand_averages[condition] = mne.grand_average(evokeds_list)
+
+    return grand_averages
