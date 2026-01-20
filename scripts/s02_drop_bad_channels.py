@@ -26,7 +26,7 @@ def reref(eeg, verbose=True):
     has_tp9 = 'TP9' in eeg.ch_names
     has_tp10 = 'TP10' in eeg.ch_names
 
-    if has_tp9 and has_tp1:
+    if has_tp9 and has_tp10:
         if verbose:
             print("Average Reference: Keeping both.")
         eeg.set_eeg_reference(ref_channels=['TP9', 'TP10'])
