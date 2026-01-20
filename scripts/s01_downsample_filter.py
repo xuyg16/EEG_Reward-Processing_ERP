@@ -1,7 +1,7 @@
 from meegkit.dss import dss_line
 import numpy as np
 
-def down_sampling(eeg, new_sfreq=250):
+def down_sampling(eeg, new_sfreq=250, verbose=True):
     '''
     Downsample the eeg signal.
     
@@ -11,9 +11,11 @@ def down_sampling(eeg, new_sfreq=250):
     :return: downsampled eeg signal
     '''
     eeg_down = eeg.copy().resample(new_sfreq, npad='auto')
-    print(f"Original Sampling Rate: {eeg.info['sfreq']} Hz")
-    print(f"New Sampling Rate: {eeg_down.info['sfreq']} Hz")
-    
+
+    if verbose:
+        print(f"Original Sampling Rate: {eeg.info['sfreq']} Hz")
+        print(f"New Sampling Rate: {eeg_down.info['sfreq']} Hz")
+
     return eeg_down
 
 

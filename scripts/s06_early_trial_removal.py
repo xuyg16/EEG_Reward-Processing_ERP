@@ -1,7 +1,7 @@
 import mne
 import numpy as np
 
-def exclude_early_trials(data, num_to_exclude=10):
+def exclude_early_trials(data, num_to_exclude=10, verbose=True):
     '''
     Exclude first few trials (default: 10) for each task type from the Epochs data.
         'S  1' = start of low-value task fixation (all low cue)
@@ -31,13 +31,11 @@ def exclude_early_trials(data, num_to_exclude=10):
             task_start_ids['S 11_S 21'].append(event_id)
         elif 'Stimulus:S 31' == event_name:
             task_start_ids['S 31'] = [event_id]
-    print(task_start_ids)
 
     # flatten all start ids
     all_task_starts = []
     for ids in task_start_ids.values():
         all_task_starts.extend(ids)
-    print(all_task_starts)
 
     events_to_exclude = []
     i = 0
@@ -71,7 +69,6 @@ def exclude_early_trials(data, num_to_exclude=10):
             trial_count[current_task_type] += 1
         
         i += 1
-    print(trial_count)
 
     # Remove excluded events
     # Create mask: True = keep, False = exclude
@@ -91,5 +88,6 @@ def exclude_early_trials(data, num_to_exclude=10):
     )
     data_clean.set_annotations(new_annot)
     
-    print(f"Excluded {len(events_to_exclude)} events (first {num_to_exclude} trials of each block).")
+    if verbose:
+        print(f"Excluded {len(events_to_exclude)} events (first {num_to_exclude} trials of each block).")
     return data_clean
