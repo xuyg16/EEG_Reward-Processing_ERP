@@ -1,22 +1,14 @@
 
-def drop_bad_channels(subject_id, eeg):
+
+def drop_bad_channels(bad_channels, eeg):
     '''
     Drop bad channels based on subject ID. Bad channels are found after the first trial processing step.
     
-    :param subject_id: subject id of the eeg data
+    :param bad_channels: list of bad channels to drop
     :param eeg: eeg data to drop bad channels from
 
     :return: eeg data with bad channels dropped
     '''
-    if subject_id == '27':
-        bad_channels = []   
-    # elif subject_id == '28':
-    #     bad_channels =['Fp1']
-    elif subject_id == '35':
-        bad_channels = ['TP10']
-    else:
-        bad_channels = []
-        print(f'bad channels unknown for {subject_id}')
     eeg.info['bads'] = bad_channels
     eeg_ica = eeg.copy().drop_channels(bad_channels)
 

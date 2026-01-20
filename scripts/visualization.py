@@ -113,7 +113,7 @@ def iclabel_visualize(ica, ic_labels, trials):
     plt.show()
 
 
-def plot_erp(evokeds, channel='FCz', mean_window=[0.240, 0.340], diff=False, title=None):
+def plot_erp(evokeds, channel='FCz', mean_window=[0.240, 0.340], ylim=[-5, 10], diff=False, title=None):
     '''
     Plot ERP waveforms with mean amplitude window shading.
     
@@ -159,6 +159,7 @@ def plot_erp(evokeds, channel='FCz', mean_window=[0.240, 0.340], diff=False, tit
         ci=True,
         show=False,
         show_sensors=False,
+        ylim=dict(eeg=ylim)
     )
     # Add shading for Mean Amplitude window
     axes.axvspan(mean_window[0], mean_window[1], color='gray', alpha=0.2, label=f'Mean Window ({mean_window[0]*1000:.0f}-{mean_window[1]*1000:.0f}ms)')

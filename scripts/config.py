@@ -52,22 +52,6 @@ CONDITIONS_DICT = {
     }
 }
 
-# ------- Bad channel lists --------
-BAD_CHANNELS = {
-    '27': [],
-    '28': [],
-    '29': [],
-    '30': [],
-    '31': [],
-    '32': [],
-    '33': [],
-    '34': [],
-    '35': [],
-    '36': [],
-    '37': [],
-    '38': [],
-}
-
 # -------- Preprocessing parameters --------
 SAMPLING_RATE = 250  # in Hz
 BANDPASS_FREQS = (0.1, 30)  # in Hz
