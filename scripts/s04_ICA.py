@@ -3,7 +3,9 @@ from mne_icalabel import label_components
 from mne_icalabel.iclabel import iclabel_label_components
 
 
-def get_ica(trials_mne, method='picard'):
+### TO DO LIST: add the code to show which components are removed ###
+
+def get_ica(trials, method='picard'):
     '''
     Fit ICA on the given MNE Epochs object.
     
@@ -13,8 +15,8 @@ def get_ica(trials_mne, method='picard'):
     :return: Fitted ICA object.
     '''
 
-    ica = mne.preprocessing.ICA(method=method, random_state=97)     # random_state for reproducibility
-    ica.fit(trials_mne,verbose=True)
+    ica = mne.preprocessing.ICA(method=method, random_state=2016)     # random_state for reproducibility (the authors used 2016)
+    ica.fit(trials,verbose=True)
 
     return ica
 
