@@ -1,4 +1,4 @@
-def find_bad_channels(epochs, reject_criteria, custom=False, rejection_info=None):
+def find_bad_channels(epochs, reject_criteria, custom=False, rejection_info=None, verbose=True):
     '''
     Find and print channels that exceed the rejection criteria based on epoch drops.
 
@@ -37,17 +37,20 @@ def find_bad_channels(epochs, reject_criteria, custom=False, rejection_info=None
 
     # Identify channels whose rejection rate exceeds the 20% threshold
     bad_channels_to_mark = []
-    print("--- Channel Rejection Summary ---")
+    if verbose:
+        print("--- Channel Rejection Summary ---")
 
     for ch_name in ch_names:
         # Use .get() to handle channels that never caused a drop (count = 0)
         drop_count = channel_drop_counts.get(ch_name, 0)
         rejection_rate = drop_count / n_total_epochs
 
-        print(f"{ch_name}: {drop_count}/{n_total_epochs} drops ({rejection_rate:.1%})")
+        if verbose:
+            print(f"{ch_name}: {drop_count}/{n_total_epochs} drops ({rejection_rate:.1%})")
 
         if rejection_rate > reject_criteria:
             bad_channels_to_mark.append(ch_name)
     
-    print("---------------------------------")
-    print(f"Channels exceeding {reject_criteria:.0%} threshold: {bad_channels_to_mark}")
+    if verbose:
+        print("---------------------------------")
+        print(f"Channels exceeding {reject_criteria:.0%} threshold: {bad_channels_to_mark}")
