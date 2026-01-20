@@ -14,8 +14,10 @@ def get_ica(trials, method='picard'):
 
     :return: Fitted ICA object.
     '''
-
-    ica = mne.preprocessing.ICA(method=method, random_state=2016)     # random_state for reproducibility (the authors used 2016)
+    if method == 'picard':
+        ica = mne.preprocessing.ICA(method=method, random_state=2016)     # random_state for reproducibility (the authors used 2016)
+    else:
+        ica = mne.preprocessing.ICA(method=method, fit_params=dict(extended=True), random_state=2016)     # random_state for reproducibility
     ica.fit(trials,verbose=True)
 
     return ica
