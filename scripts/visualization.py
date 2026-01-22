@@ -164,3 +164,16 @@ def plot_erp(evokeds, channel='FCz', mean_window=[0.240, 0.340], ylim=[-5, 10], 
     # Add shading for Mean Amplitude window
     axes.axvspan(mean_window[0], mean_window[1], color='gray', alpha=0.2, label=f'Mean Window ({mean_window[0]*1000:.0f}-{mean_window[1]*1000:.0f}ms)')
     plt.show();
+
+
+def plot_topo_serires(evokeds, times = [0.18, 0.22, 0.26, 0.30, 0.34, 0.38], vlimit = (-5, 5)):
+    '''
+    Plot topo sereies for the grand average erps
+    
+    :param evokeds: input grand averages
+    :param times: time points for each single topography
+    :param vlimit: amplitude limites for the topographies
+    '''
+    for condition, evoked in evokeds.items():
+        print(f"Plotting Topomap for: {condition}")
+        evoked.plot_topomap(times=times, ch_type='eeg', colorbar=True, vlim=vlimit)
