@@ -10,7 +10,7 @@ def down_sampling(eeg, new_sfreq=250, verbose=True):
 
     :return: downsampled eeg signal
     '''
-    eeg_down = eeg.copy().resample(new_sfreq, npad='auto')
+    eeg_down = eeg.resample(new_sfreq, npad='auto')
 
     if verbose:
         print(f"Original Sampling Rate: {eeg.info['sfreq']} Hz")
@@ -30,7 +30,7 @@ def band_filter(eeg, f_low=0.1, f_high=30):
 
     :return: bandpass filtered eeg signal
     '''
-    eeg_band = eeg.copy().filter(l_freq=f_low, h_freq=f_high)
+    eeg_band = eeg.filter(l_freq=f_low, h_freq=f_high, n_jobs=-1)
 
     return eeg_band
 
@@ -44,7 +44,7 @@ def notch_filter(eeg, line_freq=50):
 
     :return: notch filtered eeg signal
     '''
-    eeg_band_notch = eeg.copy().notch_filter(line_freq)
+    eeg_band_notch = eeg.notch_filter(line_freq, n_jobs=-1)
 
     return eeg_band_notch
 
@@ -59,11 +59,10 @@ def zapline_filter(eeg, line_freq=50):
     :return: zapline filtered eeg signal
     '''
     # input & output of dss_line are of shape: (n_samples, n_channels, n_trial)
-    eeg_band_zap = eeg.copy()
     band_sfreq = eeg.info['sfreq']
-    eeg_band_zap_array, _ = dss_line(np.expand_dims(eeg.get_data().T, axis=2), fline=line_freq, sfreq=band_sfreq)
+    eeg_zap_array, _ = dss_line(np.expand_dims(eeg.get_data().T, axis=2), fline=line_freq, sfreq=band_sfreq)
     # convert back to shape: (n_channels, n_samples)
-    eeg_band_zap_array = eeg_band_zap_array.squeeze().T
-    eeg_band_zap._data = eeg_band_zap_array
+    eeg_zap_array = eeg_zap_array.squeeze().T
+    eeg._data = eeg_zap_array
 
-    return eeg_band_zap
+    return eeg
