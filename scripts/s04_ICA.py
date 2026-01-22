@@ -64,7 +64,7 @@ def iccomponent_removal(eeg, ica, ic_labels, criteria):
 
     return eeg
 
-def iccomponent_removal_author(eeg, eeg_ica, ica):
+def iccomponent_removal_author(eeg, trials, ica):
     '''
     Remove bad IC components based on the given criteria.
 
@@ -86,7 +86,7 @@ def iccomponent_removal_author(eeg, eeg_ica, ica):
         'other': 7
     }
     exclude_idx = []
-    all_labels = iclabel_label_components(eeg_ica, ica)
+    all_labels = iclabel_label_components(trials, ica)
     for i, probabilities in enumerate(all_labels):
         #print(label)
         if probabilities[label_dict['eye blink']] > probabilities[label_dict['brain']]:
@@ -96,7 +96,7 @@ def iccomponent_removal_author(eeg, eeg_ica, ica):
 
     return eeg
 
-def iccomponent_removal_new(eeg, eeg_ica, ica):
+def iccomponent_removal_new(eeg, trials, ica):
     '''
     Remove bad IC components based on the given criteria.
 
@@ -118,7 +118,7 @@ def iccomponent_removal_new(eeg, eeg_ica, ica):
         'other': 7
     }
     exclude_idx = []
-    all_labels = iclabel_label_components(eeg_ica, ica)
+    all_labels = iclabel_label_components(trials, ica)
     for i, probabilities in enumerate(all_labels):
         #print(label)
         if probabilities[label_dict['brain']] < 0.4:
