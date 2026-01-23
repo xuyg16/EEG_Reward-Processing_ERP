@@ -8,14 +8,15 @@ def find_bad_channels(epochs, reject_criteria, custom=False, rejection_info=None
 
     :return: List of bad channels exceeding the rejection criteria
     '''
+    n_total_epochs = len([log for log in epochs.drop_log if 'IGNORED' not in log])   # number of epochs before dropping
+    print(n_total_epochs)
     if not custom:
         # Get the drop log which lists the channels responsible for each drop
         drop_log = epochs.drop_log
     elif custom and rejection_info is not None:
         # Construct drop log from custom rejection info
-        n_epochs = len(epochs.events)
         drop_log = []
-        for epoch_idx in range(n_epochs):
+        for epoch_idx in range(n_total_epochs):
             if epoch_idx in rejection_info:
                 drop_log.append(tuple(rejection_info[epoch_idx]))
             else:
@@ -25,7 +26,6 @@ def find_bad_channels(epochs, reject_criteria, custom=False, rejection_info=None
 
     # Initialize a dictionary to count how many times each channel caused a drop
     channel_drop_counts = {}
-    n_total_epochs = len(epochs.events)
     ch_names = epochs.ch_names
 
     # Iterate through the drop log and count
