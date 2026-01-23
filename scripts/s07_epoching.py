@@ -19,14 +19,11 @@ def epoching(conditions_dict, eeg, max=150e-6, min=0.1e-6, tmin=-0.2, tmax=0.6, 
     '''
 
     # get all the feedback-locked stimulus
-    all_markers = []
-    for markers in conditions_dict.values():
-        all_markers.extend(markers)
+    stim_dict = []
+    for condition in conditions_dict.values():
+        stim_dict.extend(condition)
 
-    # Create the filtered event dictionary
-    evts, evts_dict_stim = get_event_dict(eeg, all_markers)
-
-    epochs_all = trial_rejection_mne(eeg, evts, evts_dict_stim, max=max, min=min,  tmin=tmin, tmax=tmax, baseline=baseline)
+    epochs_all = trial_rejection_mne(eeg, stim_dict, max=max, min=min,  tmin=tmin, tmax=tmax, baseline=baseline)
 
     return epochs_all
 
@@ -46,15 +43,13 @@ def epoching_cust(conditions_dict, eeg, maxMin=150e-6, level=150e-6, step=40e-6,
 
     :return: MNE Epochs object containing the epoched and cleaned data
     '''
-    
-    all_markers = []
-    for markers in conditions_dict.values():
-        all_markers.extend(markers)
 
-    # Create the filtered event dictionary
-    evts, evts_dict_stim = get_event_dict(eeg, all_markers)
+    # get all the feedback-locked stimulus
+    stim_dict = []
+    for condition in conditions_dict.values():
+        stim_dict.extend(condition)
 
-    epochs_all = trial_rejection_cust(eeg, evts, evts_dict_stim, maxMin=maxMin, level=level, step=step, lowest=lowest
+    epochs_all = trial_rejection_cust(eeg, stim_dict, maxMin=maxMin, level=level, step=step, lowest=lowest
                                                        , tmin=tmin, tmax=tmax, baseline=baseline)
 
     return epochs_all

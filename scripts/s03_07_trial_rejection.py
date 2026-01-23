@@ -1,8 +1,9 @@
 import numpy as np
 import mne
+from tools import get_event_dict
 
 ### ------------- Customized Trial Rejection ------------------
-def trial_rejection_cust(eeg, evts, evts_dict_stim, maxMin=500e-6, level=500e-6, step=40e-6, lowest=0.1e-6, tmin=0, tmax=3, baseline=None):
+def trial_rejection_cust(eeg, stim_dict, maxMin=500e-6, level=500e-6, step=40e-6, lowest=0.1e-6, tmin=0, tmax=3, baseline=None):
     '''
     Customized trial rejection based on four artifact checks:
         1. MaxMin: whether the peak-to-peak amplitude range is over the threshold
@@ -21,6 +22,9 @@ def trial_rejection_cust(eeg, evts, evts_dict_stim, maxMin=500e-6, level=500e-6,
     :return trials: trials after rejecting bad trials
     :return rejected_info: dictionary containing the info of rejected trials: reason(channel name) for each dropped trial
     '''
+    # get the event dict filtered by conditions
+    evts, evts_dict_stim = get_event_dict(eeg, stim_dict)
+
     # dividing the data into trials
     trials = mne.Epochs(eeg, evts, evts_dict_stim, tmin=tmin, tmax=tmax, baseline=baseline, verbose=False) 
 
@@ -87,7 +91,7 @@ def find_artifacts(trials, maxMin, level, step, lowest):
 
 ### ------------- Trial Rejection by MNE Methods------------------
 ### NOTE: need some adjustments to fit our data structure
-def trial_rejection_mne(eeg, evts, evts_dict_stim, max=500e-6, min=0.1e-6, tmin=0, tmax=3, baseline=None):
+def trial_rejection_mne(eeg, stim_dict, max=500e-6, min=0.1e-6, tmin=0, tmax=3, baseline=None):
     '''
     Trial rejection using MNE built-in methods based on peak-to-peak amplitude and flat signal checks.
     
@@ -102,6 +106,9 @@ def trial_rejection_mne(eeg, evts, evts_dict_stim, max=500e-6, min=0.1e-6, tmin=
 
     :return: trials after rejecting bad trials
     '''
+    # get the event dict filtered by conditions
+    evts, evts_dict_stim = get_event_dict(eeg, stim_dict)
+
     ### peak-to-peak amp check
     reject_criteria = dict(
         eeg=max
