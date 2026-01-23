@@ -14,7 +14,7 @@ SUBJECT_INFO = {
            'bad_channels': []},
     '28': {'learner': True,
            'bad_channels': []},
-    '29': {'learner': True,
+    '29': {'learner': False,
            'bad_channels': []},
     '30': {'learner': False,
            'bad_channels': []},
@@ -64,7 +64,7 @@ PIPELINES = {
         'ica_method': 'infomax',
         'ica_criteria': None, #tbd to be edited if needed
         'trial_rejection_method': 'custom',
-        'rejection_params': {
+        'rejection_params': { #trial rejection
             'ica':{
                 'maxMin': 500e-6,
                 'level': 500e-6,
@@ -94,7 +94,7 @@ PIPELINES = {
         'ica_method': 'picard',
         'ica_criteria': None, #tbd to be edited if needed
         'trial_rejection_method': 'mne',
-        'rejection_params': {
+        'rejection_params': { #trial rejection
             'ica':{
                 'max': 500e-6,
                 'min': 0.1e-6,
