@@ -67,32 +67,36 @@ def rewp_calculation(all_evokeds, epoch_dict):
     :param epoch_dict: Dictionary defining the epoch conditions
     
     :return: None (prints the RewP metrics)"""
+    condition_pairs = [
+        ('Low-Low',   'Low-Low Win',   'Low-Low Loss'),
+        ('Mid-Low',   'Mid-Low Win',   'Mid-Low Loss'),
+        ('Mid-High',  'Mid-High Win',  'Mid-High Loss'),
+        ('High-High', 'High-High Win', 'High-High Loss')
+    ]
 
-    win = [k for k in epoch_dict.keys() if 'Win' in k]
-    loss = [k for k in epoch_dict.keys() if 'Loss' in k]
-    valid_win_names = [name for name in win if name in all_evokeds]
-    valid_loss_names = [name for name in loss if name in all_evokeds]
-
-
-    # calculate average amplitude for win and lose cases
-    win_evokeds_list = [all_evokeds[name] for name in valid_win_names]
-    loss_evokeds_list = [all_evokeds[name] for name in valid_loss_names]
-
-    erp_grand_win = mne.combine_evoked(win_evokeds_list, weights='equal')
-    erp_grand_loss = mne.combine_evoked(loss_evokeds_list, weights='equal')
-    rewp_diff = mne.combine_evoked([erp_grand_win, erp_grand_loss], weights=[1, -1])
-
-    # Parameters
     channel = 'FCz'
-    mean_window = [0.240, 0.340] # as set by authors
+    mean_window = [0.240, 0.340]
+    results = {}
 
-    # Metrics
-    rewp_mean_amplitude = calculate_mean_amplitude(rewp_diff, channel, *mean_window)
-    p2p_amp, n_time, p_time, n_val, p_val = calculate_peak_to_peak(rewp_diff, channel, *mean_window)
+    for label, win_key, loss_key in condition_pairs:
+        if win_key in all_evokeds and loss_key in all_evokeds:
+            # Create the Difference Wave: RewP = Win - Loss
+            # weights=[1, -1] performs the subtraction
+            rewp_diff = mne.combine_evoked(
+                [all_evokeds[win_key], all_evokeds[loss_key]], 
+                weights=[1, -1]
+            )
 
+            mean_amp = calculate_mean_amplitude(rewp_diff, channel, *mean_window)
+            p2p_amp, n_t, p_t, n_amp, p_amp = calculate_peak_to_peak(rewp_diff, channel, *mean_window)
 
-    print(f"RewP Mean Amplitude: {rewp_mean_amplitude:.2f} µV")
-    print(f"RewP Peak-to-Peak: {p2p_amp:.2f} µV")
+            results[label] = {'mean': mean_amp, 'p2p': p2p_amp}
+            
+            print(f"[{label}] Mean: {mean_amp:5.2f} µV | P2P: {p2p_amp:5.2f} µV")
+        else:
+            print(f"[{label}] Missing data for win/loss pair.")
+
+    return results
 
 
 
