@@ -1,0 +1,230 @@
+import csv
+import json
+from pathlib import Path
+
+import numpy as np
+
+from s11b_stats_utils import rm_anova_oneway, rm_ttest
+
+
+def _find_key(keys, includes, excludes=()):
+    for k in keys:
+        kl = k.lower()
+        if all(s in kl for s in includes) and not any(s in kl for s in excludes):
+            return k
+    return None
+
+
+def _get_key_map(keys):
+    patterns = {
+        'LL_win': (['low', 'low', 'win'], []),
+        'LL_loss': (['low', 'low', 'loss'], []),
+        'ML_win': (['mid', 'low', 'win'], []),
+        'ML_loss': (['mid', 'low', 'loss'], []),
+        'MH_win': (['mid', 'high', 'win'], []),
+        'MH_loss': (['mid', 'high', 'loss'], []),
+        'HH_win': (['high', 'high', 'win'], []),
+        'HH_loss': (['high', 'high', 'loss'], []),
+    }
+    key_map = {name: _find_key(keys, inc, exc) for name, (inc, exc) in patterns.items()}
+    missing = [k for k, v in key_map.items() if v is None]
+    if missing:
+        raise RuntimeError(f"Missing condition keys: {missing}. Check condition names.")
+    return key_map
+
+
+def build_rewp_scores(group_evokeds, ch_name='FCz', tmin=0.240, tmax=0.340):
+    """
+    Build RewP mean-amplitude scores (Win-Loss) for LL/ML/MH/HH.
+
+    :param group_evokeds: {subject_id: {condition_name: Evoked}}
+    :return: scores (n_subjects, 4), subjects list, key_map
+    """
+    subjects = list(group_evokeds.keys())
+    example_keys = list(next(iter(group_evokeds.values())).keys())
+    key_map = _get_key_map(example_keys)
+
+    def _mean_fc(evoked):
+        e = evoked.copy().pick(ch_name).crop(tmin, tmax)
+        return float(e.data.mean())
+
+    scores = []
+    for sid in subjects:
+        ev = group_evokeds[sid]
+        ll = _mean_fc(ev[key_map['LL_win']]) - _mean_fc(ev[key_map['LL_loss']])
+        ml = _mean_fc(ev[key_map['ML_win']]) - _mean_fc(ev[key_map['ML_loss']])
+        mh = _mean_fc(ev[key_map['MH_win']]) - _mean_fc(ev[key_map['MH_loss']])
+        hh = _mean_fc(ev[key_map['HH_win']]) - _mean_fc(ev[key_map['HH_loss']])
+        scores.append([ll, ml, mh, hh])
+
+    scores = np.asarray(scores)
+    return scores, subjects, key_map
+
+
+def save_rewp_scores(scores, subjects, key_map, out_path,
+                     ch_name='FCz', tmin=0.240, tmax=0.340):
+    """
+    Save RewP scores to CSV with JSON metadata.
+
+    :param scores: (n_subjects, 4) array
+    :param subjects: list of subject ids
+    :param key_map: dict of condition name mapping
+    :param out_path: file path (.csv)
+    """
+    out_path = Path(out_path)
+    if out_path.suffix.lower() != '.csv':
+        out_path = out_path.with_suffix('.csv')
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    meta = {
+        'score_labels': ['LL', 'ML', 'MH', 'HH'],
+        'ch_name': ch_name,
+        'tmin': float(tmin),
+        'tmax': float(tmax),
+    }
+    meta_path = out_path.with_name(out_path.stem + "_meta.json")
+
+    scores = np.asarray(scores, float)
+    subjects = np.asarray(subjects, int)
+
+    with out_path.open("w", newline="") as f:
+        writer = csv.writer(f)
+        writer.writerow(["subject", "LL", "ML", "MH", "HH"])
+        for sid, row in zip(subjects, scores):
+            writer.writerow([int(sid)] + [float(x) for x in row])
+
+    with meta_path.open("w", encoding="utf-8") as f:
+        json.dump({"key_map": key_map, "meta": meta}, f, indent=2, ensure_ascii=False)
+
+    print(f"Saved RewP scores -> {out_path}")
+    print(f"Saved metadata -> {meta_path}")
+    return out_path
+
+
+def load_rewp_scores(path):
+    """
+    Load RewP scores from csv saved by save_rewp_scores.
+    """
+    path = Path(path)
+    if path.suffix.lower() != '.csv':
+        path = path.with_suffix('.csv')
+    meta_path = path.with_name(path.stem + "_meta.json")
+
+    subjects = []
+    scores = []
+    with path.open("r", newline="") as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            subjects.append(int(row["subject"]))
+            scores.append([float(row["LL"]), float(row["ML"]), float(row["MH"]), float(row["HH"])])
+
+    key_map = None
+    meta = None
+    if meta_path.exists():
+        with meta_path.open("r", encoding="utf-8") as f:
+            payload = json.load(f)
+        key_map = payload.get("key_map")
+        meta = payload.get("meta")
+
+    return np.asarray(scores, float), subjects, key_map, meta
+
+
+def run_rewp_parametric_from_scores(scores, subjects=None, key_map=None):
+    """
+    Run rmANOVA + rmTTest from precomputed scores.
+
+    :param scores: (n_subjects, 4) array
+    """
+    scores = np.asarray(scores, float)
+    print('RewP diff score shape:', scores.shape)
+    if key_map is not None:
+        print('Condition mapping:', key_map)
+
+    print('\n=== rmANOVA on RewP diffs (LL, ML, MH, HH) ===')
+    anova_res = rm_anova_oneway(scores)
+
+    print('\n=== rmTTest ===')
+    print('Mid-Low vs Low-Low')
+    t1 = rm_ttest(scores[:, 1], scores[:, 0])
+    print('Mid-High vs High-High')
+    t2 = rm_ttest(scores[:, 2], scores[:, 3])
+
+    return {
+        'anova': anova_res,
+        'ttest_ml_ll': t1,
+        'ttest_mh_hh': t2,
+        'subjects': subjects,
+    }
+
+
+def save_parametric_results(param_res, out_path):
+    """
+    Save parametric results to CSV + raw JSON.
+
+    :param param_res: dict returned by run_rewp_parametric_from_scores
+    :param out_path: csv path
+    """
+    out_path = Path(out_path)
+    if out_path.suffix.lower() != '.csv':
+        out_path = out_path.with_suffix('.csv')
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    raw_path = out_path.with_name(out_path.stem + "_raw.json")
+
+    header = [
+        "test", "comparison", "stat", "df1", "df2", "p",
+        "cohen_d", "n", "normality_p",
+        "partial_eta2", "generalized_eta2",
+        "friedman_chi2", "friedman_p", "friedman_n",
+    ]
+
+    rows = []
+    anova = param_res.get("anova", {})
+    rows.append({
+        "test": "rmANOVA",
+        "comparison": "LL/ML/MH/HH",
+        "stat": anova.get("F"),
+        "df1": anova.get("df1"),
+        "df2": anova.get("df2"),
+        "p": anova.get("p"),
+        "partial_eta2": anova.get("partial_eta2"),
+        "generalized_eta2": anova.get("generalized_eta2"),
+        "friedman_chi2": anova.get("friedman_chi2"),
+        "friedman_p": anova.get("friedman_p"),
+        "friedman_n": anova.get("friedman_n"),
+    })
+
+    t_ml_ll = param_res.get("ttest_ml_ll", {})
+    rows.append({
+        "test": "rmTTest",
+        "comparison": "ML-LL",
+        "stat": t_ml_ll.get("t"),
+        "df1": t_ml_ll.get("df"),
+        "p": t_ml_ll.get("p"),
+        "cohen_d": t_ml_ll.get("cohen_d"),
+        "n": t_ml_ll.get("n"),
+        "normality_p": t_ml_ll.get("normality_p"),
+    })
+
+    t_mh_hh = param_res.get("ttest_mh_hh", {})
+    rows.append({
+        "test": "rmTTest",
+        "comparison": "MH-HH",
+        "stat": t_mh_hh.get("t"),
+        "df1": t_mh_hh.get("df"),
+        "p": t_mh_hh.get("p"),
+        "cohen_d": t_mh_hh.get("cohen_d"),
+        "n": t_mh_hh.get("n"),
+        "normality_p": t_mh_hh.get("normality_p"),
+    })
+
+    with out_path.open("w", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=header)
+        writer.writeheader()
+        for row in rows:
+            writer.writerow({k: row.get(k, "") for k in header})
+
+    with raw_path.open("w", encoding="utf-8") as f:
+        json.dump(param_res, f, indent=2, ensure_ascii=False)
+
+    print(f"Saved parametric results -> {out_path}")
+    print(f"Saved raw parametric JSON -> {raw_path}")
+    return out_path
