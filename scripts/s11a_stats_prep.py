@@ -4,7 +4,7 @@ from pathlib import Path
 
 import numpy as np
 
-from s11b_stats_utils import rm_anova_oneway, rm_ttest
+from s11b_stats import rm_anova_oneway, rm_ttest
 
 
 def _find_key(keys, includes, excludes=()):

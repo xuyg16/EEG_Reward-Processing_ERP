@@ -1,7 +1,8 @@
 # -------- General parameters --------
 BIDS_ROOT = {
     'qian': "/Users/qianyueli/Documents/UniStuttgart/26WI/EEG/EEG_project/reward_dataset",
-    'zheng': "C:\\Users\\Zheng\\Desktop\\fourth semester\\EEG\\reward_dataset\\reward_dataset\\reward_dataset"
+    'zheng': "C:\\Users\\Zheng\\Desktop\\fourth semester\\EEG\\reward_dataset\\reward_dataset\\reward_dataset",
+    'xu': "/Users/xuyg/GitHub/EEG_Reward-Processing_ERP/ds004147"
 }
 LOCS_FILENAME = {   #NOTE: download .locs file from author's Github, put it under root_of_dataset/code/..
     'site2': 'site2channellocations.locs',
