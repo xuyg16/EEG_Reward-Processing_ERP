@@ -40,7 +40,8 @@ def paired_permutation_test(x1, x2, n_perm=10000, stat="t", seed=0, alternative=
     if stat == "t":
         mu = diff_perm.mean(axis=1)
         sd = diff_perm.std(axis=1, ddof=1)
-        perm_stats = mu / (sd / np.sqrt(n))
+        den = sd / np.sqrt(n)
+        perm_stats = np.where(den > 0, mu / den, 0.0)
     else:  # mean
         perm_stats = diff_perm.mean(axis=1)
 
