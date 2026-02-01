@@ -14,6 +14,7 @@ def get_trimmed_mean(epochs, proportiontocut):
     :returns: trimmed_evoked -- the trimmed mean ERP as an Evoked object
     '''
     data = epochs.get_data()
+    n_trials = len(epochs)
     trimmed_erp_data = np.apply_along_axis(
         trim_mean,
         axis=0, # along the trial axis
@@ -24,7 +25,8 @@ def get_trimmed_mean(epochs, proportiontocut):
     trimmed_evoked = mne.EvokedArray(
         trimmed_erp_data, 
         epochs.info, 
-        tmin=epochs.times[0]
+        tmin=epochs.times[0],
+        nave=n_trials
     )
     return trimmed_evoked
 
@@ -42,8 +44,19 @@ def get_evoked(conditions_dict, epochs, proportiontocut=0.05):
     '''
     all_evokeds = {}
     for name, marker in conditions_dict.items():
+        # 1. Select the epochs for this condition
         epoch_cond = epochs[marker]
+        
+        if len(epoch_cond) == 0:
+            print(f"Warning: No trials found for condition {name}")
+            continue
+
+        # 2. Generate the ERP using your trimmed mean function
         erp_cond = get_trimmed_mean(epoch_cond, proportiontocut=proportiontocut)
+               
+        # Set the comment so it shows up in the object summary
+        erp_cond.comment = name
+        
         all_evokeds[name] = erp_cond
 
     return all_evokeds
@@ -144,7 +157,8 @@ def compute_grand_average(epoch_dict, group_evokeds):
     '''
     grand_averages = {}
     for condition in epoch_dict.keys():
-        evokeds_list = [group_evokeds[subject_id][condition] for subject_id in group_evokeds.keys()]
-        grand_averages[condition] = mne.grand_average(evokeds_list)
+        evokeds_list = [group_evokeds[subject_id][condition] for subject_id in group_evokeds.keys() if condition in group_evokeds[subject_id]]
+        if evokeds_list:
+            grand_averages[condition] = mne.grand_average(evokeds_list)
 
     return grand_averages

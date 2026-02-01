@@ -22,8 +22,9 @@ def epoching(conditions_dict, eeg, max=150e-6, min=0.1e-6, tmin=-0.2, tmax=0.6, 
     stim_dict = []
     for condition in conditions_dict.values():
         stim_dict.extend(condition)
+    unique_stim = list(set(stim_dict)) # remove duplicates to avoid double-epoching
 
-    epochs_all = trial_rejection_mne(eeg, stim_dict, max=max, min=min,  tmin=tmin, tmax=tmax, baseline=baseline)
+    epochs_all = trial_rejection_mne(eeg, unique_stim, max=max, min=min,  tmin=tmin, tmax=tmax, baseline=baseline)
 
     return epochs_all
 
@@ -48,8 +49,9 @@ def epoching_cust(conditions_dict, eeg, maxMin=150e-6, level=150e-6, step=40e-6,
     stim_dict = []
     for condition in conditions_dict.values():
         stim_dict.extend(condition)
+    unique_stim = list(set(stim_dict)) # remove duplicates to avoid double-epoching
 
-    epochs_all = trial_rejection_cust(eeg, stim_dict, maxMin=maxMin, level=level, step=step, lowest=lowest
+    epochs_all, rejection_info = trial_rejection_cust(eeg, unique_stim, maxMin=maxMin, level=level, step=step, lowest=lowest
                                                        , tmin=tmin, tmax=tmax, baseline=baseline)
 
-    return epochs_all
+    return epochs_all, rejection_info
