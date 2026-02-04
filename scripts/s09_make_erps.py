@@ -32,7 +32,7 @@ def get_trimmed_mean(epochs, proportiontocut):
 
 
 
-def get_evoked(conditions_dict, epochs, proportiontocut=0.05):
+def get_evoked(conditions_dict, epochs, proportiontocut=0.05, verbose=True):
     '''
     Generate evoked ERPs for different conditions using trimmed mean.
     
@@ -45,19 +45,19 @@ def get_evoked(conditions_dict, epochs, proportiontocut=0.05):
     all_evokeds = {}
     for name, marker in conditions_dict.items():
         # 1. Select the epochs for this condition
-        epoch_cond = epochs[marker]
-        
-        if len(epoch_cond) == 0:
-            print(f"Warning: No trials found for condition {name}")
-            continue
 
-        # 2. Generate the ERP using your trimmed mean function
-        erp_cond = get_trimmed_mean(epoch_cond, proportiontocut=proportiontocut)
-               
-        # Set the comment so it shows up in the object summary
-        erp_cond.comment = name
+        try:
+            epoch_cond = epochs[marker]
+            # 2. Generate the ERP using your trimmed mean function
+            erp_cond = get_trimmed_mean(epoch_cond, proportiontocut=proportiontocut)
+            # Set the comment so it shows up in the object summary
+            erp_cond.comment = name
+            all_evokeds[name] = erp_cond
         
-        all_evokeds[name] = erp_cond
+        except KeyError:
+            if verbose:
+                print(f"Warning: No trials found for condition {name}")
+            continue
 
     return all_evokeds
 

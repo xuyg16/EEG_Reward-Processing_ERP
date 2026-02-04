@@ -59,7 +59,7 @@ def calculate_peak_to_peak(evoked, channel_name, tmin, tmax):
 
 
 
-def rewp_calculation(all_evokeds, epoch_dict):
+def rewp_calculation(all_evokeds, epoch_dict, verbose=True):
     """
     Calculate RewP metrics (Mean Amplitude and Peak-to-Peak) based on difference waves (Win - Loss).
 
@@ -92,9 +92,11 @@ def rewp_calculation(all_evokeds, epoch_dict):
 
             results[label] = {'mean': mean_amp, 'p2p': p2p_amp}
             
-            print(f"[{label}] Mean: {mean_amp:5.2f} µV | P2P: {p2p_amp:5.2f} µV")
+            if verbose:
+                print(f"[{label}] Mean: {mean_amp:5.2f} µV | P2P: {p2p_amp:5.2f} µV")
         else:
             print(f"[{label}] Missing data for win/loss pair.")
+            results[label] = {'mean': np.nan, 'p2p': np.nan}
 
     return results
 
