@@ -118,3 +118,7 @@ PIPELINES = {
         'evoked_proportiontocut': 0.05 # 5% trimming
     }
 }
+
+
+# -------- Other parameters --------
+N_BINS = 5
