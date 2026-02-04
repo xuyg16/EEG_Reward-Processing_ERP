@@ -165,7 +165,7 @@ def plot_erp(evokeds, channel='FCz', mean_window=[0.240, 0.340], ylim=[-5, 10], 
     axes.axvspan(mean_window[0], mean_window[1], color='gray', alpha=0.2, label=f'Mean Window ({mean_window[0]*1000:.0f}-{mean_window[1]*1000:.0f}ms)')
     plt.show();
 
-
+# NOTE: need to change to average calculation instead of timepoints
 def plot_topo_serires(evokeds, times = [0.18, 0.22, 0.26, 0.30, 0.34, 0.38], vlimit = (-5, 5)):
     '''
     Plot topo sereies for the grand average erps
@@ -177,3 +177,50 @@ def plot_topo_serires(evokeds, times = [0.18, 0.22, 0.26, 0.30, 0.34, 0.38], vli
     for condition, evoked in evokeds.items():
         print(f"Plotting Topomap for: {condition}")
         evoked.plot_topomap(times=times, ch_type='eeg', colorbar=True, vlim=vlimit)
+
+
+
+def plot_binning_results(rewp_differences, title='RewP Mean Amplitude Across Chronological Bins', figsize=(12, 6)):
+    plt.figure(figsize=figsize)
+
+    target_conditions = ['Low-Low', 'Mid-Low', 'Mid-High', 'High-High']
+    colors = {
+        'Low-Low': '#4C72B0',   # Muted Blue
+        'Mid-Low': '#64B5CD',   # Soft Cyan
+        'Mid-High': '#E1BC66',  # Sand/Gold
+        'High-High': '#C44E52'  # Muted Crimson 
+        }
+    
+    for i, cond in enumerate(target_conditions):
+        # 1. Extract the bin-by-bin means
+        y_values = [bin_res[cond]['mean'] for bin_res in rewp_differences if cond in bin_res]
+        x_values = list(range(1, len(y_values) + 1))
+        
+        if y_values:
+            color = colors[cond]
+            
+            # 2. Calculate the global average for this condition across all bins
+            avg_value = np.mean(y_values)
+            
+            # 3. Plot the "Average" line (Lower Saturation / Faint)
+            # alpha=0.3 makes it transparent/desaturated
+            plt.axhline(y=avg_value, color=color, linestyle='--', alpha=0.3, 
+                        label=f'{cond} Avg') # Labeling first one as example
+
+            # 4. Plot the main "Trend" line (Full Saturation)
+            plt.plot(x_values, y_values, marker='o', label=cond, 
+                    linewidth=2.5, markersize=8, color=color)
+
+    # Formatting
+    plt.title(title, fontsize=14, fontweight='bold')
+    plt.xlabel('Chronological Bin', fontsize=12)
+    plt.ylabel('Mean Amplitude (µV)', fontsize=12)
+    plt.xticks(range(1, len(y_values) + 1))
+    plt.axhline(0, color='black', alpha=0.2) # Zero baseline
+
+    # Refined Legend
+    plt.legend(title='Reward Level', loc='upper left', bbox_to_anchor=(1, 1))
+    plt.grid(True, linestyle=':', alpha=0.4)
+    plt.tight_layout()
+
+    plt.show()
