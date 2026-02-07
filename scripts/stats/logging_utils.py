@@ -116,3 +116,31 @@ def setup_rewp_logger(group_label, out_dir=None, repo_root=None, name_prefix="re
     log(logger, f"Check log file: {log_path}")
     return logger, out_dir, log_path
 
+
+def log_ica_exclusion(logger, subject_id, exclude_idx, total_components):
+    """
+    log the results of ICA component exclusion for a subject.
+    
+    :param logger: preset up logger
+    :param subject_id: id of the subject being processed
+    :param exclude_idx: indices of IC components rejected
+    :param total_components: total number of IC components generated
+    """
+    msg = (
+        f"Subject {subject_id}: Excluded {len(exclude_idx)}/{total_components} ICs -> {exclude_idx}"
+    )
+    log(logger, msg)
+
+
+def log_bad_channels(logger, subject_id, bad_channels):
+    """
+    Log the list of bad channels for a given subject.
+
+    :param logger: preset up logger
+    :param subject_id: id of the subject being processed
+    :param bad_channels: list of bad channel names
+    """
+    msg = (
+        f"Subject {subject_id}: Bad channels detected -> {bad_channels}"
+    )
+    log(logger, msg)

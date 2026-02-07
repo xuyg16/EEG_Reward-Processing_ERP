@@ -1,4 +1,6 @@
-def find_bad_channels(epochs, reject_criteria, custom=False, rejection_info=None, verbose=True):
+from stats.logging_utils import log_bad_channels
+
+def find_bad_channels(epochs, reject_criteria, subject_id, custom=False, rejection_info=None, logger=None, verbose=True):
     '''
     Find and print channels that exceed the rejection criteria based on epoch drops.
 
@@ -54,3 +56,6 @@ def find_bad_channels(epochs, reject_criteria, custom=False, rejection_info=None
     if verbose:
         print("---------------------------------")
         print(f"Channels exceeding {reject_criteria:.0%} threshold: {bad_channels_to_mark}")
+
+    if logger:
+        log_bad_channels(logger, subject_id, bad_channels_to_mark)
