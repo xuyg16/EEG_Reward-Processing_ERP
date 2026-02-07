@@ -12,29 +12,65 @@ LOCS_FILENAME = {   #NOTE: download .locs file from author's Github, put it unde
 # -------- Data parameters --------
 SUBJECT_INFO = {
     '27': {'learner': True,
-           'bad_channels': []},
+           'bad_channels': [],
+           'ic_excluded':
+            {'original': None,
+             'proposed': [0, 1, 2, 4, 5, 6, 11, 12, 13, 14, 18, 25]}},
     '28': {'learner': True,
-           'bad_channels': []},
+           'bad_channels': [],
+           'ic_excluded':
+            {'original': None,
+             'proposed': [0, 1, 3, 4, 6, 11, 14, 19, 21, 23, 30]}},
     '29': {'learner': False,
-           'bad_channels': []},
+           'bad_channels': [],
+           'ic_excluded':
+            {'original': None,
+             'proposed': [0, 1, 2, 8, 10, 11, 12, 14, 16, 18, 20, 21, 22, 25, 27]}},
     '30': {'learner': False,
-           'bad_channels': []},
+           'bad_channels': [],
+           'ic_excluded':
+            {'original': None,
+             'proposed': [0, 2, 3, 5, 8, 12, 15, 17, 24, 27]}},
     '31': {'learner': True,
-           'bad_channels': []},
+           'bad_channels': [],
+           'ic_excluded':
+            {'original': None,
+             'proposed': [0, 1, 4, 5, 7, 15, 16, 19, 28, 29, 30]}},
     '32': {'learner': False,
-           'bad_channels': []},
+           'bad_channels': [],
+           'ic_excluded':
+            {'original': None,
+             'proposed': [0, 1, 4, 5, 9, 11, 13, 14, 18, 20, 21, 24, 25, 26, 28]}},
     '33': {'learner': False,
-           'bad_channels': []},
+           'bad_channels': [],
+           'ic_excluded':
+            {'original': None,
+             'proposed': [1, 2, 4, 5, 8, 9, 10, 11, 15, 17, 18, 20, 26]}},
     '34': {'learner': True,
-           'bad_channels': []},
+           'bad_channels': [],
+           'ic_excluded':
+            {'original': None,
+             'proposed': [0, 2, 3, 4, 8, 9, 10, 11, 12, 17, 19]}},
     '35': {'learner': True,
-           'bad_channels': []},
+           'bad_channels': [],
+           'ic_excluded':
+            {'original': None,
+             'proposed': [0, 1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 14, 15, 16, 17, 19, 25, 29, 30]}},
     '36': {'learner': True,
-           'bad_channels': []},
+           'bad_channels': [],
+           'ic_excluded':
+            {'original': None,
+             'proposed': [0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 13, 14, 19, 21, 23, 24, 29]}},
     '37': {'learner': True,
-           'bad_channels': []},
+           'bad_channels': [],
+           'ic_excluded':
+            {'original': None,
+             'proposed': [0, 3, 7, 8, 11, 12, 18, 20, 25, 27]}},
     '38': {'learner': True,
-           'bad_channels': []},
+           'bad_channels': [],
+           'ic_excluded':
+            {'original': None,
+             'proposed': [0, 5, 8, 9, 10, 12, 14, 21, 30]}},
 }
 
 CONDITIONS_DICT = {
@@ -89,7 +125,7 @@ PIPELINES = {
         'epoch_tmin': -0.2,
         'epoch_tmax': 0.6,
         'early_trial_deletion': 10, # delete first 10 trials to avoid learning effects
-        'evoked_proportiontocut': 0.00 # no trimming
+        'evoked_proportiontocut': 0.00, # no trimming
     },
     'proposed':{
         'ica_method': 'picard',
@@ -115,7 +151,7 @@ PIPELINES = {
         'epoch_tmin': -0.2,
         'epoch_tmax': 0.6,
         'early_trial_deletion': 10, # delete first 10 trials to avoid learning effects
-        'evoked_proportiontocut': 0.05 # 5% trimming
+        'evoked_proportiontocut': 0.05, # 5% trimming
     }
 }
 
