@@ -1,4 +1,5 @@
 from matplotlib import pyplot as plt
+from matplotlib.backends.backend_pdf import PdfPages
 import numpy as np
 import mne
 
@@ -72,33 +73,36 @@ def psd_compare(eegs, labels, title, figsize=(8, 6), picks=['FCz'], y_min=-46.4,
 
 
 
-def iclabel_visualize(ica, ic_labels, trials):
+def iclabel_visualize(ica, ic_labels, exclude_idx=None, show=False, trials=None, save_path=None):
     '''
     Visualize Independent Component Analysis (ICA) components with their corresponding labels and probabilities.
     
     :param ica: ica object
     :param ic_labels: Dictionary containing 'labels' and 'y_pred_proba'
-    :param trials: MNE Epochs object for plotting components
+    :param trials: MNE Epochs object for plotting components. Only needed if want interactive plot with topographies.
     '''
-    labels = ic_labels['labels'] 
-    probs = ic_labels['y_pred_proba'] 
+    label_dict = ['brain', 'muscle', 'eye blink', 'eye movement', 'heart', 'line noise', 'channel noise', 'other']
 
     # plot out scalp picture and the auto ic label
     titles = []
-    for i, label in enumerate(labels):
-        probability = np.max(probs[i])
+    for probabilities in ic_labels:
+        max_prob = np.max(probabilities)
+        label_idx = np.argmax(probabilities)
+        label = label_dict[label_idx]
+        print(f'The label with highest probabiliy ({max_prob}) is {label}')
         
-        title = f"{label.capitalize()} ({probability:.0%})"
+        title = f"{label.capitalize()} ({max_prob:.0%})"
         titles.append(title)
 
 
-    figs = ica.plot_components(inst=trials, show=False)
+    figs = ica.plot_components(picks=exclude_idx, inst=trials, show=False)
 
     if not isinstance(figs, list):
         figs = [figs]
 
     comp_idx = 0
     for fig in figs:
+        fig.set_layout_engine(None)
         fig.subplots_adjust(hspace=0.6, wspace=0.1, bottom=0.15)
         for ax in fig.axes:
             if comp_idx >= len(titles):
@@ -110,7 +114,13 @@ def iclabel_visualize(ica, ic_labels, trials):
             
             comp_idx += 1
 
-    plt.show()
+    if show:
+        plt.show();
+    if save_path:
+        with PdfPages(save_path) as pdf:
+            for fig in figs:
+                pdf.savefig(fig)
+        print(f'Save ')
 
 
 def plot_erp(evokeds, channel='FCz', mean_window=[0.240, 0.340], ylim=[-5, 10], diff=False, title=None):
