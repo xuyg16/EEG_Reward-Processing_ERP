@@ -1,0 +1,63 @@
+---
+title: "Reward task EEG"
+
+
+number-sections: true
+date: today
+date-format: long
+
+title-block-banner: true
+title-block-style: default
+
+bibliography: bibliography.bib
+
+author: 
+- name: Qianyue Li
+- name: Zheng Lin
+- name: Yanhong Xu
+
+format: 
+  html:
+    toc: true
+    code-fold: true
+    number-sections: true
+    colorlinks: true
+    code-block-bg: true
+    code-block-border-left: "#31BAE9"
+  pdf:
+    toc: true
+    toc-depth: 2
+    toc-title: Contents 
+    number-sections: true
+    colorlinks: true
+    documentclass: scrreprt
+    header-includes:
+      - \usepackage{setspace}
+      - \onehalfspacing
+    papersize: letter 
+    fontsize: 12pt
+jupyter: python3
+---
+
+# Introduction {#sec-introduction}
+{{< include _introduction.qmd >}}
+
+# Experiment {#sec-experiment}
+
+{{< include _experiment.qmd >}}
+
+# Analysis Methods {#sec-analysis}
+{{< include _analysis-methods.qmd >}}
+
+# Results {#sec-results}
+
+{{< include _results.qmd >}}
+
+# Discussion {#sec-discussion}
+
+{{< include _discussion.qmd >}}
+
+# Contribution Table
+
+{{< include _contribution-table.qmd >}}
+
