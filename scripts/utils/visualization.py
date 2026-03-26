@@ -234,3 +234,64 @@ def plot_binning_results(rewp_differences, title='RewP Mean Amplitude Across Chr
     plt.tight_layout()
 
     plt.show()
+
+
+def plot_behavior_task_value(df, title='Behavioral manipulation check: win rate by task value', figsize=(8, 5)):
+    required = ['low', 'mid', 'high']
+    missing = [col for col in required if col not in df.columns]
+    if missing:
+        raise ValueError(f"Missing columns for behavior plot: {missing}")
+
+    x = np.array([1, 2, 3], dtype=float)
+    labels = ['Low', 'Mid', 'High']
+    colors = ['#4C72B0', '#64B5CD', '#C44E52']
+
+    values = df[required].to_numpy(dtype=float)
+    mask = np.all(np.isfinite(values), axis=1)
+    values = values[mask]
+    if values.size == 0:
+        raise ValueError("No complete low/mid/high behavior rows available for plotting.")
+
+    def _mean_ci(column):
+        column = np.asarray(column, float)
+        n = column.size
+        mean = np.mean(column)
+        if n < 2:
+            return mean, np.nan, np.nan
+        sd = np.std(column, ddof=1)
+        tval = stats.t.ppf(0.975, df=n - 1)
+        ci = tval * sd / np.sqrt(n)
+        return mean, mean - ci, mean + ci
+
+    fig, ax = plt.subplots(figsize=figsize)
+
+    for row in values:
+        ax.plot(x, row * 100, color='0.75', linewidth=1, alpha=0.6, zorder=1)
+
+    means = []
+    ci_lows = []
+    ci_highs = []
+    for idx, name in enumerate(required):
+        mean, ci_low, ci_high = _mean_ci(values[:, idx])
+        means.append(mean * 100)
+        ci_lows.append(ci_low * 100)
+        ci_highs.append(ci_high * 100)
+
+    means = np.asarray(means)
+    ci_lows = np.asarray(ci_lows)
+    ci_highs = np.asarray(ci_highs)
+    yerr = np.vstack([means - ci_lows, ci_highs - means])
+
+    ax.plot(x, means, color='black', linewidth=2, marker='o', markersize=7, zorder=3)
+    for xi, yi, color in zip(x, means, colors):
+        ax.scatter([xi], [yi], color=color, s=80, zorder=4)
+    ax.errorbar(x, means, yerr=yerr, fmt='none', ecolor='black', elinewidth=1.5, capsize=4, zorder=2)
+
+    ax.set_xticks(x)
+    ax.set_xticklabels(labels)
+    ax.set_ylabel('Win rate (%)')
+    ax.set_title(title)
+    ax.grid(True, axis='y', linestyle=':', alpha=0.4)
+    ax.set_ylim(0, 100)
+    plt.tight_layout()
+    plt.show()
