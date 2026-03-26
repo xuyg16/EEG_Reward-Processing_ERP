@@ -1,1 +1,1 @@
-"""Status helpers for RewP analysis."""
+"""Status helpers for statistical analysis."""
