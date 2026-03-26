@@ -1,8 +1,8 @@
-import logging
 import numpy as np
+import logging
 from pathlib import Path
 
-_LOGGERS = {}
+_LOGGER = {}
 
 def _close_logger_handlers(logger: logging.Logger):
     for handler in logger.handlers[:]:
@@ -100,9 +100,10 @@ def log_scores(scores, subjects, logger=None, head=8):
 
 
 def setup_rewp_logger(group_label, out_dir=None, repo_root=None, name_prefix="rewp_stats",
-                      console_level=logging.INFO, file_level=logging.DEBUG):
+                      console_level=logging.INFO, file_level=logging.DEBUG,
+                      print_summary=True):
     """
-    Stats-oriented convenience wrapper around setup_logger.
+    Convenience helper to create a logger + output dir, with clean notebook prints.
 
     Returns: (logger, out_dir, log_path)
     """
@@ -116,21 +117,36 @@ def setup_rewp_logger(group_label, out_dir=None, repo_root=None, name_prefix="re
     log_dir = out_dir / "logs"
     name = f"{name_prefix}_{group_label}"
     log_path = log_dir / f"{name}.log"
-    logger, _ = setup_logger(name, log_dir, console_level=console_level, file_level=file_level)
-    log(logger, "Output dir: %s", out_dir)
-    log(logger, "Check log file: %s", log_path)
+    logger = get_logger(log_dir, name=name, console_level=console_level, file_level=file_level)
+    log(logger, f"Output dir: {out_dir}")
+    log(logger, f"Check log file: {log_path}")
     return logger, out_dir, log_path
 
 
 def log_ica_exclusion(logger, subject_id, exclude_idx, total_components):
-    log(
-        logger,
-        "Subject %s: Excluded %s/%s ICs -> %s",
-        subject_id,
-        len(exclude_idx),
-        total_components,
-        exclude_idx,
+    """
+    log the results of ICA component exclusion for a subject.
+    
+    :param logger: preset up logger
+    :param subject_id: id of the subject being processed
+    :param exclude_idx: indices of IC components rejected
+    :param total_components: total number of IC components generated
+    """
+    msg = (
+        f"Subject {subject_id}: Excluded {len(exclude_idx)}/{total_components} ICs -> {exclude_idx}"
     )
+    log(logger, msg)
+
 
 def log_bad_channels(logger, subject_id, bad_channels):
-    log(logger, "Subject %s: Bad channels detected -> %s", subject_id, bad_channels)
+    """
+    Log the list of bad channels for a given subject.
+
+    :param logger: preset up logger
+    :param subject_id: id of the subject being processed
+    :param bad_channels: list of bad channel names
+    """
+    msg = (
+        f"Subject {subject_id}: Bad channels detected -> {bad_channels}"
+    )
+    log(logger, msg)
