@@ -1,6 +1,9 @@
 import numpy as np
+import csv
+import json
+from pathlib import Path
 from scipy import stats
-from stats.logging_utils import log
+from scripts.utils.logger import log
 
 
 def swtest(x, alpha=0.05):
@@ -120,3 +123,81 @@ def rm_anova_oneway(x, logger=None):
         'friedman_n': int(x_clean.shape[0]),
     }
 
+def run_score_parametric_tests(scores, comparisons, condition_labels=None, subjects=None, logger=None):
+    scores = np.asarray(scores, float)
+    log(logger, 'Score matrix shape: %s', scores.shape)
+    if condition_labels is not None:
+        log(logger, 'Condition labels: %s', condition_labels)
+
+    log(logger, '\n=== rmANOVA ===')
+    anova_res = rm_anova_oneway(scores, logger=logger)
+
+    pairwise = {}
+    log(logger, '\n=== Paired t-tests ===')
+    for label, idx_a, idx_b in comparisons:
+        log(logger, label)
+        pairwise[label] = rm_ttest(scores[:, idx_a], scores[:, idx_b], logger=logger)
+
+    return {
+        'anova': anova_res,
+        'pairwise': pairwise,
+        'subjects': subjects,
+        'condition_labels': condition_labels,
+    }
+
+
+def save_parametric_results(param_res, out_path, logger=None):
+    out_path = Path(out_path)
+    if out_path.suffix.lower() != '.csv':
+        out_path = out_path.with_suffix('.csv')
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    raw_path = out_path.with_name(out_path.stem + "_raw.json")
+
+    header = [
+        "test", "comparison", "stat", "df1", "df2", "p",
+        "cohen_d", "n", "normality_p",
+        "partial_eta2", "generalized_eta2",
+        "friedman_chi2", "friedman_p", "friedman_n",
+    ]
+
+    rows = []
+    anova = param_res.get("anova", {})
+    labels = param_res.get("condition_labels")
+    rows.append({
+        "test": "rmANOVA",
+        "comparison": "/".join(labels) if labels else "",
+        "stat": anova.get("F"),
+        "df1": anova.get("df1"),
+        "df2": anova.get("df2"),
+        "p": anova.get("p"),
+        "partial_eta2": anova.get("partial_eta2"),
+        "generalized_eta2": anova.get("generalized_eta2"),
+        "friedman_chi2": anova.get("friedman_chi2"),
+        "friedman_p": anova.get("friedman_p"),
+        "friedman_n": anova.get("friedman_n"),
+    })
+
+    for label, res in param_res.get("pairwise", {}).items():
+        rows.append({
+            "test": "rmTTest",
+            "comparison": label,
+            "stat": res.get("t"),
+            "df1": res.get("df"),
+            "p": res.get("p"),
+            "cohen_d": res.get("cohen_d"),
+            "n": res.get("n"),
+            "normality_p": res.get("normality_p"),
+        })
+
+    with out_path.open("w", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=header)
+        writer.writeheader()
+        for row in rows:
+            writer.writerow({k: row.get(k, "") for k in header})
+
+    with raw_path.open("w", encoding="utf-8") as f:
+        json.dump(param_res, f, indent=2, ensure_ascii=False)
+
+    log(logger, f"Saved parametric results -> {out_path}")
+    log(logger, f"Saved raw parametric JSON -> {raw_path}")
+    return out_path

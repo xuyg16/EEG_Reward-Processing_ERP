@@ -1,19 +1,14 @@
 import csv
 import json
-import numpy as np
 from pathlib import Path
+
+import numpy as np
 from scipy import stats
-from stats.logging_utils import log
+
+from scripts.utils.logger import log
 
 
 def paired_permutation_test(x1, x2, n_perm=10000, stat="t", seed=0, alternative="two-sided", logger=None):
-    """
-    Paired permutation via sign-flip on within-subject differences.
-    x1, x2: 1D arrays, same length
-    stat: "t" (recommended) or "mean"
-    alternative: "two-sided", "greater" (x1>x2), "less" (x1<x2)
-    Returns dict with observed stat, permutation p, and permutation distribution.
-    """
     x1 = np.asarray(x1, float)
     x2 = np.asarray(x2, float)
     diff = x1 - x2
@@ -24,28 +19,24 @@ def paired_permutation_test(x1, x2, n_perm=10000, stat="t", seed=0, alternative=
 
     rng = np.random.default_rng(seed)
 
-    # observed statistic
     if stat == "t":
-        t_obs = stats.ttest_1samp(diff, 0.0).statistic
-        stat_obs = float(t_obs)
+        stat_obs = float(stats.ttest_1samp(diff, 0.0).statistic)
     elif stat == "mean":
         stat_obs = float(np.mean(diff))
     else:
         raise ValueError("stat must be 't' or 'mean'")
 
-    # sign-flip permutations
     signs = rng.choice([-1.0, 1.0], size=(n_perm, n))
-    diff_perm = signs * diff  # shape (n_perm, n)
+    diff_perm = signs * diff
 
     if stat == "t":
         mu = diff_perm.mean(axis=1)
         sd = diff_perm.std(axis=1, ddof=1)
         den = sd / np.sqrt(n)
         perm_stats = np.where(den > 0, mu / den, 0.0)
-    else:  # mean
+    else:
         perm_stats = diff_perm.mean(axis=1)
 
-    # p-value (with +1 correction)
     if alternative == "two-sided":
         p_perm = (np.sum(np.abs(perm_stats) >= np.abs(stat_obs)) + 1) / (n_perm + 1)
     elif alternative == "greater":
@@ -67,10 +58,6 @@ def paired_permutation_test(x1, x2, n_perm=10000, stat="t", seed=0, alternative=
 
 
 def paired_bootstrap_ci(x1, x2, n_boot=10000, seed=0, ci=0.95, logger=None):
-    """
-    Bootstrap CI for mean difference and paired Cohen's d.
-    Returns percentile CI.
-    """
     x1 = np.asarray(x1, float)
     x2 = np.asarray(x2, float)
     diff = x1 - x2
@@ -81,9 +68,8 @@ def paired_bootstrap_ci(x1, x2, n_boot=10000, seed=0, ci=0.95, logger=None):
                 "ci_mean": (np.nan, np.nan), "ci_d": (np.nan, np.nan)}
 
     rng = np.random.default_rng(seed)
-    idx = rng.integers(0, n, size=(n_boot, n))  # resample subjects
-
-    boot = diff[idx]  # (n_boot, n)
+    idx = rng.integers(0, n, size=(n_boot, n))
+    boot = diff[idx]
     boot_mean = boot.mean(axis=1)
 
     boot_sd = boot.std(axis=1, ddof=1)
@@ -110,51 +96,29 @@ def paired_bootstrap_ci(x1, x2, n_boot=10000, seed=0, ci=0.95, logger=None):
     }
 
 
-def run_rewp_robustness(scores, n_perm=10000, n_boot=10000, seed=0, logger=None):
-    """
-    Run permutation + bootstrap robustness checks for ML-LL and MH-HH.
-
-    :param scores: (n_subjects, 4) array [LL, ML, MH, HH]
-    """
+def run_score_robustness(scores, comparisons, n_perm=10000, n_boot=10000, seed=0, logger=None):
     scores = np.asarray(scores, float)
-    if scores.ndim != 2 or scores.shape[1] != 4:
-        raise ValueError("scores must be (n_subjects, 4) [LL, ML, MH, HH]")
-
     results = {}
-    log(logger, "\n=== Permutation tests ===")
-    log(logger, "Mid-Low vs Low-Low")
-    res = paired_permutation_test(scores[:, 1], scores[:, 0], n_perm=n_perm, seed=seed)
-    log(logger, f"perm p = {res['p_perm']:.4g}, stat = {res['stat_obs']:.4g}, n = {res['n']}")
-    results['perm_ml_ll'] = res
 
-    log(logger, "Mid-High vs High-High")
-    res = paired_permutation_test(scores[:, 2], scores[:, 3], n_perm=n_perm, seed=seed + 1)
-    log(logger, f"perm p = {res['p_perm']:.4g}, stat = {res['stat_obs']:.4g}, n = {res['n']}")
-    results['perm_mh_hh'] = res
+    log(logger, "\n=== Permutation tests ===")
+    for offset, (label, idx_a, idx_b) in enumerate(comparisons):
+        log(logger, label)
+        res = paired_permutation_test(scores[:, idx_a], scores[:, idx_b], n_perm=n_perm, seed=seed + offset)
+        log(logger, f"perm p = {res['p_perm']:.4g}, stat = {res['stat_obs']:.4g}, n = {res['n']}")
+        results[f"perm_{label}"] = res
 
     log(logger, "\n=== Bootstrap CIs ===")
-    log(logger, "Mid-Low vs Low-Low")
-    res = paired_bootstrap_ci(scores[:, 1], scores[:, 0], n_boot=n_boot, seed=seed)
-    log(logger, f"mean diff = {res['mean_diff']:.4g}, CI = {res['ci_mean']}")
-    log(logger, f"Cohen's d = {res['d']:.4g}, CI = {res['ci_d']}")
-    results['boot_ml_ll'] = res
-
-    log(logger, "Mid-High vs High-High")
-    res = paired_bootstrap_ci(scores[:, 2], scores[:, 3], n_boot=n_boot, seed=seed + 1)
-    log(logger, f"mean diff = {res['mean_diff']:.4g}, CI = {res['ci_mean']}")
-    log(logger, f"Cohen's d = {res['d']:.4g}, CI = {res['ci_d']}")
-    results['boot_mh_hh'] = res
+    for offset, (label, idx_a, idx_b) in enumerate(comparisons):
+        log(logger, label)
+        res = paired_bootstrap_ci(scores[:, idx_a], scores[:, idx_b], n_boot=n_boot, seed=seed + offset)
+        log(logger, f"mean diff = {res['mean_diff']:.4g}, CI = {res['ci_mean']}")
+        log(logger, f"Cohen's d = {res['d']:.4g}, CI = {res['ci_d']}")
+        results[f"boot_{label}"] = res
 
     return results
 
 
 def save_robustness_results(robust_res, out_path, logger=None):
-    """
-    Save permutation + bootstrap results to CSV + raw JSON.
-
-    :param robust_res: dict returned by run_rewp_robustness
-    :param out_path: csv path
-    """
     out_path = Path(out_path)
     if out_path.suffix.lower() != '.csv':
         out_path = out_path.with_suffix('.csv')
@@ -165,43 +129,35 @@ def save_robustness_results(robust_res, out_path, logger=None):
         "method", "comparison", "stat_type", "stat_obs", "p_perm", "n_perm", "n",
         "mean_diff", "d", "ci_mean_low", "ci_mean_high", "ci_d_low", "ci_d_high", "ci", "n_boot",
     ]
-
     rows = []
 
-    def _add_perm(key, label):
-        res = robust_res.get(key, {})
-        rows.append({
-            "method": "permutation",
-            "comparison": label,
-            "stat_type": res.get("stat"),
-            "stat_obs": res.get("stat_obs"),
-            "p_perm": res.get("p_perm"),
-            "n_perm": res.get("n_perm"),
-            "n": res.get("n"),
-        })
-
-    def _add_boot(key, label):
-        res = robust_res.get(key, {})
-        ci_mean = res.get("ci_mean", (None, None))
-        ci_d = res.get("ci_d", (None, None))
-        rows.append({
-            "method": "bootstrap",
-            "comparison": label,
-            "mean_diff": res.get("mean_diff"),
-            "d": res.get("d"),
-            "ci_mean_low": ci_mean[0],
-            "ci_mean_high": ci_mean[1],
-            "ci_d_low": ci_d[0],
-            "ci_d_high": ci_d[1],
-            "ci": res.get("ci"),
-            "n_boot": res.get("n_boot"),
-            "n": res.get("n"),
-        })
-
-    _add_perm("perm_ml_ll", "ML-LL")
-    _add_perm("perm_mh_hh", "MH-HH")
-    _add_boot("boot_ml_ll", "ML-LL")
-    _add_boot("boot_mh_hh", "MH-HH")
+    for key, res in robust_res.items():
+        if key.startswith("perm_"):
+            rows.append({
+                "method": "permutation",
+                "comparison": key.removeprefix("perm_"),
+                "stat_type": res.get("stat"),
+                "stat_obs": res.get("stat_obs"),
+                "p_perm": res.get("p_perm"),
+                "n_perm": res.get("n_perm"),
+                "n": res.get("n"),
+            })
+        elif key.startswith("boot_"):
+            ci_mean = res.get("ci_mean", (None, None))
+            ci_d = res.get("ci_d", (None, None))
+            rows.append({
+                "method": "bootstrap",
+                "comparison": key.removeprefix("boot_"),
+                "mean_diff": res.get("mean_diff"),
+                "d": res.get("d"),
+                "ci_mean_low": ci_mean[0],
+                "ci_mean_high": ci_mean[1],
+                "ci_d_low": ci_d[0],
+                "ci_d_high": ci_d[1],
+                "ci": res.get("ci"),
+                "n_boot": res.get("n_boot"),
+                "n": res.get("n"),
+            })
 
     with out_path.open("w", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=header)
