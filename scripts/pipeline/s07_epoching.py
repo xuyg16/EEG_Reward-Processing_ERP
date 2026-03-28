@@ -1,6 +1,6 @@
 import mne
-from s03_07_trial_rejection import trial_rejection_cust, trial_rejection_mne
-from tools import get_event_dict
+from pipeline.s03_07_trial_rejection import trial_rejection_cust, trial_rejection_mne
+from utils.tools import get_event_dict
 
 def epoching(conditions_dict, eeg, max=150e-6, min=0.1e-6, tmin=-0.2, tmax=0.6, baseline=(-0.2, 0)):
     '''

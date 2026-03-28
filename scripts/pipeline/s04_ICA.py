@@ -1,8 +1,8 @@
 import mne
 from mne_icalabel import label_components
 from mne_icalabel.iclabel import iclabel_label_components
-from stats.logging_utils import log_ica_exclusion
-from visualization import iclabel_visualize
+from utils.logger import log_ica_exclusion
+from utils.visualization import iclabel_visualize
 import config
 
 

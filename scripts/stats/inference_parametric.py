@@ -3,7 +3,7 @@ import csv
 import json
 from pathlib import Path
 from scipy import stats
-from scripts.utils.logger import log
+from utils.logger import log
 
 
 def swtest(x, alpha=0.05):

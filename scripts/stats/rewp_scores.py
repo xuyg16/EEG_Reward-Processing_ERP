@@ -2,8 +2,8 @@ import csv
 import json
 import numpy as np
 from pathlib import Path
-from scripts.pipeline.s10_rewp_calculation import rewp_calculation
-from scripts.utils.logger import log, log_scores
+from pipeline.s10_rewp_calculation import rewp_calculation
+from utils.logger import log, log_scores
 
 
 KEY_MAP = {

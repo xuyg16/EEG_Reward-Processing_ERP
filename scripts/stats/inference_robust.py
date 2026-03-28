@@ -5,7 +5,7 @@ from pathlib import Path
 import numpy as np
 from scipy import stats
 
-from scripts.utils.logger import log
+from utils.logger import log
 
 
 def paired_permutation_test(x1, x2, n_perm=10000, stat="t", seed=0, alternative="two-sided", logger=None):

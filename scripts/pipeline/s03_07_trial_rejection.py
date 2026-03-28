@@ -1,6 +1,6 @@
 import numpy as np
 import mne
-from tools import get_event_dict
+from utils.tools import get_event_dict
 
 ### ------------- Customized Trial Rejection ------------------
 def trial_rejection_cust(eeg, stim_dict, maxMin=500e-6, level=500e-6, step=40e-6, lowest=0.1e-6, tmin=0, tmax=3, baseline=None):
