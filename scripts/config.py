@@ -12,64 +12,88 @@ LOCS_FILENAME = {   #NOTE: download .locs file from author's Github, put it unde
 # -------- Data parameters --------
 SUBJECT_INFO = {
     '27': {'learner': True,
-           'bad_channels': [],
+           'bad_channels': 
+            {'original': [],
+             'proposed': []},
            'ic_excluded':
-            {'original': None,
+            {'original': [0, 5, 12],
              'proposed': [0, 1, 2, 4, 5, 6, 11, 12, 13, 14, 18, 25]}},
     '28': {'learner': True,
-           'bad_channels': [],
+           'bad_channels': 
+            {'original': [],
+             'proposed': []},
            'ic_excluded':
-            {'original': None,
+            {'original': [0, 5, 10, 18, 20, 26],
              'proposed': [0, 1, 3, 4, 6, 11, 14, 19, 21, 23, 30]}},
     '29': {'learner': False,
-           'bad_channels': [],
+           'bad_channels': 
+            {'original': [],
+             'proposed': []},
            'ic_excluded':
-            {'original': None,
+            {'original': [0, 10, 20],
              'proposed': [0, 1, 2, 8, 10, 11, 12, 14, 16, 18, 20, 21, 22, 25, 27]}},
     '30': {'learner': False,
-           'bad_channels': [],
+           'bad_channels': 
+            {'original': [],
+             'proposed': []},
            'ic_excluded':
-            {'original': None,
+            {'original': [0, 1, 5],
              'proposed': [0, 2, 3, 5, 8, 12, 15, 17, 24, 27]}},
     '31': {'learner': True,
-           'bad_channels': [],
+           'bad_channels': 
+            {'original': [],
+             'proposed': []},
            'ic_excluded':
-            {'original': None,
+            {'original': [0, 3, 5],
              'proposed': [0, 1, 4, 5, 7, 15, 16, 19, 28, 29, 30]}},
     '32': {'learner': False,
-           'bad_channels': [],
+           'bad_channels': 
+            {'original': [],
+             'proposed': []},
            'ic_excluded':
-            {'original': None,
+            {'original': [0, 1, 8, 12],
              'proposed': [0, 1, 4, 5, 9, 11, 13, 14, 18, 20, 21, 24, 25, 26, 28]}},
     '33': {'learner': False,
-           'bad_channels': [],
+           'bad_channels': 
+            {'original': [],
+             'proposed': []},
            'ic_excluded':
-            {'original': None,
+            {'original': [1, 25, 27],
              'proposed': [1, 2, 4, 5, 8, 9, 10, 11, 15, 17, 18, 20, 26]}},
     '34': {'learner': True,
-           'bad_channels': [],
+           'bad_channels': 
+            {'original': [],
+             'proposed': []},
            'ic_excluded':
-            {'original': None,
+            {'original': [0, 1, 2, 10],
              'proposed': [0, 2, 3, 4, 8, 9, 10, 11, 12, 17, 19]}},
     '35': {'learner': True,
-           'bad_channels': [],
+           'bad_channels': 
+            {'original': [],
+             'proposed': []},
            'ic_excluded':
-            {'original': None,
+            {'original': [0, 6],
              'proposed': [0, 1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 14, 15, 16, 17, 19, 25, 29, 30]}},
     '36': {'learner': True,
-           'bad_channels': [],
+           'bad_channels': 
+            {'original': [],
+             'proposed': []},
            'ic_excluded':
-            {'original': None,
+            {'original': [0, 1, 2, 3, 7, 12, 16, 21],
              'proposed': [0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 13, 14, 19, 21, 23, 24, 29]}},
     '37': {'learner': True,
-           'bad_channels': [],
+           'bad_channels': 
+            {'original': [],
+             'proposed': []},
            'ic_excluded':
-            {'original': None,
+            {'original': [0],
              'proposed': [0, 3, 7, 8, 11, 12, 18, 20, 25, 27]}},
     '38': {'learner': True,
-           'bad_channels': [],
+           'bad_channels': 
+            {'original': [],
+             'proposed': []},
            'ic_excluded':
-            {'original': None,
+            {'original': [0, 1, 5, 10, 14],
              'proposed': [0, 5, 8, 9, 10, 12, 14, 21, 30]}},
 }
 
