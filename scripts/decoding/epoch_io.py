@@ -3,9 +3,11 @@ import numpy as np
 import pandas as pd
 
 from pathlib import Path
-from scripts.utils.tools import extract_stimulus_code
+from scripts.utils.tools import get_event_dict
 from scripts import config
 
+REPO_ROOT = Path(__file__).resolve().parents[2] # Adjust as needed to point to the root of the repository
+EPOCHS_DIR = REPO_ROOT / "output_mne" / "epochs" 
 
 TASK_LABELS = {
     1: "low_task",
@@ -56,9 +58,11 @@ def load_behavior_table(subject_id: str, early_trials_to_exclude: int, bids_root
         beh[col] = pd.to_numeric(beh[col], errors="coerce")
     beh["rt"] = pd.to_numeric(beh["rt"], errors="coerce")
 
-    beh["trial_index_within_task"] = beh.groupby("task").cumcount()
-    beh = beh.loc[beh["trial_index_within_task"] >= early_trials_to_exclude].copy()
-    beh = beh.loc[beh["outcome"].isin([0, 1])].copy()
+    beh["trial_index_within_task"] = beh.groupby("task").cumcount() # zero-indexed trial number within each task
+    beh["is_early_familiarization"] = beh["trial_index_within_task"] < early_trials_to_exclude
+
+    beh["has_feedback_outcome"] = beh["outcome"].isin([0, 1])
+    beh["is_behavior_valid"] = (beh["early"] == 0) & (beh["invalid"] == 0) & beh["has_feedback_outcome"]
 
     beh["task_context"] = beh["task"].map(TASK_LABELS)
     beh["context"] = [CONTEXT_LABELS[(int(task), int(prob))] for task, prob in zip(beh["task"], beh["prob"])]
@@ -71,37 +75,51 @@ def load_behavior_table(subject_id: str, early_trials_to_exclude: int, bids_root
 
 def build_feedback_metadata(raw: mne.io.BaseRaw, behavior: pd.DataFrame) -> pd.DataFrame:
     events, event_id = mne.events_from_annotations(raw, verbose=False)
+
     event_code_map = {}
     for event_name, actual_id in event_id.items():
-        stim_code = extract_stimulus_code(event_name)
+        stim_code = get_event_dict(event_name)
         if stim_code in FEEDBACK_CODE_MAP:
             event_code_map[actual_id] = stim_code
 
-    feedback_mask = np.isin(events[:, 2], list(event_code_map))
+    feedback_mask = np.isin(events[:, 2], list(event_code_map.keys()))
     feedback_events = events[feedback_mask]
     feedback_codes = [event_code_map[int(actual_id)] for actual_id in feedback_events[:, 2]]
 
-    if len(feedback_events) != len(behavior):
+    # only keep behavior rows that have valid feedback outcomes, do not delete early trials
+    behavior_feedback = behavior.loc[behavior["has_feedback_outcome"]].copy().reset_index(drop=True)
+
+    if len(feedback_events) != len(behavior_feedback):
         raise RuntimeError(
-            f"Behavior/feedback mismatch: {len(behavior)} behavior rows vs {len(feedback_events)} feedback events."
+            f"Behavior/feedback mismatch: {len(behavior_feedback)} behavior rows vs {len(feedback_events)} feedback events."
         )
 
     event_context = [FEEDBACK_CODE_MAP[int(code)]["context"] for code in feedback_codes]
     event_outcome = [FEEDBACK_CODE_MAP[int(code)]["outcome"] for code in feedback_codes]
     event_outcome_label = [FEEDBACK_CODE_MAP[int(code)]["outcome_label"] for code in feedback_codes]
 
-    if behavior["context"].tolist() != event_context:
+    if behavior_feedback["context"].tolist() != event_context:
         raise RuntimeError("Behavior rows and feedback event contexts do not align.")
-    if behavior["outcome"].astype(int).tolist() != event_outcome:
+    if behavior_feedback["outcome"].astype(int).tolist() != event_outcome:
         raise RuntimeError("Behavior rows and feedback event outcomes do not align.")
 
-    metadata = behavior.copy()
+    metadata = behavior_feedback.copy()
+    metadata["feedback_event_index"] = np.arange(len(feedback_events), dtype=int)
     metadata["event_code"] = np.asarray(feedback_codes, dtype=int)
-    metadata["source_event_index"] = np.flatnonzero(feedback_mask).astype(int)
     metadata["event_sample"] = feedback_events[:, 0].astype(int)
     metadata["event_onset_sec"] = feedback_events[:, 0] / raw.info["sfreq"]
     metadata["event_outcome_label"] = event_outcome_label
     return metadata
+
+
+def exclude_early_trials_epochs(epochs:mne.Epochs) -> mne.Epochs:
+    if epochs.metadata is None or "is_early_familiarization" not in epochs.metadata.columns:
+        raise ValueError("Epochs metadata must contain 'is_early_familiarization' column to exclude early trials.")
+
+    keep_mask = ~epochs.metadata["is_early_familiarization"].to_numpy()
+    out = epochs[keep_mask].copy()
+    out.metadata = out.metadata.reset_index(drop=True)
+    return out
 
 
 def attach_feedback_metadata(
@@ -117,14 +135,23 @@ def attach_feedback_metadata(
     metadata_full = build_feedback_metadata(raw, behavior)
     metadata_kept = (
         metadata_full
-        .set_index("source_event_index")
+        .set_index("feedback_event_index")
         .loc[epochs.selection]
-        .reset_index()
+        .reset_index(drop=True)
     )
+
+    if len(metadata_kept) != len(epochs):
+        raise RuntimeError(f"Metadata/epochs mismatch: {len(metadata_kept)} vs {len(epochs)}")
+
+    if not np.array_equal(metadata_kept["event_sample"].to_numpy(), epochs.events[:, 0]):
+        raise RuntimeError("Metadata event_sample does not match epochs.events[:, 0].")
+
     epochs.metadata = metadata_kept
+    epochs = exclude_early_trials_epochs(epochs)
+
     if logger is not None:
         logger.info(
-            "Attached feedback metadata for sub-%s: kept %s epochs",
+            "Attached feedback metadata for sub-%s: kept %s epochs after early-trial exclusion",
             subject_id,
             len(epochs),
         )
@@ -147,5 +174,3 @@ def load_epochs(subject_id: str, pipeline_name: str, lock: str = "feedback", pre
     if logger is not None:
         logger.info("Loading saved %s epochs for sub-%s from %s", lock, subject_id, path)
     return mne.read_epochs(path, preload=preload, verbose="ERROR")
-
-EPOCHS_DIR = Path(config.OUTPUT_DIR) / "epochs"
