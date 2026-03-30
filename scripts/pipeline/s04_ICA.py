@@ -111,3 +111,55 @@ def iccomponent_removal_new(eeg, trials, ica, subject_id, logger=None, save_path
     ica.apply(eeg)
 
     return eeg
+
+
+
+def iccomponent_removal(eeg, trials, ica, subject_id, active_pipeline, logger=None, save_path=None):
+    '''
+    Remove bad IC components based on the given criteria.
+
+    :param eeg: MNE Raw object containing EEG data.
+    :param trials: MNE Epochs object for ICA fitting.
+    :param ica: Fitted ICA object.
+    :param exclude_idx: List of component indices to exclude. If None, find the components to exclude
+
+    :return: Cleaned MNE Raw object.
+    '''
+    exclude_idx = config.SUBJECT_INFO[subject_id]['ic_excluded'][active_pipeline]   # check is exclude idx is already saved
+
+    if exclude_idx is None:
+        exclude_idx = []
+        trials.load_data()
+        label_dict = {
+            'brain': 0,
+            'muscle': 1,
+            'eye blink': 2,
+            'eye movement': 3,
+            'heart': 4,
+            'line noise': 5,
+            'channel noise': 6,
+            'other': 7
+        }
+        all_labels = iclabel_label_components(trials, ica)
+        for i, probabilities in enumerate(all_labels):
+            if active_pipeline == 'original':
+                if probabilities[label_dict['eye blink']] > probabilities[label_dict['brain']] or \
+                    probabilities[label_dict['eye movement']] > probabilities[label_dict['brain']]:
+                    exclude_idx.append(i)
+            elif active_pipeline == 'proposed':
+                 if probabilities[label_dict.index('brain')] < 0.4:
+                    exclude_idx.append(i)
+            else:
+                raise ValueError(f'Unknown pipeline: {active_pipeline}')
+        if save_path:
+        # Save a plot of the excluded components to a folder
+            iclabel_visualize(ica, all_labels[exclude_idx], exclude_idx=exclude_idx, show=False, save_path=save_path)
+    # logging 
+    if logger:
+        log_ica_exclusion(logger, subject_id, exclude_idx, ica.n_components_)
+
+
+    ica.exclude = exclude_idx
+    ica.apply(eeg)
+
+    return eeg
