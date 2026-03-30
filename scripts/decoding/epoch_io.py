@@ -171,6 +171,8 @@ def save_epochs(epochs: mne.Epochs, subject_id: str, pipeline_name: str, lock: s
 def load_epochs(subject_id: str, pipeline_name: str, lock: str = "feedback", preload: bool = True,
                 root_dir: Path | None = None, logger=None) -> mne.Epochs:
     path = get_epochs_path(subject_id, pipeline_name, lock, root_dir=root_dir)
+    if not path.exists():
+        raise FileNotFoundError(f"Epochs file not found: {path}")
     if logger is not None:
         logger.info("Loading saved %s epochs for sub-%s from %s", lock, subject_id, path)
     return mne.read_epochs(path, preload=preload, verbose="ERROR")
