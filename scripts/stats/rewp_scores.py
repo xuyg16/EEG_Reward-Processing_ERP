@@ -49,7 +49,7 @@ def compute_rewp_scores(group_evokeds, ch_name='FCz', tmin=0.240, tmax=0.340, lo
 
 def save_rewp_scores(scores, subjects, out_path, logger=None):
     """
-    Save RewP scores to TSV.
+    Save RewP scores to CSV.
     Columns: subject, LL, ML, MH, HH
     """
     out_path = Path(out_path)

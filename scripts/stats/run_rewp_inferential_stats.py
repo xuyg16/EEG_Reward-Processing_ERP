@@ -75,7 +75,7 @@ def summarize_rewp_comparison(
         "text": "\n".join(lines),
     }
 
-def plot_rewp_performance_correlation(
+def plot_rewp_performance_correlation_old(
     scores,
     subjects,
     behavior_df,
@@ -84,7 +84,6 @@ def plot_rewp_performance_correlation(
     title="ΔRewP vs performance",
 ):
     """
-    Reconstruct a Fig. 4-like plot.
 
     x-axis:
         mean performance across learnable conditions
@@ -200,6 +199,117 @@ def plot_rewp_performance_correlation(
         transform=ax.transAxes,
         ha="right",
         va="bottom",
+    )
+
+    plt.tight_layout()
+    plt.show()
+
+    return df_plot, {"r": float(r), "p": float(p), "n": int(len(df_plot))}
+
+
+def plot_rewp_performance_correlation(
+    scores,
+    subjects,
+    behavior_df,
+    learner_cutoff=0.60,
+    figsize=(6.5, 5.5),
+    title="ΔRewP vs performance",
+):
+    scores = np.asarray(scores, float)
+
+    rewp_df = pd.DataFrame({
+        "subject": [str(s) for s in subjects],
+        "MH": scores[:, 2],
+        "HH": scores[:, 3],
+    })
+    rewp_df["delta_rewp"] = rewp_df["MH"] - rewp_df["HH"]
+
+    beh = behavior_df.copy()
+    beh["subject"] = beh["subject"].astype(str)
+
+    def _norm_sub(x):
+        x = str(x).strip()
+        if x.startswith("sub-"):
+            x = x[4:]
+        return x
+
+    rewp_df["subject"] = rewp_df["subject"].map(_norm_sub)
+    beh["subject"] = beh["subject"].map(_norm_sub)
+
+    beh["performance"] = beh[["mid_high_acc", "high_high_acc"]].mean(axis=1)
+    beh["learner"] = (
+        (beh["mid_high_acc"] >= learner_cutoff) &
+        (beh["high_high_acc"] >= learner_cutoff)
+    )
+
+    df_plot = rewp_df.merge(
+        beh[["subject", "performance", "learner"]],
+        on="subject",
+        how="inner",
+    )
+
+    df_plot = df_plot[
+        np.isfinite(df_plot["performance"]) &
+        np.isfinite(df_plot["delta_rewp"])
+    ].copy()
+
+    if len(df_plot) < 3:
+        raise ValueError("Not enough valid subjects to plot the correlation.")
+
+    r, p = stats.pearsonr(df_plot["performance"], df_plot["delta_rewp"])
+    slope, intercept, *_ = stats.linregress(df_plot["performance"], df_plot["delta_rewp"])
+
+    learners = df_plot["learner"]
+    nonlearners = ~learners
+
+    fig, ax = plt.subplots(figsize=figsize)
+
+    # learners
+    ax.scatter(
+        df_plot.loc[learners, "performance"] * 100,
+        df_plot.loc[learners, "delta_rewp"],
+        marker="o",
+        s=90,
+        facecolors="white",
+        edgecolors="#4C78A8",
+        linewidths=1.8,
+        label="Learners",
+        zorder=3,
+    )
+
+    # non-learners
+    ax.scatter(
+        df_plot.loc[nonlearners, "performance"] * 100,
+        df_plot.loc[nonlearners, "delta_rewp"],
+        marker="*",
+        s=180,
+        color="#F58518",
+        label="Non-learners",
+        zorder=4,
+    )
+
+    # regression line
+    xline = np.linspace(df_plot["performance"].min(), df_plot["performance"].max(), 200)
+    yline = intercept + slope * xline
+    ax.plot(xline * 100, yline, color="#333333", linewidth=2)
+
+    ax.set_xlabel("Performance (% correct)")
+    ax.set_ylabel("Δ RewP (μV)")
+    ax.set_title(title)
+
+    ax.grid(True, linestyle=":", alpha=0.35)
+    ax.spines["top"].set_visible(False)
+    ax.spines["right"].set_visible(False)
+    ax.legend(frameon=False, loc="upper left")
+
+    p_text = "< .001" if p < 0.001 else f"= {p:.3f}".replace("0.", ".")
+    ax.text(
+        0.98, 0.05,
+        f"r = {r:.2f}, p {p_text}, n = {len(df_plot)}",
+        transform=ax.transAxes,
+        ha="right",
+        va="bottom",
+        fontsize=10,
     )
 
     plt.tight_layout()
