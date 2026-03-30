@@ -2,21 +2,18 @@ import numpy as np
 import logging
 from pathlib import Path
 
-_LOGGER = {}
+_LOGGERS = {}
 
-def _close_logger_handlers(logger: logging.Logger):
+def _close_logger_handlers(logger):
     for handler in logger.handlers[:]:
+        logger.removeHandler(handler)
         handler.close()
-    logger.handlers.clear()
 
 
 def log(logger, msg, *args, level="info"):
     """Print if no logger; otherwise send the message to the chosen log level."""
     if logger is None:
-        if args:
-            msg = msg % args
-        print(msg)
-        return
+        return 
     if isinstance(level, str):
         level_value = logging.getLevelName(level.upper())
         if not isinstance(level_value, int):
@@ -26,7 +23,7 @@ def log(logger, msg, *args, level="info"):
     logger.log(level_value, msg, *args)
 
 
-def setup_logger(name: str, out_dir: Path, console_level: int = logging.INFO,
+def setup_logger(out_dir: Path, name: str, console_level: int = logging.INFO,
                  file_level: int = logging.DEBUG):
     out_dir = Path(out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -103,23 +100,31 @@ def setup_rewp_logger(group_label, out_dir=None, repo_root=None, name_prefix="re
                       console_level=logging.INFO, file_level=logging.DEBUG,
                       print_summary=True):
     """
-    Convenience helper to create a logger + output dir, with clean notebook prints.
+    Convenience helper to create a logger + output dir.
 
     Returns: (logger, out_dir, log_path)
     """
-    if repo_root is None:
-        repo_root = Path.cwd().resolve()
-        if repo_root.name == "scripts":
-            repo_root = repo_root.parent
     if out_dir is None:
-        out_dir = repo_root / "output_mne"
+        if repo_root is None:
+            raise ValueError("Please provide either out_dir or repo_root.")
+        out_dir = Path(repo_root) / "output_mne"
+
     out_dir = Path(out_dir)
+    out_dir.mkdir(parents=True, exist_ok=True)
+
     log_dir = out_dir / "logs"
     name = f"{name_prefix}_{group_label}"
-    log_path = log_dir / f"{name}.log"
-    logger = get_logger(log_dir, name=name, console_level=console_level, file_level=file_level)
+
+    logger, log_path = setup_logger(
+        name=name,
+        out_dir=log_dir,
+        console_level=console_level,
+        file_level=file_level,
+    )
+
     log(logger, f"Output dir: {out_dir}")
     log(logger, f"Check log file: {log_path}")
+
     return logger, out_dir, log_path
 
 
@@ -150,3 +155,14 @@ def log_bad_channels(logger, subject_id, bad_channels):
         f"Subject {subject_id}: Bad channels detected -> {bad_channels}"
     )
     log(logger, msg)
+
+def setup_stats_logger(group_label, out_dir=None, repo_root=None,
+                       console_level=logging.INFO, file_level=logging.DEBUG):
+    return setup_rewp_logger(
+        group_label=group_label,
+        out_dir=out_dir,
+        repo_root=repo_root,
+        name_prefix="stats",
+        console_level=console_level,
+        file_level=file_level,
+    )

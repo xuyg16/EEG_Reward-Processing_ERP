@@ -26,8 +26,8 @@ def compute_rewp_scores(group_evokeds, ch_name='FCz', tmin=0.240, tmax=0.340, lo
 
     subjects = list(group_evokeds.keys())
     scores = []
-    for sid in subjects:
-        ev = group_evokeds[sid]
+    for subject_id in subjects:
+        ev = group_evokeds[subject_id]
         score_map = rewp_calculation(
             ev,
             epoch_dict=None,
@@ -43,46 +43,30 @@ def compute_rewp_scores(group_evokeds, ch_name='FCz', tmin=0.240, tmax=0.340, lo
         ])
 
     scores = np.asarray(scores)
-    log_scores(scores, subjects, logger=logger)
+    #log_scores(scores, subjects, logger=logger)
     return scores, subjects, KEY_MAP.copy()
 
 
-def save_rewp_scores(scores, subjects, key_map, out_path,
-                     ch_name='FCz', tmin=0.240, tmax=0.340, logger=None):
+def save_rewp_scores(scores, subjects, out_path, logger=None):
     """
-    Save RewP scores to CSV with JSON metadata.
-
-    :param scores: (n_subjects, 4) array
-    :param subjects: list of subject ids
-    :param key_map: dict of condition name mapping
-    :param out_path: file path (.csv)
+    Save RewP scores to TSV.
+    Columns: subject, LL, ML, MH, HH
     """
     out_path = Path(out_path)
     if out_path.suffix.lower() != '.csv':
         out_path = out_path.with_suffix('.csv')
     out_path.parent.mkdir(parents=True, exist_ok=True)
-    meta = {
-        'score_labels': ['LL', 'ML', 'MH', 'HH'],
-        'ch_name': ch_name,
-        'tmin': float(tmin),
-        'tmax': float(tmax),
-    }
-    meta_path = out_path.with_name(out_path.stem + "_meta.json")
-
+    
     scores = np.asarray(scores, float)
-    subjects = np.asarray(subjects, int)
+    #subjects = np.asarray(subjects, int)
 
     with out_path.open("w", newline="") as f:
         writer = csv.writer(f)
         writer.writerow(["subject", "LL", "ML", "MH", "HH"])
-        for sid, row in zip(subjects, scores):
-            writer.writerow([int(sid)] + [float(x) for x in row])
-
-    with meta_path.open("w", encoding="utf-8") as f:
-        json.dump({"key_map": key_map, "meta": meta}, f, indent=2, ensure_ascii=False)
+        for subject_id, row in zip(subjects, scores):
+            writer.writerow([(subject_id)] + [float(x) for x in row])
 
     log(logger, f"Saved RewP scores -> {out_path}")
-    log(logger, f"Saved metadata -> {meta_path}")
     return out_path
 
 
@@ -93,7 +77,6 @@ def load_rewp_scores(path, logger=None):
     path = Path(path)
     if path.suffix.lower() != '.csv':
         path = path.with_suffix('.csv')
-    meta_path = path.with_name(path.stem + "_meta.json")
 
     subjects = []
     scores = []
@@ -103,12 +86,6 @@ def load_rewp_scores(path, logger=None):
             subjects.append(int(row["subject"]))
             scores.append([float(row["LL"]), float(row["ML"]), float(row["MH"]), float(row["HH"])])
 
-    key_map = None
-    meta = None
-    if meta_path.exists():
-        with meta_path.open("r", encoding="utf-8") as f:
-            payload = json.load(f)
-        key_map = payload.get("key_map")
-        meta = payload.get("meta")
-
-    return np.asarray(scores, float), subjects, key_map, meta
+    scores = np.asarray(scores, dtype=float)
+    log(logger, f"Loaded RewP scores <- {path}")
+    return scores, subjects, KEY_MAP.copy()

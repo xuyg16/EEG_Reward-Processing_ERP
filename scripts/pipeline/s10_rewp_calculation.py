@@ -24,6 +24,26 @@ def calculate_mean_amplitude(evoked, channel_name, tmin, tmax):
     return mean_val * 1e6 # Convert Volts to microvolts (µV)
 
 
+def calculate_max_amplitude(evoked, channel_name, tmin, tmax):
+    """Calculates the mean amplitude for a channel within a time window.
+    
+    :param evoked: MNE Evoked object
+    :param channel_name: Name of the channel to analyze
+    :param tmin: start time of the window (in seconds)
+    :param tmax: end time of the window (in seconds)
+    
+    :return: Mean amplitude in microvolts (µV)"""
+    
+    # Select the specific channel
+    data = evoked.get_data(picks=channel_name)[0] 
+    
+    # Get the time indices corresponding to the window (tmin, tmax)
+    i_start, i_end = evoked.time_as_index([tmin, tmax])
+    
+    # calculate the mean across time (axis 1)
+    max_val = np.max(data[i_start:i_end + 1])
+    
+    return max_val * 1e6 # Convert Volts to microvolts (µV)
 
 def calculate_peak_to_peak(evoked, channel_name, tmin, tmax):
     """
@@ -59,7 +79,7 @@ def calculate_peak_to_peak(evoked, channel_name, tmin, tmax):
 
 
 
-def rewp_calculation(all_evokeds, epoch_dict, verbose=True):
+def rewp_calculation(all_evokeds, epoch_dict, verbose=True, channel='FCz', mean_window=(0.240, 0.340)):
     """
     Calculate RewP metrics (Mean Amplitude and Peak-to-Peak) based on difference waves (Win - Loss).
 
@@ -74,8 +94,7 @@ def rewp_calculation(all_evokeds, epoch_dict, verbose=True):
         ('High-High', 'High-High Win', 'High-High Loss')
     ]
 
-    channel = 'FCz'
-    mean_window = [0.240, 0.340]
+
     results = {}
 
     for label, win_key, loss_key in condition_pairs:
@@ -86,17 +105,18 @@ def rewp_calculation(all_evokeds, epoch_dict, verbose=True):
                 [all_evokeds[win_key], all_evokeds[loss_key]], 
                 weights=[1, -1]
             )
-
+            
             mean_amp = calculate_mean_amplitude(rewp_diff, channel, *mean_window)
+            max_amp = calculate_max_amplitude(rewp_diff, channel, *mean_window)
             p2p_amp, n_t, p_t, n_amp, p_amp = calculate_peak_to_peak(rewp_diff, channel, *mean_window)
 
-            results[label] = {'mean': mean_amp, 'p2p': p2p_amp}
+            results[label] = {'mean': mean_amp, 'max': mean_amp, 'p2p': p2p_amp}
             
             if verbose:
-                print(f"[{label}] Mean: {mean_amp:5.2f} µV | P2P: {p2p_amp:5.2f} µV")
+                print(f"[{label}] Mean: {mean_amp:5.2f} µV | Max: {max_amp:5.2f} µV| P2P: {p2p_amp:5.2f} µV")
         else:
             print(f"[{label}] Missing data for win/loss pair.")
-            results[label] = {'mean': np.nan, 'p2p': np.nan}
+            results[label] = {'mean': np.nan, 'max': np.nan, 'p2p': np.nan}
 
     return results
 

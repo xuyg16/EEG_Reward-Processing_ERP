@@ -1,0 +1,472 @@
+2026-03-30 01:54:40,919 - stats_prop_all - INFO - Logger initialized -> /Users/xuyg/GitHub/EEG_Reward-Processing_ERP/output_mne/logs/stats_prop_all.log
+2026-03-30 01:54:40,920 - stats_prop_all - INFO - Output dir: /Users/xuyg/GitHub/EEG_Reward-Processing_ERP/output_mne
+2026-03-30 01:54:40,920 - stats_prop_all - INFO - Check log file: /Users/xuyg/GitHub/EEG_Reward-Processing_ERP/output_mne/logs/stats_prop_all.log
+2026-03-30 01:55:05,133 - stats_prop_all - INFO - RM ANOVA: F(2,22) = 14.08, p = 0.0001155
+2026-03-30 01:55:05,134 - stats_prop_all - INFO - partial eta^2 = 0.5614
+2026-03-30 01:55:05,136 - stats_prop_all - INFO - generalized eta^2 = 0.4168
+2026-03-30 01:59:16,977 - stats_prop_all - INFO - RM ANOVA: F(2,22) = 14.08, p = 0.0001155
+2026-03-30 01:59:16,978 - stats_prop_all - INFO - partial eta^2 = 0.5614
+2026-03-30 01:59:16,979 - stats_prop_all - INFO - generalized eta^2 = 0.4168
+2026-03-30 02:00:45,113 - stats_prop_all - INFO - Output dir: /Users/xuyg/GitHub/EEG_Reward-Processing_ERP/output_mne
+2026-03-30 02:00:45,114 - stats_prop_all - INFO - Check log file: /Users/xuyg/GitHub/EEG_Reward-Processing_ERP/output_mne/logs/stats_prop_all.log
+2026-03-30 02:00:47,589 - stats_prop_all - INFO - RM ANOVA: F(2,22) = 14.08, p = 0.0001155
+2026-03-30 02:00:47,589 - stats_prop_all - INFO - partial eta^2 = 0.5614
+2026-03-30 02:00:47,590 - stats_prop_all - INFO - generalized eta^2 = 0.4168
+2026-03-30 02:01:28,033 - stats_prop_all - INFO - RM ANOVA: F(2,22) = 14.08, p = 0.0001155
+2026-03-30 02:01:28,035 - stats_prop_all - INFO - partial eta^2 = 0.5614
+2026-03-30 02:01:28,036 - stats_prop_all - INFO - generalized eta^2 = 0.4168
+2026-03-30 02:01:28,037 - stats_prop_all - INFO - The proportion of winning trials among different tasks (n=12):
+• low-value: 48.60%, 95% CI [46.71, 50.50]
+• mid-value: 59.03%, 95% CI [55.78, 62.28]
+• high-value: 60.00%, 95% CI [54.08, 65.92]
+F(2,22) = 14.08, p < .001, ηp² = 0.56, ηg² = 0.42
+2026-03-30 02:03:23,807 - stats_prop_all - INFO - RM ANOVA: F(2,22) = 14.08, p = 0.0001155
+2026-03-30 02:03:23,808 - stats_prop_all - INFO - partial eta^2 = 0.5614
+2026-03-30 02:03:23,809 - stats_prop_all - INFO - generalized eta^2 = 0.4168
+2026-03-30 02:03:23,809 - stats_prop_all - INFO - The proportion of winning trials among different tasks (n=12):
+• low-value: 48.60%, 95% CI [46.71, 50.50]
+• mid-value: 59.03%, 95% CI [55.78, 62.28]
+• high-value: 60.00%, 95% CI [54.08, 65.92]
+F(2,22) = 14.08, p < .001, ηp² = 0.56, ηg² = 0.42
+2026-03-30 02:03:23,812 - stats_prop_all - INFO - Shapiro-Wilk on paired differences: p = 0.7551
+2026-03-30 02:03:23,813 - stats_prop_all - INFO - Paired t-test: t(11) = 1.552, p = 0.149
+2026-03-30 02:03:23,814 - stats_prop_all - INFO - Mean difference = 0.05834
+2026-03-30 02:03:23,814 - stats_prop_all - INFO - Cohen's dz = 0.4479
+2026-03-30 02:03:23,814 - stats_prop_all - INFO - mid-value block: 72.76%, 95% CI [63.64, 81.87]
+high-value block: 66.92%, 95% CI [56.92, 76.93]
+t(11) = 1.55, p = 0.149, Cohen's d = 0.45
+2026-03-30 02:04:21,765 - stats_prop_all - INFO - RM ANOVA: F(2,22) = 14.08, p = 0.0001155
+2026-03-30 02:04:21,765 - stats_prop_all - INFO - partial eta^2 = 0.5614
+2026-03-30 02:04:21,766 - stats_prop_all - INFO - generalized eta^2 = 0.4168
+2026-03-30 02:04:21,767 - stats_prop_all - INFO - The proportion of winning trials among different tasks (n=12):
+• low-value: 48.60%, 95% CI [46.71, 50.50]
+• mid-value: 59.03%, 95% CI [55.78, 62.28]
+• high-value: 60.00%, 95% CI [54.08, 65.92]
+F(2,22) = 14.08, p < .001, ηp² = 0.56, ηg² = 0.42
+2026-03-30 02:04:21,819 - stats_prop_all - INFO - Shapiro-Wilk on paired differences: p = 0.7551
+2026-03-30 02:04:21,820 - stats_prop_all - INFO - Paired t-test: t(11) = 1.552, p = 0.149
+2026-03-30 02:04:21,820 - stats_prop_all - INFO - Mean difference = 0.05834
+2026-03-30 02:04:21,821 - stats_prop_all - INFO - Cohen's dz = 0.4479
+2026-03-30 02:04:21,821 - stats_prop_all - INFO - mid-value block: 72.76%, 95% CI [63.64, 81.87]
+high-value block: 66.92%, 95% CI [56.92, 76.93]
+t(11) = 1.55, p = 0.149, Cohen's d = 0.45
+2026-03-30 02:04:43,815 - stats_prop_all - INFO - RM ANOVA: F(2,22) = 14.08, p = 0.0001155
+2026-03-30 02:04:43,816 - stats_prop_all - INFO - partial eta^2 = 0.5614
+2026-03-30 02:04:43,816 - stats_prop_all - INFO - generalized eta^2 = 0.4168
+2026-03-30 02:04:43,817 - stats_prop_all - INFO - The proportion of winning trials among different tasks (n=12):
+• low-value: 48.60%, 95% CI [46.71, 50.50]
+• mid-value: 59.03%, 95% CI [55.78, 62.28]
+• high-value: 60.00%, 95% CI [54.08, 65.92]
+F(2,22) = 14.08, p < .001, ηp² = 0.56, ηg² = 0.42
+2026-03-30 02:04:43,927 - stats_prop_all - INFO - Shapiro-Wilk on paired differences: p = 0.7551
+2026-03-30 02:04:43,928 - stats_prop_all - INFO - Paired t-test: t(11) = 1.552, p = 0.149
+2026-03-30 02:04:43,928 - stats_prop_all - INFO - Mean difference = 0.05834
+2026-03-30 02:04:43,928 - stats_prop_all - INFO - Cohen's dz = 0.4479
+2026-03-30 02:04:43,929 - stats_prop_all - INFO - mid-value block: 72.76%, 95% CI [63.64, 81.87]
+high-value block: 66.92%, 95% CI [56.92, 76.93]
+t(11) = 1.55, p = 0.149, Cohen's d = 0.45
+2026-03-30 02:04:50,973 - stats_prop_all - INFO - RM ANOVA: F(2,22) = 14.08, p = 0.0001155
+2026-03-30 02:04:50,975 - stats_prop_all - INFO - partial eta^2 = 0.5614
+2026-03-30 02:04:50,976 - stats_prop_all - INFO - generalized eta^2 = 0.4168
+2026-03-30 02:04:50,976 - stats_prop_all - INFO - The proportion of winning trials among different tasks (n=12):
+• low-value: 48.60%, 95% CI [46.71, 50.50]
+• mid-value: 59.03%, 95% CI [55.78, 62.28]
+• high-value: 60.00%, 95% CI [54.08, 65.92]
+F(2,22) = 14.08, p < .001, ηp² = 0.56, ηg² = 0.42
+2026-03-30 02:04:51,028 - stats_prop_all - INFO - Shapiro-Wilk on paired differences: p = 0.7551
+2026-03-30 02:04:51,029 - stats_prop_all - INFO - Paired t-test: t(11) = 1.552, p = 0.149
+2026-03-30 02:04:51,029 - stats_prop_all - INFO - Mean difference = 0.05834
+2026-03-30 02:04:51,029 - stats_prop_all - INFO - Cohen's dz = 0.4479
+2026-03-30 02:04:51,030 - stats_prop_all - INFO - mid-value block: 72.76%, 95% CI [63.64, 81.87]
+high-value block: 66.92%, 95% CI [56.92, 76.93]
+t(11) = 1.55, p = 0.149, Cohen's d = 0.45
+2026-03-30 14:06:11,085 - stats_prop_all - INFO - Output dir: /Users/xuyg/GitHub/EEG_Reward-Processing_ERP/output_mne
+2026-03-30 14:06:11,086 - stats_prop_all - INFO - Check log file: /Users/xuyg/GitHub/EEG_Reward-Processing_ERP/output_mne/logs/stats_prop_all.log
+2026-03-30 14:06:13,185 - stats_prop_all - INFO - RewP scores shape: (12, 4)
+Summary:
+              LL         ML         MH         HH
+count  12.000000  12.000000  12.000000  12.000000
+mean    2.821050   2.391861   0.890970   2.566864
+std     4.928581   3.926136   4.213054   4.363340
+2026-03-30 14:06:13,186 - stats_prop_all - INFO - Scores preview (head=8):
+subject        LL        ML        MH        HH
+     27  3.407326  1.973151 -0.161061  0.146578
+     28 -6.704157 -3.844774 -6.138581 -6.348819
+     29  1.249949  2.037467 -0.612010  0.734149
+     30  3.909596 -1.272723  1.280878  4.783235
+     31 13.435358  0.424832  2.193780  8.034330
+     32  2.068267 -0.742960  1.812639  4.664269
+     33  4.508307  5.856371  0.705983  5.125377
+     34  0.690988  4.701501  0.045411 -0.772797
+2026-03-30 14:06:13,186 - stats_prop_all - INFO - RewP scores computed for group: prop_all
+2026-03-30 14:06:13,191 - stats_prop_all - INFO - Saved RewP scores -> /Users/xuyg/GitHub/EEG_Reward-Processing_ERP/output_mne/stats/rewp_scores_prop_all.csv
+2026-03-30 14:06:13,192 - stats_prop_all - INFO - Saved metadata -> /Users/xuyg/GitHub/EEG_Reward-Processing_ERP/output_mne/stats/rewp_scores_prop_all_meta.json
+2026-03-30 14:06:43,929 - stats_prop_all - INFO - Shapiro-Wilk on paired differences: p = 0.09102
+2026-03-30 14:06:43,932 - stats_prop_all - INFO - Paired t-test: t(11) = -0.2977, p = 0.7715
+2026-03-30 14:06:43,933 - stats_prop_all - INFO - Mean difference = -0.4292
+2026-03-30 14:06:43,933 - stats_prop_all - INFO - Cohen's dz = -0.08594
+2026-03-30 14:06:43,939 - stats_prop_all - INFO - Permutation (exact sign-flip): stat = -0.4292, p = 0.8062, n = 12
+2026-03-30 14:06:43,940 - stats_prop_all - INFO - Mean difference = -0.4292
+2026-03-30 14:06:43,940 - stats_prop_all - INFO - Cohen's dz = -0.08594
+2026-03-30 14:32:51,461 - stats_prop_all - INFO - Output dir: /Users/xuyg/GitHub/EEG_Reward-Processing_ERP/output_mne
+2026-03-30 14:32:51,461 - stats_prop_all - INFO - Check log file: /Users/xuyg/GitHub/EEG_Reward-Processing_ERP/output_mne/logs/stats_prop_all.log
+2026-03-30 14:32:51,500 - stats_prop_all - INFO - RewP scores shape: (12, 4)
+Summary:
+              LL         ML         MH         HH
+count  12.000000  12.000000  12.000000  12.000000
+mean    2.821050   2.391861   0.890970   2.566864
+std     4.928581   3.926136   4.213054   4.363340
+2026-03-30 14:32:51,501 - stats_prop_all - INFO - Scores preview (head=8):
+subject        LL        ML        MH        HH
+     27  3.407326  1.973151 -0.161061  0.146578
+     28 -6.704157 -3.844774 -6.138581 -6.348819
+     29  1.249949  2.037467 -0.612010  0.734149
+     30  3.909596 -1.272723  1.280878  4.783235
+     31 13.435358  0.424832  2.193780  8.034330
+     32  2.068267 -0.742960  1.812639  4.664269
+     33  4.508307  5.856371  0.705983  5.125377
+     34  0.690988  4.701501  0.045411 -0.772797
+2026-03-30 14:32:51,502 - stats_prop_all - INFO - RewP scores computed for group: prop_all
+2026-03-30 14:42:08,021 - stats_prop_all - INFO - RewP scores shape: (12, 4)
+Summary:
+              LL         ML         MH         HH
+count  12.000000  12.000000  12.000000  12.000000
+mean    2.821050   2.391861   0.890970   2.566864
+std     4.928581   3.926136   4.213054   4.363340
+2026-03-30 14:42:08,024 - stats_prop_all - INFO - Scores preview (head=8):
+subject        LL        ML        MH        HH
+     27  3.407326  1.973151 -0.161061  0.146578
+     28 -6.704157 -3.844774 -6.138581 -6.348819
+     29  1.249949  2.037467 -0.612010  0.734149
+     30  3.909596 -1.272723  1.280878  4.783235
+     31 13.435358  0.424832  2.193780  8.034330
+     32  2.068267 -0.742960  1.812639  4.664269
+     33  4.508307  5.856371  0.705983  5.125377
+     34  0.690988  4.701501  0.045411 -0.772797
+2026-03-30 14:44:15,692 - stats_prop_all - INFO - RewP scores shape: (12, 4)
+Summary:
+              LL         ML         MH         HH
+count  12.000000  12.000000  12.000000  12.000000
+mean    2.821050   2.391861   0.890970   2.566864
+std     4.928581   3.926136   4.213054   4.363340
+2026-03-30 14:44:15,694 - stats_prop_all - INFO - Scores preview (head=8):
+subject        LL        ML        MH        HH
+     27  3.407326  1.973151 -0.161061  0.146578
+     28 -6.704157 -3.844774 -6.138581 -6.348819
+     29  1.249949  2.037467 -0.612010  0.734149
+     30  3.909596 -1.272723  1.280878  4.783235
+     31 13.435358  0.424832  2.193780  8.034330
+     32  2.068267 -0.742960  1.812639  4.664269
+     33  4.508307  5.856371  0.705983  5.125377
+     34  0.690988  4.701501  0.045411 -0.772797
+2026-03-30 14:50:52,398 - stats_prop_all - INFO - RewP scores shape: (12, 4)
+Summary:
+              LL         ML         MH         HH
+count  12.000000  12.000000  12.000000  12.000000
+mean    2.821050   2.391861   0.890970   2.566864
+std     4.928581   3.926136   4.213054   4.363340
+2026-03-30 14:50:52,401 - stats_prop_all - INFO - Scores preview (head=8):
+subject        LL        ML        MH        HH
+     27  3.407326  1.973151 -0.161061  0.146578
+     28 -6.704157 -3.844774 -6.138581 -6.348819
+     29  1.249949  2.037467 -0.612010  0.734149
+     30  3.909596 -1.272723  1.280878  4.783235
+     31 13.435358  0.424832  2.193780  8.034330
+     32  2.068267 -0.742960  1.812639  4.664269
+     33  4.508307  5.856371  0.705983  5.125377
+     34  0.690988  4.701501  0.045411 -0.772797
+2026-03-30 14:50:52,402 - stats_prop_all - INFO - Saved RewP scores -> /Users/xuyg/GitHub/EEG_Reward-Processing_ERP/output_mne/stats/rewp_scores_prop_all.csv
+2026-03-30 14:52:55,762 - stats_prop_all - INFO - RewP scores shape: (12, 4)
+Summary:
+              LL         ML         MH         HH
+count  12.000000  12.000000  12.000000  12.000000
+mean    2.821050   2.391861   0.890970   2.566864
+std     4.928581   3.926136   4.213054   4.363340
+2026-03-30 14:52:55,763 - stats_prop_all - INFO - Scores preview (head=8):
+subject        LL        ML        MH        HH
+     27  3.407326  1.973151 -0.161061  0.146578
+     28 -6.704157 -3.844774 -6.138581 -6.348819
+     29  1.249949  2.037467 -0.612010  0.734149
+     30  3.909596 -1.272723  1.280878  4.783235
+     31 13.435358  0.424832  2.193780  8.034330
+     32  2.068267 -0.742960  1.812639  4.664269
+     33  4.508307  5.856371  0.705983  5.125377
+     34  0.690988  4.701501  0.045411 -0.772797
+2026-03-30 14:52:55,766 - stats_prop_all - INFO - Saved RewP scores -> /Users/xuyg/GitHub/EEG_Reward-Processing_ERP/output_mne/stats/rewp_scores_prop_all.csv
+2026-03-30 14:52:55,768 - stats_prop_all - INFO - Shapiro-Wilk on paired differences: p = 0.7186
+2026-03-30 14:52:55,770 - stats_prop_all - INFO - Paired t-test: t(11) = -2.039, p = 0.0662
+2026-03-30 14:52:55,771 - stats_prop_all - INFO - Mean difference = -1.676
+2026-03-30 14:52:55,771 - stats_prop_all - INFO - Cohen's dz = -0.5887
+2026-03-30 14:52:55,776 - stats_prop_all - INFO - Permutation (exact sign-flip): stat = -1.676, p = 0.06445, n = 12
+2026-03-30 14:52:55,777 - stats_prop_all - INFO - Mean difference = -1.676
+2026-03-30 14:52:55,777 - stats_prop_all - INFO - Cohen's dz = -0.5887
+2026-03-30 14:52:55,777 - stats_prop_all - INFO - The RewP following high-value cues was smaller in the mid-value task (0.89 μV, 95% CI [-1.79, 3.57]) than in the high-value task (2.57 μV, 95% CI [-0.21, 5.34]), t(11) = -2.04, p = .066, Cohen's d = -0.59.
+2026-03-30 14:52:55,778 - stats_prop_all - INFO - Exact paired permutation: p = .064.
+2026-03-30 14:52:55,778 - stats_prop_all - INFO - Shapiro-Wilk on paired differences: p = 0.09102
+2026-03-30 14:52:55,779 - stats_prop_all - INFO - Paired t-test: t(11) = -0.2977, p = 0.7715
+2026-03-30 14:52:55,779 - stats_prop_all - INFO - Mean difference = -0.4292
+2026-03-30 14:52:55,779 - stats_prop_all - INFO - Cohen's dz = -0.08594
+2026-03-30 14:52:55,783 - stats_prop_all - INFO - Permutation (exact sign-flip): stat = -0.4292, p = 0.8062, n = 12
+2026-03-30 14:52:55,784 - stats_prop_all - INFO - Mean difference = -0.4292
+2026-03-30 14:52:55,785 - stats_prop_all - INFO - Cohen's dz = -0.08594
+2026-03-30 14:52:55,786 - stats_prop_all - INFO - The RewP following low-value cues was smaller in the mid-value task (2.39 μV, 95% CI [-0.10, 4.89]) than in the low-value task (2.82 μV, 95% CI [-0.31, 5.95]), t(11) = -0.30, p = .771, Cohen's d = -0.09.
+2026-03-30 14:52:55,788 - stats_prop_all - INFO - Exact paired permutation: p = .806.
+2026-03-30 14:59:58,339 - stats_prop_all - INFO - RewP scores shape: (12, 4)
+Summary:
+              LL         ML         MH         HH
+count  12.000000  12.000000  12.000000  12.000000
+mean    2.821050   2.391861   0.890970   2.566864
+std     4.928581   3.926136   4.213054   4.363340
+2026-03-30 14:59:58,342 - stats_prop_all - INFO - Scores preview (head=8):
+subject        LL        ML        MH        HH
+     27  3.407326  1.973151 -0.161061  0.146578
+     28 -6.704157 -3.844774 -6.138581 -6.348819
+     29  1.249949  2.037467 -0.612010  0.734149
+     30  3.909596 -1.272723  1.280878  4.783235
+     31 13.435358  0.424832  2.193780  8.034330
+     32  2.068267 -0.742960  1.812639  4.664269
+     33  4.508307  5.856371  0.705983  5.125377
+     34  0.690988  4.701501  0.045411 -0.772797
+2026-03-30 14:59:58,347 - stats_prop_all - INFO - Saved RewP scores -> /Users/xuyg/GitHub/EEG_Reward-Processing_ERP/output_mne/stats/rewp_scores_prop_all.csv
+2026-03-30 15:00:41,307 - stats_prop_all - INFO - RewP scores shape: (12, 4)
+Summary:
+              LL         ML         MH         HH
+count  12.000000  12.000000  12.000000  12.000000
+mean    2.821050   2.391861   0.890970   2.566864
+std     4.928581   3.926136   4.213054   4.363340
+2026-03-30 15:00:41,309 - stats_prop_all - INFO - Scores preview (head=8):
+subject        LL        ML        MH        HH
+     27  3.407326  1.973151 -0.161061  0.146578
+     28 -6.704157 -3.844774 -6.138581 -6.348819
+     29  1.249949  2.037467 -0.612010  0.734149
+     30  3.909596 -1.272723  1.280878  4.783235
+     31 13.435358  0.424832  2.193780  8.034330
+     32  2.068267 -0.742960  1.812639  4.664269
+     33  4.508307  5.856371  0.705983  5.125377
+     34  0.690988  4.701501  0.045411 -0.772797
+2026-03-30 15:00:41,311 - stats_prop_all - INFO - Saved RewP scores -> /Users/xuyg/GitHub/EEG_Reward-Processing_ERP/output_mne/stats/rewp_scores_prop_all.csv
+2026-03-30 15:00:44,032 - stats_prop_all - INFO - RewP scores shape: (12, 4)
+Summary:
+              LL         ML         MH         HH
+count  12.000000  12.000000  12.000000  12.000000
+mean    2.821050   2.391861   0.890970   2.566864
+std     4.928581   3.926136   4.213054   4.363340
+2026-03-30 15:00:44,033 - stats_prop_all - INFO - Scores preview (head=8):
+subject        LL        ML        MH        HH
+     27  3.407326  1.973151 -0.161061  0.146578
+     28 -6.704157 -3.844774 -6.138581 -6.348819
+     29  1.249949  2.037467 -0.612010  0.734149
+     30  3.909596 -1.272723  1.280878  4.783235
+     31 13.435358  0.424832  2.193780  8.034330
+     32  2.068267 -0.742960  1.812639  4.664269
+     33  4.508307  5.856371  0.705983  5.125377
+     34  0.690988  4.701501  0.045411 -0.772797
+2026-03-30 15:00:44,035 - stats_prop_all - INFO - Saved RewP scores -> /Users/xuyg/GitHub/EEG_Reward-Processing_ERP/output_mne/stats/rewp_scores_prop_all.csv
+2026-03-30 15:02:53,067 - stats_prop_all - INFO - RewP scores shape: (12, 4)
+Summary:
+              LL         ML         MH         HH
+count  12.000000  12.000000  12.000000  12.000000
+mean    2.821050   2.391861   0.890970   2.566864
+std     4.928581   3.926136   4.213054   4.363340
+2026-03-30 15:02:53,070 - stats_prop_all - INFO - Scores preview (head=8):
+subject        LL        ML        MH        HH
+     27  3.407326  1.973151 -0.161061  0.146578
+     28 -6.704157 -3.844774 -6.138581 -6.348819
+     29  1.249949  2.037467 -0.612010  0.734149
+     30  3.909596 -1.272723  1.280878  4.783235
+     31 13.435358  0.424832  2.193780  8.034330
+     32  2.068267 -0.742960  1.812639  4.664269
+     33  4.508307  5.856371  0.705983  5.125377
+     34  0.690988  4.701501  0.045411 -0.772797
+2026-03-30 15:02:53,072 - stats_prop_all - INFO - Saved RewP scores -> /Users/xuyg/GitHub/EEG_Reward-Processing_ERP/output_mne/stats/rewp_scores_prop_all.csv
+2026-03-30 15:02:53,074 - stats_prop_all - INFO - Shapiro-Wilk on paired differences: p = 0.7186
+2026-03-30 15:02:53,075 - stats_prop_all - INFO - Paired t-test: t(11) = -2.039, p = 0.0662
+2026-03-30 15:02:53,076 - stats_prop_all - INFO - Mean difference = -1.676
+2026-03-30 15:02:53,077 - stats_prop_all - INFO - Cohen's dz = -0.5887
+2026-03-30 15:02:53,085 - stats_prop_all - INFO - Permutation (exact sign-flip): stat = -1.676, p = 0.06445, n = 12
+2026-03-30 15:02:53,086 - stats_prop_all - INFO - Mean difference = -1.676
+2026-03-30 15:02:53,086 - stats_prop_all - INFO - Cohen's dz = -0.5887
+2026-03-30 15:02:53,089 - stats_prop_all - INFO - mid-value task: 0.89 μV, 95% CI [-1.79, 3.57]
+high-value task: 2.57 μV, 95% CI [-0.21, 5.34]
+t(11) = -2.04, p = .066, Cohen's d = -0.59
+Exact paired permutation: p = .064
+2026-03-30 15:03:15,949 - stats_prop_all - INFO - RewP scores shape: (12, 4)
+Summary:
+              LL         ML         MH         HH
+count  12.000000  12.000000  12.000000  12.000000
+mean    2.821050   2.391861   0.890970   2.566864
+std     4.928581   3.926136   4.213054   4.363340
+2026-03-30 15:03:15,953 - stats_prop_all - INFO - Scores preview (head=8):
+subject        LL        ML        MH        HH
+     27  3.407326  1.973151 -0.161061  0.146578
+     28 -6.704157 -3.844774 -6.138581 -6.348819
+     29  1.249949  2.037467 -0.612010  0.734149
+     30  3.909596 -1.272723  1.280878  4.783235
+     31 13.435358  0.424832  2.193780  8.034330
+     32  2.068267 -0.742960  1.812639  4.664269
+     33  4.508307  5.856371  0.705983  5.125377
+     34  0.690988  4.701501  0.045411 -0.772797
+2026-03-30 15:03:15,954 - stats_prop_all - INFO - Saved RewP scores -> /Users/xuyg/GitHub/EEG_Reward-Processing_ERP/output_mne/stats/rewp_scores_prop_all.csv
+2026-03-30 15:03:15,955 - stats_prop_all - INFO - Shapiro-Wilk on paired differences: p = 0.7186
+2026-03-30 15:03:15,958 - stats_prop_all - INFO - Paired t-test: t(11) = -2.039, p = 0.0662
+2026-03-30 15:03:15,958 - stats_prop_all - INFO - Mean difference = -1.676
+2026-03-30 15:03:15,959 - stats_prop_all - INFO - Cohen's dz = -0.5887
+2026-03-30 15:03:16,045 - stats_prop_all - INFO - Permutation (exact sign-flip): stat = -1.676, p = 0.06445, n = 12
+2026-03-30 15:03:16,046 - stats_prop_all - INFO - Mean difference = -1.676
+2026-03-30 15:03:16,046 - stats_prop_all - INFO - Cohen's dz = -0.5887
+2026-03-30 15:03:16,047 - stats_prop_all - INFO - mid-value task: 0.89 μV, 95% CI [-1.79, 3.57]
+high-value task: 2.57 μV, 95% CI [-0.21, 5.34]
+t(11) = -2.04, p = .066, Cohen's d = -0.59
+Exact paired permutation: p = .064
+2026-03-30 15:03:16,048 - stats_prop_all - INFO - Shapiro-Wilk on paired differences: p = 0.09102
+2026-03-30 15:03:16,049 - stats_prop_all - INFO - Paired t-test: t(11) = -0.2977, p = 0.7715
+2026-03-30 15:03:16,049 - stats_prop_all - INFO - Mean difference = -0.4292
+2026-03-30 15:03:16,049 - stats_prop_all - INFO - Cohen's dz = -0.08594
+2026-03-30 15:03:16,078 - stats_prop_all - INFO - Permutation (exact sign-flip): stat = -0.4292, p = 0.8062, n = 12
+2026-03-30 15:03:16,078 - stats_prop_all - INFO - Mean difference = -0.4292
+2026-03-30 15:03:16,079 - stats_prop_all - INFO - Cohen's dz = -0.08594
+2026-03-30 15:03:16,079 - stats_prop_all - INFO - mid-value task: 2.39 μV, 95% CI [-0.10, 4.89]
+low-value task: 2.82 μV, 95% CI [-0.31, 5.95]
+t(11) = -0.30, p = .771, Cohen's d = -0.09
+Exact paired permutation: p = .806
+2026-03-30 15:05:18,918 - stats_prop_all - INFO - RewP scores shape: (12, 4)
+Summary:
+              LL         ML         MH         HH
+count  12.000000  12.000000  12.000000  12.000000
+mean    2.821050   2.391861   0.890970   2.566864
+std     4.928581   3.926136   4.213054   4.363340
+2026-03-30 15:05:18,920 - stats_prop_all - INFO - Scores preview (head=8):
+subject        LL        ML        MH        HH
+     27  3.407326  1.973151 -0.161061  0.146578
+     28 -6.704157 -3.844774 -6.138581 -6.348819
+     29  1.249949  2.037467 -0.612010  0.734149
+     30  3.909596 -1.272723  1.280878  4.783235
+     31 13.435358  0.424832  2.193780  8.034330
+     32  2.068267 -0.742960  1.812639  4.664269
+     33  4.508307  5.856371  0.705983  5.125377
+     34  0.690988  4.701501  0.045411 -0.772797
+2026-03-30 15:05:18,921 - stats_prop_all - INFO - Saved RewP scores -> /Users/xuyg/GitHub/EEG_Reward-Processing_ERP/output_mne/stats/rewp_scores_prop_all.csv
+2026-03-30 15:05:18,926 - stats_prop_all - INFO - Shapiro-Wilk on paired differences: p = 0.7186
+2026-03-30 15:05:18,927 - stats_prop_all - INFO - Paired t-test: t(11) = -2.039, p = 0.0662
+2026-03-30 15:05:18,928 - stats_prop_all - INFO - Mean difference = -1.676
+2026-03-30 15:05:18,929 - stats_prop_all - INFO - Cohen's dz = -0.5887
+2026-03-30 15:05:18,936 - stats_prop_all - INFO - Permutation (exact sign-flip): stat = -1.676, p = 0.06445, n = 12
+2026-03-30 15:05:18,937 - stats_prop_all - INFO - Mean difference = -1.676
+2026-03-30 15:05:18,938 - stats_prop_all - INFO - Cohen's dz = -0.5887
+2026-03-30 15:05:18,941 - stats_prop_all - INFO - mid-value task: 0.89 μV, 95% CI [-1.79, 3.57]
+high-value task: 2.57 μV, 95% CI [-0.21, 5.34]
+t(11) = -2.04, p = .066, Cohen's d = -0.59
+Exact paired permutation: p = .064
+2026-03-30 15:05:18,945 - stats_prop_all - INFO - Shapiro-Wilk on paired differences: p = 0.09102
+2026-03-30 15:05:18,946 - stats_prop_all - INFO - Paired t-test: t(11) = -0.2977, p = 0.7715
+2026-03-30 15:05:19,025 - stats_prop_all - INFO - Mean difference = -0.4292
+2026-03-30 15:05:19,030 - stats_prop_all - INFO - Cohen's dz = -0.08594
+2026-03-30 15:05:19,041 - stats_prop_all - INFO - Permutation (exact sign-flip): stat = -0.4292, p = 0.8062, n = 12
+2026-03-30 15:05:19,042 - stats_prop_all - INFO - Mean difference = -0.4292
+2026-03-30 15:05:19,043 - stats_prop_all - INFO - Cohen's dz = -0.08594
+2026-03-30 15:05:19,043 - stats_prop_all - INFO - mid-value task: 2.39 μV, 95% CI [-0.10, 4.89]
+low-value task: 2.82 μV, 95% CI [-0.31, 5.95]
+t(11) = -0.30, p = .771, Cohen's d = -0.09
+Exact paired permutation: p = .806
+2026-03-30 15:05:34,825 - stats_prop_all - INFO - Saved RewP scores -> /Users/xuyg/GitHub/EEG_Reward-Processing_ERP/output_mne/stats/rewp_scores_prop_all.csv
+2026-03-30 15:05:34,826 - stats_prop_all - INFO - Shapiro-Wilk on paired differences: p = 0.7186
+2026-03-30 15:05:34,827 - stats_prop_all - INFO - Paired t-test: t(11) = -2.039, p = 0.0662
+2026-03-30 15:05:34,827 - stats_prop_all - INFO - Mean difference = -1.676
+2026-03-30 15:05:34,827 - stats_prop_all - INFO - Cohen's dz = -0.5887
+2026-03-30 15:05:34,832 - stats_prop_all - INFO - Permutation (exact sign-flip): stat = -1.676, p = 0.06445, n = 12
+2026-03-30 15:05:34,833 - stats_prop_all - INFO - Mean difference = -1.676
+2026-03-30 15:05:34,833 - stats_prop_all - INFO - Cohen's dz = -0.5887
+2026-03-30 15:05:34,834 - stats_prop_all - INFO - mid-value task: 0.89 μV, 95% CI [-1.79, 3.57]
+high-value task: 2.57 μV, 95% CI [-0.21, 5.34]
+t(11) = -2.04, p = .066, Cohen's d = -0.59
+Exact paired permutation: p = .064
+2026-03-30 15:05:34,839 - stats_prop_all - INFO - Shapiro-Wilk on paired differences: p = 0.09102
+2026-03-30 15:05:34,881 - stats_prop_all - INFO - Paired t-test: t(11) = -0.2977, p = 0.7715
+2026-03-30 15:05:34,883 - stats_prop_all - INFO - Mean difference = -0.4292
+2026-03-30 15:05:34,894 - stats_prop_all - INFO - Cohen's dz = -0.08594
+2026-03-30 15:05:34,919 - stats_prop_all - INFO - Permutation (exact sign-flip): stat = -0.4292, p = 0.8062, n = 12
+2026-03-30 15:05:34,919 - stats_prop_all - INFO - Mean difference = -0.4292
+2026-03-30 15:05:34,920 - stats_prop_all - INFO - Cohen's dz = -0.08594
+2026-03-30 15:05:34,921 - stats_prop_all - INFO - mid-value task: 2.39 μV, 95% CI [-0.10, 4.89]
+low-value task: 2.82 μV, 95% CI [-0.31, 5.95]
+t(11) = -0.30, p = .771, Cohen's d = -0.09
+Exact paired permutation: p = .806
+2026-03-30 15:44:31,190 - stats_prop_all - INFO - Saved RewP scores -> /Users/xuyg/GitHub/EEG_Reward-Processing_ERP/output_mne/stats/rewp_scores_prop_all.csv
+2026-03-30 15:45:26,371 - stats_prop_all - INFO - Saved RewP scores -> /Users/xuyg/GitHub/EEG_Reward-Processing_ERP/output_mne/stats/rewp_scores_prop_all.csv
+2026-03-30 15:45:26,397 - stats_prop_all - INFO - [High-value cues | MH vs HH]
+mid-value task: 0.89 μV, 95% CI [-1.79, 3.57]
+high-value task: 2.57 μV, 95% CI [-0.21, 5.34]
+t(11) = -2.04, p = .066, Cohen's d = -0.59
+Exact paired permutation: p = .064
+2026-03-30 15:45:26,402 - stats_prop_all - INFO - [Low-value cues | ML vs LL]
+mid-value task: 2.39 μV, 95% CI [-0.10, 4.89]
+low-value task: 2.82 μV, 95% CI [-0.31, 5.95]
+t(11) = -0.30, p = .771, Cohen's d = -0.09
+Exact paired permutation: p = .806
+2026-03-30 15:48:54,163 - stats_prop_all - INFO - Saved RewP scores -> /Users/xuyg/GitHub/EEG_Reward-Processing_ERP/output_mne/stats/rewp_scores_prop_all.csv
+2026-03-30 15:48:54,172 - stats_prop_all - INFO - [High-value cues | MH vs HH]
+mid-value task: 0.89 μV, 95% CI [-1.79, 3.57]
+high-value task: 2.57 μV, 95% CI [-0.21, 5.34]
+t(11) = -2.04, p = .066, Cohen's d = -0.59
+Exact paired permutation: p = .064
+2026-03-30 15:48:54,173 - stats_prop_all - INFO - 
+
+2026-03-30 15:48:54,206 - stats_prop_all - INFO - [Low-value cues | ML vs LL]
+mid-value task: 2.39 μV, 95% CI [-0.10, 4.89]
+low-value task: 2.82 μV, 95% CI [-0.31, 5.95]
+t(11) = -0.30, p = .771, Cohen's d = -0.09
+Exact paired permutation: p = .806
+2026-03-30 15:50:28,452 - stats_prop_all - INFO - Saved RewP scores -> /Users/xuyg/GitHub/EEG_Reward-Processing_ERP/output_mne/stats/rewp_scores_prop_all.csv
+2026-03-30 15:50:28,461 - stats_prop_all - INFO - [High-value cues | MH vs HH]
+mid-value task: 0.89 μV, 95% CI [-1.79, 3.57]
+high-value task: 2.57 μV, 95% CI [-0.21, 5.34]
+t(11) = -2.04, p = .066, Cohen's d = -0.59
+Exact paired permutation: p = .064
+2026-03-30 15:50:28,461 - stats_prop_all - INFO - 
+
+2026-03-30 15:50:28,544 - stats_prop_all - INFO - [Low-value cues | ML vs LL]
+mid-value task: 2.39 μV, 95% CI [-0.10, 4.89]
+low-value task: 2.82 μV, 95% CI [-0.31, 5.95]
+t(11) = -0.30, p = .771, Cohen's d = -0.09
+Exact paired permutation: p = .806
+2026-03-30 15:50:46,656 - stats_prop_all - INFO - Saved RewP scores -> /Users/xuyg/GitHub/EEG_Reward-Processing_ERP/output_mne/stats/rewp_scores_prop_all.csv
+2026-03-30 15:50:46,661 - stats_prop_all - INFO - [High-value cues | MH vs HH]
+mid-value task: 0.89 μV, 95% CI [-1.79, 3.57]
+high-value task: 2.57 μV, 95% CI [-0.21, 5.34]
+t(11) = -2.04, p = .066, Cohen's d = -0.59
+Exact paired permutation: p = .064
+2026-03-30 15:50:46,661 - stats_prop_all - INFO - 
+
+2026-03-30 15:50:46,668 - stats_prop_all - INFO - [Low-value cues | ML vs LL]
+mid-value task: 2.39 μV, 95% CI [-0.10, 4.89]
+low-value task: 2.82 μV, 95% CI [-0.31, 5.95]
+t(11) = -0.30, p = .771, Cohen's d = -0.09
+Exact paired permutation: p = .806
+2026-03-30 15:50:53,190 - stats_prop_all - INFO - RM ANOVA: F(2,22) = 14.08, p = 0.0001155
+2026-03-30 15:50:53,190 - stats_prop_all - INFO - partial eta^2 = 0.5614
+2026-03-30 15:50:53,190 - stats_prop_all - INFO - generalized eta^2 = 0.4168
+2026-03-30 15:50:53,192 - stats_prop_all - INFO - The proportion of winning trials among different tasks (n=12):
+• low-value: 48.60%, 95% CI [46.71, 50.50]
+• mid-value: 59.03%, 95% CI [55.78, 62.28]
+• high-value: 60.00%, 95% CI [54.08, 65.92]
+F(2,22) = 14.08, p < .001, ηp² = 0.56, ηg² = 0.42
+2026-03-30 15:50:53,367 - stats_prop_all - INFO - Shapiro-Wilk on paired differences: p = 0.7551
+2026-03-30 15:50:53,368 - stats_prop_all - INFO - Paired t-test: t(11) = 1.552, p = 0.149
+2026-03-30 15:50:53,368 - stats_prop_all - INFO - Mean difference = 0.05834
+2026-03-30 15:50:53,369 - stats_prop_all - INFO - Cohen's dz = 0.4479
+2026-03-30 15:50:53,369 - stats_prop_all - INFO - mid-value block: 72.76%, 95% CI [63.64, 81.87]
+high-value block: 66.92%, 95% CI [56.92, 76.93]
+t(11) = 1.55, p = 0.149, Cohen's d = 0.45
+2026-03-30 16:03:15,554 - stats_prop_all - INFO - Collected behavior summary for 12 subjects
+2026-03-30 16:03:52,383 - stats_prop_all - INFO - Collected behavior summary for 12 subjects
+2026-03-30 16:04:00,919 - stats_prop_all - INFO - Collected behavior summary for 12 subjects
+2026-03-30 16:05:35,315 - stats_prop_all - INFO - Collected behavior summary for 12 subjects
+2026-03-30 16:06:02,258 - stats_prop_all - INFO - Collected behavior summary for 12 subjects
+2026-03-30 16:06:14,012 - stats_prop_all - INFO - Collected behavior summary for 12 subjects
+2026-03-30 16:06:35,326 - stats_prop_all - INFO - Collected behavior summary for 12 subjects
+2026-03-30 16:06:42,926 - stats_prop_all - INFO - Collected behavior summary for 12 subjects
+2026-03-30 16:06:49,087 - stats_prop_all - INFO - Collected behavior summary for 12 subjects
+2026-03-30 16:08:02,131 - stats_prop_all - INFO - Collected behavior summary for 12 subjects
+2026-03-30 16:08:06,875 - stats_prop_all - INFO - Collected behavior summary for 12 subjects
+2026-03-30 16:08:45,588 - stats_prop_all - INFO - Collected behavior summary for 12 subjects
+2026-03-30 16:09:01,629 - stats_prop_all - INFO - Collected behavior summary for 12 subjects

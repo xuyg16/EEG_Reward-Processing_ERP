@@ -5,8 +5,8 @@ import numpy as np
 import pandas as pd
 from scipy import stats
 
-from scripts.stats.inference_parametric import rm_anova_oneway, rm_ttest
-from scripts.utils.logger import log
+from stats.inference_parametric import rm_anova_oneway, paired_ttest
+from utils.logger import log
 
 
 def _normalize_subject_id(subject) -> str:
@@ -141,16 +141,123 @@ def run_behavior_stats(df, logger=None):
     if df_perf.empty:
         raise ValueError("No complete subjects for high-value cue accuracy t-test.")
 
-    perf_res = rm_ttest(
+    perf_res = paired_ttest(
         df_perf["mid_high_acc"].to_numpy(float),
         df_perf["high_high_acc"].to_numpy(float),
-        normality_on="each",
         logger=logger,
     )
 
     return {
         "anova": anova_res,
         "performance_ttest": perf_res,
+    }
+
+
+def summarize_task_winrates(df, decimals=2, include_anova=False, logger=None):
+    """
+    Summarize task win rates (low/mid/high) with 95% CIs.
+    Optionally include one-way repeated-measures ANOVA.
+
+    Returns
+    -------
+    dict
+        {
+            "low": {"mean": ..., "ci": (..., ...), "n": ...},
+            "mid": {"mean": ..., "ci": (..., ...), "n": ...},
+            "high": {"mean": ..., "ci": (..., ...), "n": ...},
+            "anova": {...} or None,
+            "text": str,
+        }
+    """
+    cols = ["low", "mid", "high"]
+    labels = ["low-value", "mid-value", "high-value"]
+
+    x = df[cols].to_numpy(float)
+
+    # use complete subjects across all three task conditions
+    complete_subject_mask = np.all(np.isfinite(x), axis=1)
+    x_use = x[complete_subject_mask]
+
+    if x_use.size == 0:
+        raise ValueError("No complete subjects for task win-rate summary.")
+
+    n = x_use.shape[0]
+    summary = {}
+
+    lines = [f"The proportion of winning trials among different tasks (n={n}):"]
+
+    for idx, (label, col) in enumerate(zip(labels, cols)):
+        m, (lo, hi), n_col = mean_ci_t(x_use[:, idx])
+        summary[col] = {
+            "mean": float(m),
+            "ci": (float(lo), float(hi)),
+            "n": int(n_col),
+        }
+        lines.append(
+            f"• {label}: {m*100:.{decimals}f}%, "
+            f"95% CI [{lo*100:.{decimals}f}, {hi*100:.{decimals}f}]"
+        )
+
+    anova_res = None
+    if include_anova:
+        anova_res = rm_anova_oneway(x_use, logger=logger)
+        p = anova_res["p"]
+        p_str = "< .001" if np.isfinite(p) and p < 0.001 else f"= {p:.3f}"
+
+        lines.append(
+            f"F({anova_res['df1']},{anova_res['df2']}) = {anova_res['F']:.2f}, "
+            f"p {p_str}, "
+            f"ηp² = {anova_res['partial_eta2']:.2f}, "
+            f"ηg² = {anova_res['generalized_eta2']:.2f}"
+        )
+
+    return {
+        "low": summary["low"],
+        "mid": summary["mid"],
+        "high": summary["high"],
+        "anova": anova_res,
+        "text": "\n".join(lines),
+    }
+
+def summarize_mean_performance(df, decimals=2, logger=None):
+    """
+    Summarize mean performance in mid/high blocks with 95% CIs and paired t-test.
+    """
+    x_mid = df["mid_high_acc"].to_numpy(float)
+    x_high = df["high_high_acc"].to_numpy(float)
+
+    # use only complete paired subjects
+    valid_pair_mask = np.isfinite(x_mid) & np.isfinite(x_high)
+    x_mid = x_mid[valid_pair_mask]
+    x_high = x_high[valid_pair_mask]
+
+    if x_mid.size == 0:
+        raise ValueError("No complete subjects for mean performance summary.")
+
+    mid_m, (mid_lo, mid_hi), n_mid = mean_ci_t(x_mid)
+    high_m, (high_lo, high_hi), n_high = mean_ci_t(x_high)
+
+    t_res = paired_ttest(
+        x_mid,
+        x_high,
+        check_normality=True,
+        logger=logger,
+    )
+
+    p = t_res["p"]
+    p_str = "< .001" if np.isfinite(p) and p < 0.001 else f"= {p:.3f}"
+
+    lines = [
+        f"mid-value block: {mid_m*100:.{decimals}f}%, 95% CI [{mid_lo*100:.{decimals}f}, {mid_hi*100:.{decimals}f}]",
+        f"high-value block: {high_m*100:.{decimals}f}%, 95% CI [{high_lo*100:.{decimals}f}, {high_hi*100:.{decimals}f}]",
+        f"t({t_res['df']}) = {t_res['t']:.2f}, p {p_str}, Cohen's d = {t_res['cohen_dz']:.2f}",
+    ]
+
+    return {
+        "mid": {"mean": float(mid_m), "ci": (float(mid_lo), float(mid_hi)), "n": int(n_mid)},
+        "high": {"mean": float(high_m), "ci": (float(high_lo), float(high_hi)), "n": int(n_high)},
+        "ttest": t_res,
+        "text": "\n".join(lines),
     }
 
 
@@ -191,7 +298,7 @@ def plot_task_winrates(df, title="Behavioral manipulation check", figsize=(6, 4)
     plt.show()
 
 
-def plot_high_value_accuracy(df, title="Performance on high-value cues", figsize=(5, 4)):
+def plot_mean_performance(df, title="Performance on high-value cues", figsize=(5, 4)):
     cols = ["mid_high_acc", "high_high_acc"]
     labels = ["Mid", "High"]
     x = np.arange(1, 3)

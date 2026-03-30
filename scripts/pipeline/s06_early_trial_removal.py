@@ -9,10 +9,10 @@ def exclude_early_trials(data, num_to_exclude=10, verbose=True):
         'S 21' = start of mixed task fixation(high cue)
         'S 31' = start of high-value task fixation(all high cue)
 
-    :param data: Epochs object
+    :param data: Raw data
     :param num_to_exclude: Number of early trials to exclude per task type
 
-    :return: Epochs object with early trials excluded
+    :return: Raw data with early trials excluded
     '''
     events, event_dict = mne.events_from_annotations(data)
     

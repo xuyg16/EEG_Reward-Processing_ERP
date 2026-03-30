@@ -1,0 +1,37 @@
+2026-03-30 15:38:33,239 - ICA_results_original - INFO - Logger initialized -> /Users/xuyg/GitHub/EEG_Reward-Processing_ERP/output_mne/logs/ICA_results_original.log
+2026-03-30 15:38:33,240 - ICA_results_original - INFO - Output dir: /Users/xuyg/GitHub/EEG_Reward-Processing_ERP/output_mne
+2026-03-30 15:38:33,241 - ICA_results_original - INFO - Check log file: /Users/xuyg/GitHub/EEG_Reward-Processing_ERP/output_mne/logs/ICA_results_original.log
+2026-03-30 15:39:26,376 - ICA_results_original - INFO - Subject 27: Excluded 3/31 ICs -> [0, 5, 12]
+2026-03-30 15:42:03,641 - ICA_results_original - INFO - Output dir: /Users/xuyg/GitHub/EEG_Reward-Processing_ERP/output_mne
+2026-03-30 15:42:03,642 - ICA_results_original - INFO - Check log file: /Users/xuyg/GitHub/EEG_Reward-Processing_ERP/output_mne/logs/ICA_results_original.log
+2026-03-30 15:42:47,997 - ICA_results_original - INFO - Subject 28: Excluded 6/31 ICs -> [0, 5, 10, 18, 20, 26]
+2026-03-30 15:43:22,957 - ICA_results_original - INFO - Output dir: /Users/xuyg/GitHub/EEG_Reward-Processing_ERP/output_mne
+2026-03-30 15:43:22,958 - ICA_results_original - INFO - Check log file: /Users/xuyg/GitHub/EEG_Reward-Processing_ERP/output_mne/logs/ICA_results_original.log
+2026-03-30 15:44:10,902 - ICA_results_original - INFO - Subject 29: Excluded 3/31 ICs -> [0, 10, 20]
+2026-03-30 15:45:09,272 - ICA_results_original - INFO - Output dir: /Users/xuyg/GitHub/EEG_Reward-Processing_ERP/output_mne
+2026-03-30 15:45:09,274 - ICA_results_original - INFO - Check log file: /Users/xuyg/GitHub/EEG_Reward-Processing_ERP/output_mne/logs/ICA_results_original.log
+2026-03-30 15:45:54,417 - ICA_results_original - INFO - Subject 30: Excluded 3/31 ICs -> [0, 1, 5]
+2026-03-30 15:47:08,200 - ICA_results_original - INFO - Output dir: /Users/xuyg/GitHub/EEG_Reward-Processing_ERP/output_mne
+2026-03-30 15:47:08,201 - ICA_results_original - INFO - Check log file: /Users/xuyg/GitHub/EEG_Reward-Processing_ERP/output_mne/logs/ICA_results_original.log
+2026-03-30 15:47:57,530 - ICA_results_original - INFO - Subject 31: Excluded 3/31 ICs -> [0, 3, 5]
+2026-03-30 15:56:26,769 - ICA_results_original - INFO - Output dir: /Users/xuyg/GitHub/EEG_Reward-Processing_ERP/output_mne
+2026-03-30 15:56:26,771 - ICA_results_original - INFO - Check log file: /Users/xuyg/GitHub/EEG_Reward-Processing_ERP/output_mne/logs/ICA_results_original.log
+2026-03-30 15:57:12,258 - ICA_results_original - INFO - Subject 32: Excluded 4/31 ICs -> [0, 1, 8, 12]
+2026-03-30 15:58:59,875 - ICA_results_original - INFO - Output dir: /Users/xuyg/GitHub/EEG_Reward-Processing_ERP/output_mne
+2026-03-30 15:58:59,876 - ICA_results_original - INFO - Check log file: /Users/xuyg/GitHub/EEG_Reward-Processing_ERP/output_mne/logs/ICA_results_original.log
+2026-03-30 15:59:47,796 - ICA_results_original - INFO - Subject 33: Excluded 3/31 ICs -> [1, 25, 27]
+2026-03-30 16:00:56,813 - ICA_results_original - INFO - Output dir: /Users/xuyg/GitHub/EEG_Reward-Processing_ERP/output_mne
+2026-03-30 16:00:56,814 - ICA_results_original - INFO - Check log file: /Users/xuyg/GitHub/EEG_Reward-Processing_ERP/output_mne/logs/ICA_results_original.log
+2026-03-30 16:01:58,348 - ICA_results_original - INFO - Subject 34: Excluded 4/31 ICs -> [0, 1, 2, 10]
+2026-03-30 16:05:00,364 - ICA_results_original - INFO - Output dir: /Users/xuyg/GitHub/EEG_Reward-Processing_ERP/output_mne
+2026-03-30 16:05:00,365 - ICA_results_original - INFO - Check log file: /Users/xuyg/GitHub/EEG_Reward-Processing_ERP/output_mne/logs/ICA_results_original.log
+2026-03-30 16:05:55,942 - ICA_results_original - INFO - Subject 35: Excluded 2/31 ICs -> [0, 6]
+2026-03-30 16:07:09,803 - ICA_results_original - INFO - Output dir: /Users/xuyg/GitHub/EEG_Reward-Processing_ERP/output_mne
+2026-03-30 16:07:09,804 - ICA_results_original - INFO - Check log file: /Users/xuyg/GitHub/EEG_Reward-Processing_ERP/output_mne/logs/ICA_results_original.log
+2026-03-30 16:08:00,541 - ICA_results_original - INFO - Subject 36: Excluded 8/31 ICs -> [0, 1, 2, 3, 7, 12, 16, 21]
+2026-03-30 16:08:14,254 - ICA_results_original - INFO - Output dir: /Users/xuyg/GitHub/EEG_Reward-Processing_ERP/output_mne
+2026-03-30 16:08:14,255 - ICA_results_original - INFO - Check log file: /Users/xuyg/GitHub/EEG_Reward-Processing_ERP/output_mne/logs/ICA_results_original.log
+2026-03-30 16:09:03,466 - ICA_results_original - INFO - Subject 37: Excluded 1/31 ICs -> [0]
+2026-03-30 16:10:48,665 - ICA_results_original - INFO - Output dir: /Users/xuyg/GitHub/EEG_Reward-Processing_ERP/output_mne
+2026-03-30 16:10:48,666 - ICA_results_original - INFO - Check log file: /Users/xuyg/GitHub/EEG_Reward-Processing_ERP/output_mne/logs/ICA_results_original.log
+2026-03-30 16:11:40,880 - ICA_results_original - INFO - Subject 38: Excluded 5/31 ICs -> [0, 1, 5, 10, 14]

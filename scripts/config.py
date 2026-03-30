@@ -158,4 +158,3 @@ PIPELINES = {
 
 # -------- Other parameters --------
 N_BINS = 5
-EPOCHS_DIR = Path("output_mne") / "epochs"

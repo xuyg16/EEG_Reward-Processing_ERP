@@ -78,7 +78,7 @@ def find_artifacts(trials, maxMin, level, step, lowest):
 
     # CHEKPOINT 3: Step
     diff = np.diff(data, axis=2)
-    is_step_artifact = np.any(diff > step, axis=2)
+    is_step_artifact = np.any(diff > step, axis=2) # !!!!!!!!!!!!!
     is_artifact |= is_step_artifact
 
     # CHECKPOINT 4: lowest

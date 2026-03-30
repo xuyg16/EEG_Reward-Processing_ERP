@@ -1,4 +1,4 @@
-from stats.logging_utils import log_bad_channels
+from utils.logger import log_bad_channels
 
 def find_bad_channels(epochs, reject_criteria, subject_id, custom=False, rejection_info=None, logger=None, verbose=True):
     '''
@@ -59,3 +59,5 @@ def find_bad_channels(epochs, reject_criteria, subject_id, custom=False, rejecti
 
     if logger:
         log_bad_channels(logger, subject_id, bad_channels_to_mark)
+
+    return bad_channels_to_mark

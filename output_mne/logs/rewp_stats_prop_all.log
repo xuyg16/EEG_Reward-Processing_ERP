@@ -1,0 +1,45 @@
+2026-03-30 02:05:37,382 - rewp_stats_prop_all - INFO - Logger initialized -> /Users/xuyg/GitHub/EEG_Reward-Processing_ERP/output_mne/logs/rewp_stats_prop_all.log
+2026-03-30 02:05:37,382 - rewp_stats_prop_all - INFO - Output dir: /Users/xuyg/GitHub/EEG_Reward-Processing_ERP/output_mne
+2026-03-30 02:05:37,383 - rewp_stats_prop_all - INFO - Check log file: /Users/xuyg/GitHub/EEG_Reward-Processing_ERP/output_mne/logs/rewp_stats_prop_all.log
+2026-03-30 13:46:10,107 - rewp_stats_prop_all - INFO - RM ANOVA: F(2,22) = 14.08, p = 0.0001155
+2026-03-30 13:46:10,108 - rewp_stats_prop_all - INFO - partial eta^2 = 0.5614
+2026-03-30 13:46:10,108 - rewp_stats_prop_all - INFO - generalized eta^2 = 0.4168
+2026-03-30 13:46:10,110 - rewp_stats_prop_all - INFO - The proportion of winning trials among different tasks (n=12):
+• low-value: 48.60%, 95% CI [46.71, 50.50]
+• mid-value: 59.03%, 95% CI [55.78, 62.28]
+• high-value: 60.00%, 95% CI [54.08, 65.92]
+F(2,22) = 14.08, p < .001, ηp² = 0.56, ηg² = 0.42
+2026-03-30 13:46:10,203 - rewp_stats_prop_all - INFO - Shapiro-Wilk on paired differences: p = 0.7551
+2026-03-30 13:46:10,204 - rewp_stats_prop_all - INFO - Paired t-test: t(11) = 1.552, p = 0.149
+2026-03-30 13:46:10,205 - rewp_stats_prop_all - INFO - Mean difference = 0.05834
+2026-03-30 13:46:10,205 - rewp_stats_prop_all - INFO - Cohen's dz = 0.4479
+2026-03-30 13:46:10,206 - rewp_stats_prop_all - INFO - mid-value block: 72.76%, 95% CI [63.64, 81.87]
+high-value block: 66.92%, 95% CI [56.92, 76.93]
+t(11) = 1.55, p = 0.149, Cohen's d = 0.45
+2026-03-30 13:46:16,861 - rewp_stats_prop_all - INFO - Output dir: /Users/xuyg/GitHub/EEG_Reward-Processing_ERP/output_mne
+2026-03-30 13:46:16,862 - rewp_stats_prop_all - INFO - Check log file: /Users/xuyg/GitHub/EEG_Reward-Processing_ERP/output_mne/logs/rewp_stats_prop_all.log
+2026-03-30 13:47:56,051 - rewp_stats_prop_all - INFO - Output dir: /Users/xuyg/GitHub/EEG_Reward-Processing_ERP/output_mne
+2026-03-30 13:47:56,051 - rewp_stats_prop_all - INFO - Check log file: /Users/xuyg/GitHub/EEG_Reward-Processing_ERP/output_mne/logs/rewp_stats_prop_all.log
+2026-03-30 13:49:14,596 - rewp_stats_prop_all - INFO - Output dir: /Users/xuyg/GitHub/EEG_Reward-Processing_ERP/output_mne
+2026-03-30 13:49:14,597 - rewp_stats_prop_all - INFO - Check log file: /Users/xuyg/GitHub/EEG_Reward-Processing_ERP/output_mne/logs/rewp_stats_prop_all.log
+2026-03-30 13:49:32,656 - rewp_stats_prop_all - INFO - Output dir: /Users/xuyg/GitHub/EEG_Reward-Processing_ERP/output_mne
+2026-03-30 13:49:32,657 - rewp_stats_prop_all - INFO - Check log file: /Users/xuyg/GitHub/EEG_Reward-Processing_ERP/output_mne/logs/rewp_stats_prop_all.log
+2026-03-30 13:49:32,705 - rewp_stats_prop_all - INFO - RewP scores shape: (12, 4)
+Summary:
+              LL         ML         MH         HH
+count  12.000000  12.000000  12.000000  12.000000
+mean    2.821050   2.391861   0.890970   2.566864
+std     4.928581   3.926136   4.213054   4.363340
+2026-03-30 13:49:32,708 - rewp_stats_prop_all - INFO - Scores preview (head=8):
+subject        LL        ML        MH        HH
+     27  3.407326  1.973151 -0.161061  0.146578
+     28 -6.704157 -3.844774 -6.138581 -6.348819
+     29  1.249949  2.037467 -0.612010  0.734149
+     30  3.909596 -1.272723  1.280878  4.783235
+     31 13.435358  0.424832  2.193780  8.034330
+     32  2.068267 -0.742960  1.812639  4.664269
+     33  4.508307  5.856371  0.705983  5.125377
+     34  0.690988  4.701501  0.045411 -0.772797
+2026-03-30 13:49:32,708 - rewp_stats_prop_all - INFO - RewP scores computed for group: prop_all
+2026-03-30 13:49:32,711 - rewp_stats_prop_all - INFO - Saved RewP scores -> /Users/xuyg/GitHub/EEG_Reward-Processing_ERP/output_mne/stats/rewp_scores_prop_all.csv
+2026-03-30 13:49:32,712 - rewp_stats_prop_all - INFO - Saved metadata -> /Users/xuyg/GitHub/EEG_Reward-Processing_ERP/output_mne/stats/rewp_scores_prop_all_meta.json

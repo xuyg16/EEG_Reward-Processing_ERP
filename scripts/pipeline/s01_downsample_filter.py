@@ -13,7 +13,6 @@ def down_sampling(eeg, new_sfreq=250, verbose=True):
     eeg_down = eeg.resample(new_sfreq, npad='auto')
 
     if verbose:
-        print(f"Original Sampling Rate: {eeg.info['sfreq']} Hz")
         print(f"New Sampling Rate: {eeg_down.info['sfreq']} Hz")
 
     return eeg_down

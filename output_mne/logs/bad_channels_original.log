@@ -1,0 +1,4 @@
+2026-03-29 23:46:30,129 - bad_channels_original - INFO - Logger initialized -> /Users/xuyg/GitHub/EEG_Reward-Processing_ERP/output_mne/logs/bad_channels_original.log
+2026-03-29 23:46:30,130 - bad_channels_original - INFO - Output dir: /Users/xuyg/GitHub/EEG_Reward-Processing_ERP/output_mne
+2026-03-29 23:46:30,130 - bad_channels_original - INFO - Check log file: /Users/xuyg/GitHub/EEG_Reward-Processing_ERP/output_mne/logs/bad_channels_original.log
+2026-03-29 23:47:42,642 - bad_channels_original - INFO - Subject 32: Bad channels detected -> []

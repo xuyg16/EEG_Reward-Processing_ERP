@@ -1,0 +1,19 @@
+{
+  "key_map": {
+    "LL": "Low-Low",
+    "ML": "Mid-Low",
+    "MH": "Mid-High",
+    "HH": "High-High"
+  },
+  "meta": {
+    "score_labels": [
+      "LL",
+      "ML",
+      "MH",
+      "HH"
+    ],
+    "ch_name": "FCz",
+    "tmin": 0.24,
+    "tmax": 0.34
+  }
+}
