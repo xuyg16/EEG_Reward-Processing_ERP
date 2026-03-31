@@ -1,0 +1,32 @@
+---
+title: "Limitation"
+format: html
+---
+
+The current project's ability to draw meaningful conclusions is substantially limited by the small number of participants available from the Oxford site alone (N = 12 before exclusions). Beyond sample size, there are further issues in our pipeline design and analysis choices that we would like to address.
+
+## Proposed Pipeline
+
+**Use of 30 Hz Upper Bound** We followed the original pipeline in using 30 Hz as the upper bound of the bandpass filter. However, a higher cutoff, such as 40 Hz, may better preserve relevant brain signals and is more widely adopted as a standard threshold in ERP research.
+
+**Use of Mastoid Re-reference** We followed the original pipeline's choice of re-referencing to the average of the mastoid signals. However, as documented in the EEGLAB re-referencing guide [https://eeglab.org/tutorials/ConceptsGuide/rereferencing_background.html], there are potentially preferable alternatives, such as average reference. It is worth noting that the authors' choice may have been partly influenced by the challenges of harmonising data across two recording sites using different hardware, which could have constrained their referencing options (not sure).
+
+**IC Component Rejection** We applied a strict IC component rejection criterion, removing all components for which the probability of being brain-related fell below 40%. While this is effective at artifact removal, it resulted in a large number of rejected components (more than 10 for most participants) and may have discarded components carrying genuine neural signal.
+
+**EEG Copy for ICA**
+
+The copy of the EEG used for ICA training was filtered between 1–100 Hz but did not have the 50 Hz line noise removed. We later recognised this as a potential issue, as the line noise may occupy IC components unnecessarily, even though it was largely filtered out from the main signal used for analysis.
+
+
+## Original-MNE Pipeline
+
+The Original-MNE pipeline was intended as an auxiliary comparison to isolate discrepancies arising from toolkit differences, but several additional differences were inadvertently introduced as confounding factors. 
+
+First, we omitted the channel-location remapping applied in the original pipeline for the Oxford site, along with the associated channel additions and deletions; this simplified implementation but may have introduced unmonitored differences in the channel layout. Second, MNE's default filter settings use slightly different transition bands compared to EEGLAB, potentially resulting in different post-filtering signals. Third, we cannot confirm that EEGLAB's RunICA algorithm is exactly equivalent to MNE's Infomax ICA with `extended=True`. If they differ, this constitutes another uncontrolled source of discrepancy. Additionally, we cannot fully verify that the 'eye' label in EEGLAB's ICLabel maps exactly onto the 'eye movement' and 'eye blink' categories in MNE-ICALabel. If there is a mismatch, the set of rejected components may differ between pipelines in ways that are difficult to quantify.
+
+These issues are concretely reflected in bad channel identification. The original pipeline marked T10 as a bad channel for subject 32, implying T10 contributed to at least 20% of trial rejections. In Original-MNE, fewer than 1% of trial rejections were attributed to T10, and it was therefore not flagged as bad. This discrepancy illustrates how upstream differences can propagate into qualitatively different preprocessing outcomes.
+
+We also acknowledge that our interpretation of the original EEGLAB script may have deviated from the authors' intentions in ways we could not always verify, and that some implementation decisions in the MNE reimplementation rested on assumptions we were unable to fully validate.
+
+## Future Directions
+Ideally, future work would isolate the effect of each individual pipeline step on the final results, enabling a more principled comparison. More detailed inspection of intermediate outputs, such as trial rejection rates at each stage across pipelines, would also help identify where and why results begin to diverge.
