@@ -1,11 +1,33 @@
 ## Decoding
+As an exploratory extension to the ERP analysis, we examined whether feedback outcome (win vs. loss) could be decoded from feedback-locked EEG in the mid-high and high-high contexts.
+Decoding used epochs derived from the same preprocessing pipeline as the main ERP analysis. To ensure that each feedback epoch was matched to the correct behavioural label, early familiarization trials were not removed immediately. Instead, feedback epochs were first aligned with the behavioural table, and only then were early familiarization trials excluded. This procedure preserved trial-by-trial correspondence between epochs and behavioural context/outcome labels.
 
-As an extension to the main ERP analysis, we examined whether feedback outcome (win vs. loss) could be decoded from feedback-locked EEG activity in the mid-high and high-high contexts. Decoding was performed on epochs derived from the same preprocessing pipeline used for the main analysis. To preserve trial-wise alignment between EEG epochs and behavioral information, early familiarization trials were excluded after feedback epochs had been matched to the behavioral table. Thus, the decoding analysis used the same overall preprocessing framework as the main pipeline, with a slightly different timing of early-trial exclusion to ensure accurate alignment of behavioral context and outcome labels.
-
-For the single-window analysis, decoding was conducted on multichannel EEG data within the 240-340 ms time window. This window was selected to match the canonical FCz RewP interval used in the main ERP analysis, although the decoder itself used information from all included EEG channels rather than FCz alone.
-Classification was implemented with logistic regression using stratified cross-validation, and performance was quantified with ROC AUC, where chance performance corresponds to 0.50. This analysis tested whether outcome information could be reliably discriminated within the RewP-motivated time range.
-
-A complementary time-resolved decoding analysis was then performed to characterize when outcome information became decodable over the course of the feedback epoch. Using the same classifier, decoding performance was estimated across time and then summarized with reference to the same 240-340 ms window for direct comparison with the single-window analysis. Conceptually, the two analyses address related but distinct questions: the single-window analysis tests whether outcome information is present within the predefined RewP interval, whereas the time-resolved analysis shows when that information emerges and whether its temporal profile differs across contexts. Together, these decoding analyses were treated as exploratory extensions to the main ERP findings rather than as the primary test of the study hypotheses.
-
+For the single-window analysis, decoding was performed on multichannel EEG data within the 240–340 ms interval, corresponding to the canonical RewP time window. Classification was implemented with logistic regression and cross-validation, and performance was quantified using ROC AUC, where chance level is 0.50. A complementary time-resolved analysis was also conducted to characterize when outcome information became decodable across the feedback epoch. Decoding is included here as an additional analysis alongside the main replication of the ERP results.
 
 ## Decoding Results
+### All subjects results
+In the full sample (`n=12`), mean AUC within the 240–340 ms window was 0.538 for the mid-high context and 0.628 for the high-high context (@fig-window_all), indicating above-chance decoding in both conditions and descriptively stronger decoding in the high-high context. 
+
+![FCz-window decoding based on all subjects.](images/output_window_decoding.png){#fig-window_all fig-align="center"}
+
+
+
+The time-resolved analysis showed that decoding rose above chance shortly after feedback onset and reached its strongest values around 0.13–0.18s (@fig-time_resolved_all), with the high-high context remaining descriptively higher across the predefined window. 
+
+![Time-resolved decoding based on all subjects.](images/output_time_resolved_decoding.png){#fig-time_resolved_all fig-align="center"}
+
+
+### Learner-only results
+A learner-only sensitivity analysis (`n=8`), howed a similar pattern. Mean AUC reached 0.605 in the mid-high context and 0.666 in the high-high context(@fig-window_learner), again indicating above-chance decoding in both conditions and descriptively stronger decoding in the high-high context. The time-resolved learner-only analysis showed a broadly similar temporal profile to that observed in the full sample(@fig-time_resolved_learner).
+
+![](images/learners_window_decoding.png){#fig-window_learner fig-align="center"}
+
+
+![](images/learners_time_resolved.png){#fig-time_resolved_learner fig-align="center"}
+
+
+
+
+Overall, these decoding results suggest that feedback outcome information was present in EEG activity during, and slightly before, the RewP interval. Because the analyses were exploratory and based on a limited sample, they are interpreted as complementary to the main ERP findings.
+
+
