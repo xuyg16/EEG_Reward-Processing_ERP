@@ -27,7 +27,8 @@ pip install -r requirements.txt
 
 Download dataset
 
-This project utilizes the ds004147 dataset from Nemar, which contains EEG recordings from 12 participants performing the "Casino Task". The original paper uses dataset from 38 participants, recorded from 2 locations (UVic and Oxford). However, because participants from the UVic testing site did not consent for their data to be publicly shared, only data from location 2 could be accessed. You can download the required BIDS-compliant dataset from the NEMAR Data Explorer: https://nemar.org/dataexplorer/detail?dataset_id=ds004147
+This project utilizes the ds004147 dataset from Nemar, which contains EEG recordings from 12 participants performing the "Casino Task". The original paper uses dataset from 38 participants, recorded from 2 locations (UVic and Oxford). However, because participants from the UVic testing site did not consent for their data to be publicly shared, only data from location 2 could be accessed. 
+You can download the required BIDS-compliant dataset from: [Download dataset here](https://nemar.org/dataexplorer/detail?dataset_id=ds004147)
 
 Then:
 
