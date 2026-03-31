@@ -2,18 +2,23 @@
 
 ## Behavioral results
 *Main analysis (learners only).*
-In the learner-only sample (n = 8), the behavioral manipulation was preserved. The mean proportion of winning trials increased across task values, from 50.06% (95% CI [48.06, 52.06]) in the low-value task to 60.35% (95% CI [56.09, 64.60]) in the mid-value task and 64.72% (95% CI [59.02, 70.42]) in the high-value task, F(2,14) = 14.30, p < .001, ηp² = 0.67, ηg² = 0.62. This pattern is qualitatively consistent with the original study, in which win rates also increased with task value.
-![](images/winrates_learner.png)
+In the learner-only sample (n = 8), the behavioral manipulation was preserved. The mean proportion of winning trials increased across task values, from 50.06% (95% CI [48.06, 52.06]) in the low-value task to 60.35% (95% CI [56.09, 64.60]) in the mid-value task and 64.72% (95% CI [59.02, 70.42]) in the high-value task, F(2,14) = 14.30, p < .001, ηp² = 0.67, ηg² = 0.62. This pattern is qualitatively consistent with the original study, in which win rates also increased with task value (@fig-winrates_learner).
 
 
-Mean performance, defined as the proportion of correct responses to high-value cues, was numerically higher in the mid-value block (80.81%, 95% CI [73.96, 87.67]) than in the high-value block (74.77%, 95% CI [64.16, 85.37]), but this difference was not statistically significant, t(7) = 1.22, p = .263, Cohen’s d = 0.43. This is in line with the original study, which likewise reported no reliable difference between these two task contexts.
-![](images/performance_learner.png)
+![Mean proportion of wins in each task based on learners.](images/winrates_learner.png){#fig-winrates_learner fig-align="center"}
 
 
-As a sensitivity analysis, we repeated the same behavioral tests in the full available sample (n = 12). The overall pattern was similar: win rates still differed across task values, F(2,22) = 14.08, p < .001, ηp² = 0.56, ηg² = 0.42, and mean performance remained numerically higher in the mid-value block (72.76%, 95% CI [63.64, 81.87]) than in the high-value block (66.92%, 95% CI [56.92, 76.93]), although this comparison again did not reach significance, t(11) = 1.55, p = .149, Cohen’s d = 0.45.
-![](images/winrates_all.png)
+Mean performance, defined as the proportion of correct responses to high-value cues, was numerically higher in the mid-value block (80.81%, 95% CI [73.96, 87.67]) than in the high-value block (74.77%, 95% CI [64.16, 85.37]), but this difference was not statistically significant, t(7) = 1.22, p = .263, Cohen’s d = 0.43. This is in line with the original study, which likewise reported no reliable difference between these two task contexts(@fig-performance_learner).
 
-![](images/performance_all.png)
+![Mean proportion of correct responses with the mid-value and high-value tasks based on learners](images/performance_learner.png){#fig-performance_learner fig-align="center"}
+
+
+As a sensitivity analysis, we repeated the same behavioral tests in the full available sample (n = 12). The overall pattern was similar: win rates still differed across task values, F(2,22) = 14.08, p < .001, ηp² = 0.56, ηg² = 0.42(@fig-winrates_all), and mean performance remained numerically higher in the mid-value block (72.76%, 95% CI [63.64, 81.87]) than in the high-value block (66.92%, 95% CI [56.92, 76.93])(@fig-performance_all), although this comparison again did not reach significance, t(11) = 1.55, p = .149, Cohen’s d = 0.45.
+
+
+![Mean proportion of wins in each task based on all subjects.](images/winrates_all.png){#fig-winrates_all fig-align="center"}
+
+![Mean proportion of correct responses with the mid-value and high-value tasks based on all subjects](images/performance_all.png){#fig-performancr_all fig-align="center"}
 
 
 ## RewP results
@@ -29,6 +34,7 @@ Overall, these findings only partially match the original study. Similar to the 
 
 
 ## Relationship between RewP and performance
-Across all available participants (n = 12), the difference in RewP between the mid-value and high-value tasks was positively correlated with behavioral performance (r = 0.46, p = .135). Thus, the direction of the association matched the original study, but the effect was not statistically significant in the reduced sample. The original study reported a significant positive association across participants.
-![](images/rewp_learner.png)
+Across all available participants (n = 12), the difference in RewP between the mid-value and high-value tasks was positively correlated with behavioral performance (r = 0.46, p = .135). Thus, the direction of the association matched the original study, but the effect was not statistically significant in the reduced sample. The original study reported a significant positive association across participants(@fig-rewp_learner).
+
+![The reward positivity effect depends on performance](images/rewp_learner.png)
 
