@@ -9,9 +9,9 @@
 <meta name="author" content="Qianyue Li">
 <meta name="author" content="Zheng Lin">
 <meta name="author" content="Yanhong Xu">
-<meta name="dcterms.date" content="2026-02-16">
+<meta name="dcterms.date" content="2026-03-31">
 
-<title>Reward task EEG</title>
+<title>EEG Reward Processing Analysis</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -24,7 +24,62 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-</style>
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="report_files/libs/clipboard/clipboard.min.js"></script>
@@ -48,7 +103,8 @@ ul.task-list li input[type="checkbox"] {
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">Reward task EEG</h1>
+      <h1 class="title">EEG Reward Processing Analysis</h1>
+            <p class="subtitle lead">Does the Pipeline Change the Story? From EEGLAB to MNE-Python: A Pipeline Comparison in RewP Research</p>
                       </div>
   </div>
     
@@ -67,7 +123,7 @@ ul.task-list li input[type="checkbox"] {
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">February 16, 2026</p>
+        <p class="date">March 31, 2026</p>
       </div>
     </div>
     
@@ -81,12 +137,62 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#sec-introduction" id="toc-sec-introduction" class="nav-link active" data-scroll-target="#sec-introduction"><span class="header-section-number">1</span> Introduction</a></li>
-  <li><a href="#sec-experiment" id="toc-sec-experiment" class="nav-link" data-scroll-target="#sec-experiment"><span class="header-section-number">2</span> Experiment</a></li>
-  <li><a href="#sec-analysis" id="toc-sec-analysis" class="nav-link" data-scroll-target="#sec-analysis"><span class="header-section-number">3</span> Analysis Methods</a></li>
-  <li><a href="#sec-results" id="toc-sec-results" class="nav-link" data-scroll-target="#sec-results"><span class="header-section-number">4</span> Results</a></li>
-  <li><a href="#sec-discussion" id="toc-sec-discussion" class="nav-link" data-scroll-target="#sec-discussion"><span class="header-section-number">5</span> Discussion</a></li>
-  <li><a href="#contribution-table" id="toc-contribution-table" class="nav-link" data-scroll-target="#contribution-table"><span class="header-section-number">6</span> Contribution Table</a></li>
+  <li><a href="#sec-introduction" id="toc-sec-introduction" class="nav-link active" data-scroll-target="#sec-introduction"><span class="header-section-number">1</span> Introduction</a>
+  <ul class="collapse">
+  <li><a href="#background" id="toc-background" class="nav-link" data-scroll-target="#background"><span class="header-section-number">1.1</span> Background</a></li>
+  <li><a href="#overview-of-the-replication-study" id="toc-overview-of-the-replication-study" class="nav-link" data-scroll-target="#overview-of-the-replication-study"><span class="header-section-number">1.2</span> Overview of the Replication Study</a></li>
+  </ul></li>
+  <li><a href="#sec-experiment" id="toc-sec-experiment" class="nav-link" data-scroll-target="#sec-experiment"><span class="header-section-number">2</span> Pipeline</a>
+  <ul class="collapse">
+  <li><a href="#pipeline-overview" id="toc-pipeline-overview" class="nav-link" data-scroll-target="#pipeline-overview"><span class="header-section-number">2.1</span> Pipeline Overview</a></li>
+  <li><a href="#steps-0006-preprocessing" id="toc-steps-0006-preprocessing" class="nav-link" data-scroll-target="#steps-0006-preprocessing"><span class="header-section-number">2.2</span> Steps 00–06: Preprocessing</a>
+  <ul class="collapse">
+  <li><a href="#step-00-adding-reference-channel-setting-montage-and-re-referencing" id="toc-step-00-adding-reference-channel-setting-montage-and-re-referencing" class="nav-link" data-scroll-target="#step-00-adding-reference-channel-setting-montage-and-re-referencing"><span class="header-section-number">2.2.1</span> Step 00: Adding Reference Channel, Setting Montage, and Re-referencing</a></li>
+  <li><a href="#step-01-downsampling-and-filtering" id="toc-step-01-downsampling-and-filtering" class="nav-link" data-scroll-target="#step-01-downsampling-and-filtering"><span class="header-section-number">2.2.2</span> Step 01: Downsampling and Filtering</a></li>
+  <li><a href="#step-0208-channel-rejection" id="toc-step-0208-channel-rejection" class="nav-link" data-scroll-target="#step-0208-channel-rejection"><span class="header-section-number">2.2.3</span> Step 02/08: Channel Rejection</a></li>
+  <li><a href="#step-03-epoch-rejection" id="toc-step-03-epoch-rejection" class="nav-link" data-scroll-target="#step-03-epoch-rejection"><span class="header-section-number">2.2.4</span> Step 03: Epoch Rejection</a></li>
+  <li><a href="#step-04-ica" id="toc-step-04-ica" class="nav-link" data-scroll-target="#step-04-ica"><span class="header-section-number">2.2.5</span> Step 04: ICA</a></li>
+  <li><a href="#step-05-interpolation" id="toc-step-05-interpolation" class="nav-link" data-scroll-target="#step-05-interpolation"><span class="header-section-number">2.2.6</span> Step 05: Interpolation</a></li>
+  <li><a href="#step-06-early-trial-removal" id="toc-step-06-early-trial-removal" class="nav-link" data-scroll-target="#step-06-early-trial-removal"><span class="header-section-number">2.2.7</span> Step 06: Early Trial Removal</a></li>
+  </ul></li>
+  <li><a href="#steps-07-09-making-erps" id="toc-steps-07-09-making-erps" class="nav-link" data-scroll-target="#steps-07-09-making-erps"><span class="header-section-number">2.3</span> Steps 07 &amp; 09: Making ERPs</a></li>
+  <li><a href="#step-10-rewp-calculation" id="toc-step-10-rewp-calculation" class="nav-link" data-scroll-target="#step-10-rewp-calculation"><span class="header-section-number">2.4</span> Step 10: RewP Calculation</a></li>
+  <li><a href="#step-11-statistical-analysis" id="toc-step-11-statistical-analysis" class="nav-link" data-scroll-target="#step-11-statistical-analysis"><span class="header-section-number">2.5</span> Step 11: Statistical Analysis</a></li>
+  </ul></li>
+  <li><a href="#sec-results" id="toc-sec-results" class="nav-link" data-scroll-target="#sec-results"><span class="header-section-number">3</span> Statistical Results</a>
+  <ul class="collapse">
+  <li><a href="#behavioral-results" id="toc-behavioral-results" class="nav-link" data-scroll-target="#behavioral-results"><span class="header-section-number">3.1</span> Behavioral results</a></li>
+  <li><a href="#rewp-results" id="toc-rewp-results" class="nav-link" data-scroll-target="#rewp-results"><span class="header-section-number">3.2</span> RewP results</a></li>
+  <li><a href="#relationship-between-rewp-and-performance" id="toc-relationship-between-rewp-and-performance" class="nav-link" data-scroll-target="#relationship-between-rewp-and-performance"><span class="header-section-number">3.3</span> Relationship between RewP and performance</a></li>
+  </ul></li>
+  <li><a href="#sec-discussion" id="toc-sec-discussion" class="nav-link" data-scroll-target="#sec-discussion"><span class="header-section-number">4</span> Discussion</a></li>
+  <li><a href="#crosstime-analysis" id="toc-crosstime-analysis" class="nav-link" data-scroll-target="#crosstime-analysis"><span class="header-section-number">5</span> Crosstime Analysis</a>
+  <ul class="collapse">
+  <li><a href="#introduction" id="toc-introduction" class="nav-link" data-scroll-target="#introduction"><span class="header-section-number">5.1</span> Introduction</a></li>
+  <li><a href="#methods" id="toc-methods" class="nav-link" data-scroll-target="#methods"><span class="header-section-number">5.2</span> Methods</a></li>
+  <li><a href="#results" id="toc-results" class="nav-link" data-scroll-target="#results"><span class="header-section-number">5.3</span> Results</a>
+  <ul class="collapse">
+  <li><a href="#bin-counts-summary" id="toc-bin-counts-summary" class="nav-link" data-scroll-target="#bin-counts-summary"><span class="header-section-number">5.3.1</span> Bin counts summary</a></li>
+  <li><a href="#pairwise-t-tests-bin-1-vs-bin-5" id="toc-pairwise-t-tests-bin-1-vs-bin-5" class="nav-link" data-scroll-target="#pairwise-t-tests-bin-1-vs-bin-5"><span class="header-section-number">5.3.2</span> Pairwise t-tests (Bin 1 vs Bin 5)</a></li>
+  <li><a href="#repeated-measures-anova" id="toc-repeated-measures-anova" class="nav-link" data-scroll-target="#repeated-measures-anova"><span class="header-section-number">5.3.3</span> Repeated-Measures ANOVA</a></li>
+  </ul></li>
+  <li><a href="#discussion" id="toc-discussion" class="nav-link" data-scroll-target="#discussion"><span class="header-section-number">5.4</span> Discussion</a></li>
+  </ul></li>
+  <li><a href="#decoding" id="toc-decoding" class="nav-link" data-scroll-target="#decoding"><span class="header-section-number">6</span> Decoding</a>
+  <ul class="collapse">
+  <li><a href="#decoding-results" id="toc-decoding-results" class="nav-link" data-scroll-target="#decoding-results"><span class="header-section-number">6.1</span> Decoding Results</a>
+  <ul class="collapse">
+  <li><a href="#all-subjects-results" id="toc-all-subjects-results" class="nav-link" data-scroll-target="#all-subjects-results"><span class="header-section-number">6.1.1</span> All subjects results</a></li>
+  <li><a href="#learner-only-results" id="toc-learner-only-results" class="nav-link" data-scroll-target="#learner-only-results"><span class="header-section-number">6.1.2</span> Learner-only results</a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#limitation" id="toc-limitation" class="nav-link" data-scroll-target="#limitation"><span class="header-section-number">7</span> Limitation</a>
+  <ul class="collapse">
+  <li><a href="#proposed-pipeline" id="toc-proposed-pipeline" class="nav-link" data-scroll-target="#proposed-pipeline"><span class="header-section-number">7.1</span> Proposed Pipeline</a></li>
+  <li><a href="#original-mne-pipeline" id="toc-original-mne-pipeline" class="nav-link" data-scroll-target="#original-mne-pipeline"><span class="header-section-number">7.2</span> Original-MNE Pipeline</a></li>
+  <li><a href="#future-directions" id="toc-future-directions" class="nav-link" data-scroll-target="#future-directions"><span class="header-section-number">7.3</span> Future Directions</a></li>
+  </ul></li>
+  <li><a href="#acknowledgment" id="toc-acknowledgment" class="nav-link" data-scroll-target="#acknowledgment"><span class="header-section-number">8</span> Acknowledgment</a></li>
   </ul>
 <div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="../report.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
 </div>
@@ -98,25 +204,929 @@ ul.task-list li input[type="checkbox"] {
 
 <section id="sec-introduction" class="level1" data-number="1">
 <h1 data-number="1"><span class="header-section-number">1</span> Introduction</h1>
-<p>This is introduction</p>
+<p>Reward processing in the anterior cingulate cortex (ACC) has been extensively studied, yet its precise role in decision-making remains a matter of ongoing debate. As part of the course Signal Processing and Analysis of Human Brain Potentials (EEG), this project seeks to reproduce the <em>ERP analysis from the study Task-level Value Affects Trial-level Reward Processing</em><span class="citation" data-cites="hassall_task-level_2022">(<a href="#ref-hassall_task-level_2022" role="doc-biblioref">2022</a>)</span>. The study focuses on how task-level value modulates trial-level reward processing in EEG data. In this report, we outline our proposed analysis pipeline, present our findings, and further describe an extension involving decoding analysis. In addition, we provide access to the GitHub code repository, along with code documentation, configuration files, and environment setup instructions. Analysis scripts are available: https://github.com/xuyg16/EEG_Reward-Processing_ERP.git</p>
+<section id="background" class="level2" data-number="1.1">
+<h2 data-number="1.1" class="anchored" data-anchor-id="background"><span class="header-section-number">1.1</span> Background</h2>
+<p>ACC, as part of the frontal cortex, comprises complex mechanisms and interacts closely with other cortical structures. Its precise cognitive role remains under ongoing debate <span class="citation" data-cites="bush_cognitive_2000 rolls_emotion_2023">(<a href="#ref-bush_cognitive_2000" role="doc-biblioref">2000</a>; <a href="#ref-rolls_emotion_2023" role="doc-biblioref">2023</a>)</span>. Nevertheless, existing literature strongly suggests that the ACC is involved in action-outcome learning, particularly in relation to reward processing. These action-outcome learning properties can be understood within a reinforcement learning (RL) framework <span class="citation" data-cites="holroyd_best_2020">(<a href="#ref-holroyd_best_2020" role="doc-biblioref">2020</a>)</span>, in which learning is driven by feedback that is better or worse than expected. Within this account, reward prediction error (RPE) magnitude has been linked to the reward positivity (RewP), an event-related potential (ERP) component thought to reflect reward-related ACC activity <span class="citation" data-cites="cavanagh_reward_2026 cockburn_feedback_2018">(<a href="#ref-cavanagh_reward_2026" role="doc-biblioref">2026</a>; <a href="#ref-cockburn_feedback_2018" role="doc-biblioref">2018</a>)</span>.</p>
+<p>In the context of win/loss decision-making, different RL frameworks assign different roles to the ACC, ranging from standard trial-based RL accounts to model-based and hierarchical RL accounts. An important question is how the global environment and the current task influence RPEs, and how the RewP changes in the context of a task or a series of tasks.</p>
+</section>
+<section id="overview-of-the-replication-study" class="level2" data-number="1.2">
+<h2 data-number="1.2" class="anchored" data-anchor-id="overview-of-the-replication-study"><span class="header-section-number">1.2</span> Overview of the Replication Study</h2>
+<p>The study by Hassall et al <span class="citation" data-cites="hassall_task-level_2022">(<a href="#ref-hassall_task-level_2022" role="doc-biblioref">2022</a>)</span>investigated a fundamental question: Whether and how reward-related ACC activity, as indexed by RewP, varies with task value. While traditional reinforcement learning models focus on trial-by-trial outcomes, the authors hypothesized that average task value would significantly modulate the neural response to individual feedback.</p>
+<p>To isolate the effect of task value from trial-level expectancy, the authors designed a “Casino” task where participants gambled in three distinct environments: * Low-Value Task: Contained only low-value “slot machines” (50% win probability and no preferred right arm). * Mid-Value Task: Contained a mixture of high-value (80% win probability if choosing the right arm) and low-value machines. * High-Value Task: Contained only high-value slot machines. Crucially, the reward magnitude remained identical across all tasks. By including the same high-value cue in both the Mid-Value and High-Value tasks, the researchers could compare the neural response to the exact same objective outcome in different global contexts.</p>
+<p>The primary neural metric was RewP, an ERP component typically recorded at electrode FCz between 240 and 340 ms following feedback. The RewP is widely considered a “readout” of the midbrain dopamine system’s response to outcomes, indicating whether events are better or worse than expected.</p>
+<p>The authors found that the RewP was significantly reduced when the average task value was high. Specifically, the RewP following high-value cues was smaller in the High-Value task than in the Mid-Value task, despite the reward expectancy being the same in both. The authors proposed that high average reward rates increase tonic dopamine, which suppresses the phasic dopamine response (the RewP) to individual wins.</p>
+<p>This study provided critical evidence that the human brain does not process rewards in a vacuum but the ACC tracks the task value to determine how much weight to give to individual successes and failures.</p>
+<p>Building on the author’s ERP pipelines, we propose our own pipelines to assess whether we can replicate the paper’s results. Noted that we can not get access to all the data. Given the situation that we just have only the data from half of the participants, our results came out differently. Furthermore, by implementing both single-window and time-resolved decoding analyses, we aimed to provide an extended, albeit limited, perspective on reward processing.  </p>
+</section>
 </section>
 <section id="sec-experiment" class="level1" data-number="2">
-<h1 data-number="2"><span class="header-section-number">2</span> Experiment</h1>
+<h1 data-number="2"><span class="header-section-number">2</span> Pipeline</h1>
+<p>Even given the same EEG data, different pipelines could lead to very different results depending on the toolkit used, preprocessing steps, and type of analyses performed. For instance, if one pipeline deployed strict preprocessing steps to remove as much noise as possible while the other retained the original signal, they might yield very different ERPs and conclusions. Even though there are some generally agreed-upon steps in EEG signal processing, there is still considerable flexibility, with many caveats as each decision carrying its own advantages and disadvantages. One principle holds across this variability: results are more reliable and valid when they replicate across independent pipelines.</p>
+<p><em>Toolkit difference:</em> One key difference between the original pipeline, referred to as <strong>Original</strong>, and our proposed pipeline, referred to as <strong>Proposed</strong>, lies in the toolkit used: the former is implemented in EEGLAB for MATLAB, while the latter uses MNE-Python. To isolate the effect of this toolkit change from genuine methodological differences, we also replicated the original pipeline in MNE-Python, referred to as <strong>Original-MNE</strong>. Any discrepancy between Original and Original-MNE results can therefore be attributed to toolkit differences rather than processing decisions, while discrepancies between Original-MNE and Proposed reflect deliberate methodological changes. For completeness, we also ran the original EEGLAB script restricted to Oxford-site participants, which is not described here separately, as its steps are identical to those of Original.</p>
+<p><em>Learners vs.&nbsp;non-learners:</em> The Original pipeline included only ‘learners’ in the final ERP analysis — those who paid attention and learned, defined as participants who achieved a win rate &gt; 60% on high-value cues. We operated the pipelines on all subjects as well as the leaners only.</p>
+<p><em>Access to participant data:</em> The original study includes participants from two different sites, with 24 from the University of Victoria (UVic) and 12 from the University of Oxford (Oxford). Since we worked exclusively with data from the Oxford site, steps that map electrode locations across different recording caps to common locations were omitted.</p>
+<section id="pipeline-overview" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="pipeline-overview"><span class="header-section-number">2.1</span> Pipeline Overview</h2>
+<div id="tbl-pipeline" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-pipeline-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;1: Pipeline comparison across preprocessing approaches.
+</figcaption>
+<div aria-describedby="tbl-pipeline-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 14%">
+<col style="width: 41%">
+<col style="width: 23%">
+<col style="width: 18%">
+<col style="width: 1%">
+</colgroup>
+<tbody>
+<tr class="odd">
+<td rowspan="2">Step :============================== <strong>00: Reference channel</strong></td>
+<td rowspan="2">Original :=========================================================================================== Fz reinserted</td>
+<td rowspan="2">Proposed :================================================== —</td>
+<td rowspan="2">Original-MNE :======================================= —</td>
+<td></td>
+</tr>
+<tr class="even">
+<td></td>
+</tr>
+<tr class="odd">
+<td><strong>00: Montage</strong></td>
+<td>site1/2.locs → common.locs</td>
+<td>site2.locs</td>
+<td>site2.locs</td>
+<td></td>
+</tr>
+<tr class="even">
+<td><strong>00: Re-referencing</strong></td>
+<td>Linked mastoids (T9, T10)</td>
+<td>—</td>
+<td>—</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><strong>01: Downsampling</strong></td>
+<td>1000 Hz → 250 Hz</td>
+<td>—</td>
+<td>—</td>
+<td></td>
+</tr>
+<tr class="even">
+<td><strong>01: Band-pass filter</strong></td>
+<td>0.1–30 Hz</td>
+<td>—</td>
+<td>—</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><strong>01: Line noise removal</strong></td>
+<td>Notch at 50/60 Hz</td>
+<td>Notch at 50 Hz</td>
+<td>Notch at 50 Hz</td>
+<td></td>
+</tr>
+<tr class="even">
+<td colspan="5"><strong>02/08: Channel rejection</strong> | Automatic, iterative (&gt;20% epoch loss) | — | —</td>
+</tr>
+<tr class="odd">
+<td><strong>03/07: Trial rejection</strong></td>
+<td><p>For ICA: Peak-to-peak (500 µV); absolute (500 µV); gradient (40 µV); minimum (0.1 µV)</p>
+<p>For main EEG: peak-to-peak (150 µV); absolute (150 µV); gradient (40 µV); minimum (0.1 µV)</p></td>
+<td><p>For ICA: Absolute (500 µV); minimum (0.1 µV)</p>
+<p>For main EEG: Absolute (150 µV); minimum (0.1 µV)</p></td>
+<td>—</td>
+<td></td>
+</tr>
+<tr class="even">
+<td><strong>04: ICA algorithm</strong></td>
+<td>Runica</td>
+<td>Picard</td>
+<td>Infomax (extended)</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><strong>04: IC rejection</strong></td>
+<td>ICLabel; P(eye) &gt; P(brain)</td>
+<td>ICLabel on 1–100 Hz copy; P(brain) &lt; 40%</td>
+<td>—</td>
+<td></td>
+</tr>
+<tr class="even">
+<td><strong>05: Interpolation</strong></td>
+<td>Spherical spline</td>
+<td>—</td>
+<td>—</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><strong>06: Early trial removal</strong></td>
+<td>First 10 trials per task</td>
+<td>—</td>
+<td>—</td>
+<td></td>
+</tr>
+<tr class="even">
+<td><strong>09: Trial-level averaging</strong></td>
+<td>Mean</td>
+<td>5% trimmed mean</td>
+<td>—</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><strong>10: ERP quantification</strong></td>
+<td>Peak amplitude (240–340 ms, FCz)</td>
+<td>Peak, mean, and peak-to-peak amplitude</td>
+<td>Peak, mean, and peak-to-peak amplitude</td>
+<td></td>
+</tr>
+<tr class="even">
+<td><strong>11: Statistics</strong></td>
+<td>Paired t-test (RewP); one-way ANOVA + t-test (behavioral)</td>
+<td>+ permutation t-test (RewP)</td>
+<td>+ permutation t-test (RewP)</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><strong>12: Further Analysis</strong></td>
+<td></td>
+<td>Decoding; Cross-time analysis</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Notes:</p>
+<ol type="1">
+<li>“—” in the Proposed and Original-MNE columns indicates the step follows Original unless otherwise specified. Differences between Original and Original-MNE reflect toolkit constraints; differences between Original-MNE and Proposed reflect deliberate methodological choices.</li>
+<li>Infomax in MNE is equivalent to Runica in EEGLAB <span class="citation" data-cites="EEGLAB_ICA">(<a href="#ref-EEGLAB_ICA" role="doc-biblioref">EEGLAB Contributors n.d.b</a>)</span>. The extended variant was used as recommended by an MNE warning, though it is unclear whether this matches the version used in Original.</li>
+<li>ICLabel is implemented slightly differently between EEGLAB and MNE: ‘eye blinks’ and ‘eye movements’ are listed as separate categories in MNE but aggregated as ‘eye’ in EEGLAB.</li>
+</ol>
+</div>
+</div>
 </section>
-<section id="sec-analysis" class="level1" data-number="3">
-<h1 data-number="3"><span class="header-section-number">3</span> Analysis Methods</h1>
+<section id="steps-0006-preprocessing" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="steps-0006-preprocessing"><span class="header-section-number">2.2</span> Steps 00–06: Preprocessing</h2>
+<section id="step-00-adding-reference-channel-setting-montage-and-re-referencing" class="level3" data-number="2.2.1">
+<h3 data-number="2.2.1" class="anchored" data-anchor-id="step-00-adding-reference-channel-setting-montage-and-re-referencing"><span class="header-section-number">2.2.1</span> Step 00: Adding Reference Channel, Setting Montage, and Re-referencing</h3>
+<p><em>Refer to: <code>s00_add_reference.py</code></em></p>
+<p><strong>Purpose</strong> Raw EEG data is recorded relative to one or more reference electrode(s). Before any preprocessing, the electrode layout (montage) must be established so that MNE can interpret the spatial relationships between channels, which is required for later steps such as ICA, interpolation, and topographic visualization. Because the reference channel is recorded as all zeros and may not be stored in the raw data file, it must be reinserted manually before re-referencing can be applied. Re-referencing is standard practice in EEG signal processing, as the online reference may not be optimal for subsequent analysis.</p>
+<p><strong>Original Pipeline</strong> For the Oxford site, the channel ‘Fz’ is reinserted as the reference channel, yielding 32 channels in total. Original used the montage stored in <code>site1channellocations.locs</code> for the UVic site and <code>site2channellocations.locs</code> for the Oxford site. Because different recording caps were used at the two sites, signals were subsequently remapped to <code>common.locs</code> with channels added or removed accordingly. Original used linked mastoids (channels T9 and T10) for re-referencing, as mastoid positions are assumed to pick up little neural signal. If either T9 or T10 was rejected during channel dropping, only the remaining electrode was used as the reference.</p>
+<p><strong>Proposed Pipeline</strong> We followed the same reference channel and montage scheme as Original. Since we work exclusively with Oxford-site data, the cross-site remapping step is not required and has been omitted. The choice of mastoid referencing is not well motivated here and will be discussed further in the limitations section.</p>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Caution
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Re-referencing occurs after bad-channel dropping in Original, and consequently in Proposed as well. As we think this ordering is arbitrary for linked-mastoid referencing, it is described here for organizational clarity.</p>
+</div>
+</div>
+<hr>
 </section>
-<section id="sec-results" class="level1" data-number="4">
-<h1 data-number="4"><span class="header-section-number">4</span> Results</h1>
+<section id="step-01-downsampling-and-filtering" class="level3" data-number="2.2.2">
+<h3 data-number="2.2.2" class="anchored" data-anchor-id="step-01-downsampling-and-filtering"><span class="header-section-number">2.2.2</span> Step 01: Downsampling and Filtering</h3>
+<p><em>Refer to: <code>s01_downsample_filter.py</code></em></p>
+<p><strong>Purpose</strong> Raw EEG is sampled at a high frequency during recording, 1000 Hz in our case, which exceeds what is needed to resolve the neural signals of interest. Downsampling reduces memory and computation demands for all subsequent steps, while band-pass filtering confines the signal to the frequency range of interest and removes low- and high-frequency noise that would otherwise obscure the component.</p>
+<p><strong>Original Pipeline</strong> Original downsampled from 1000 Hz to 250 Hz, then applied a 0.1–30 Hz band-pass filter, followed by a notch filter at 50 Hz (Oxford site) or 60 Hz (UVic site) to suppress electrical line noise.</p>
+<p><strong>Proposed Pipeline</strong> We adopted the same parameters. A target rate of 250 Hz is well-suited to the analysis: it meaningfully reduces data size and satisfies the Nyquist criterion for the 30 Hz bandpass upper bound. MNE’s <code>.resample()</code> applies an anti-aliasing low-pass filter at 125 Hz automatically prior to downsampling, which serves the same purpose as the equivalent EEGLAB step and ensures no aliasing artifacts are introduced.</p>
+<p>A lower bound of 0.1 Hz is a well-established threshold suitable for attenuating slow drifts while preserving statistical power and minimising filter-induced artifacts <span class="citation" data-cites="Tanner2015">(<a href="#ref-Tanner2015" role="doc-biblioref">Tanner, Morgan-Short, and Luck 2015</a>)</span>. We retained 30 Hz as the upper bandpass bound rather than the more commonly used 40 Hz, following the original authors, as we thought RewP should fall well below this threshold.</p>
+<p>Since we have access only to Oxford-site data, the notch filter is uniformly set to 50 Hz.</p>
+<p><em>Ordering of downsampling and band-pass filtering:</em> We downsampled before applying the band-pass filter, matching Original. Applying multiple sequential filters in principle risks introducing more ringing artifacts. In practice, however, the 125 Hz anti-aliasing filter applied at downsampling is sufficiently far from the 30 Hz bandpass boundary that any interaction is negligible, so the ordering does not produce a meaningful difference here.</p>
+<p><em>Line noise filter choice:</em> We evaluated both a notch filter and a ZapLine filter and retained the notch filter. ZapLine was slower and left visible residual artifacts in some cases (<a href="#fig-zap_notch" class="quarto-xref">Figure&nbsp;5</a>). The necessity of any line-noise removal step after a 30 Hz bandpass is not self-evident, as 50 Hz lies well above the passband. However, we observed residual 50 Hz contamination in the power spectrum of several subjects after bandpass filtering alone (<a href="#fig-subject32-linenoise" class="quarto-xref">Figure&nbsp;3</a>), consistent with sub-harmonic leakage. The notch filter reliably resolved this, as shown in (<a href="#fig-subject32-no-linenoise" class="quarto-xref">Figure&nbsp;4</a>).</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Sanity Check — Filtering
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div id="fig-subject32-raw" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-subject32-raw-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="report_plots/raw_subject32.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-subject32-raw-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Subject 32 Raw PSD
+</figcaption>
+</figure>
+</div>
+<div id="fig-subject32-down" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-subject32-down-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="report_plots/downsampled_subject32.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-subject32-down-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Subject 32 Downsampled PSD
+</figcaption>
+</figure>
+</div>
+<div id="fig-subject32-linenoise" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-subject32-linenoise-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="report_plots/bandpass_only_subject32.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-subject32-linenoise-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: Subject 32 PSD without Line Noise Removal
+</figcaption>
+</figure>
+</div>
+<div id="fig-subject32-no-linenoise" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-subject32-no-linenoise-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="report_plots/bandpass_notch_subject32.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-subject32-no-linenoise-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: Subject 32 PSD with Line Noise Removed
+</figcaption>
+</figure>
+</div>
+<div id="fig-zap_notch" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-zap_notch-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="report_plots/notch_zapline_comp.png" class="img-fluid figure-img" style="width:70.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-zap_notch-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5: Comparison between Notch and ZapLine Filtering
+</figcaption>
+</figure>
+</div>
+<p><strong>To reproduce the plots</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">With &lt;single_subject_processing.ipynb&gt; open</span><span class="kw">:</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">Set</span><span class="kw">:</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">SUBJECT</span><span class="kw">:</span><span class="at"> </span><span class="dv">32</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">INSPECTION_MODE</span><span class="kw">:</span><span class="at"> </span><span class="ch">TRUE</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">Navigate to</span><span class="kw">:</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="at">        Section — Examine Results of Filtering</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+<hr>
 </section>
-<section id="sec-discussion" class="level1" data-number="5">
-<h1 data-number="5"><span class="header-section-number">5</span> Discussion</h1>
+<section id="step-0208-channel-rejection" class="level3" data-number="2.2.3">
+<h3 data-number="2.2.3" class="anchored" data-anchor-id="step-0208-channel-rejection"><span class="header-section-number">2.2.3</span> Step 02/08: Channel Rejection</h3>
+<p><em>Refer to: <code>s02_drop_bad_channels.py</code>, <code>s08_find_bad_channels.py</code></em></p>
+<p><strong>Purpose</strong> Channels with poor signal quality due to, e.g., electrode displacement, high impedance, or persistent noise, can contaminate neighbouring channels and degrade ICA decomposition, and are therefore unacceptable even if they are not the direct target of analysis. Identifying and removing them before further processing prevents these artifacts from propagating through the pipeline.</p>
+<p><strong>Original Pipeline</strong> Rather than applying a fixed threshold or relying on manual inspection, Original uses an iterative two-loop structure. Bad channels are not identified upfront. Instead, after the first pass of ICA component rejection, any channel responsible for more than 20% of epoch rejections is flagged as bad and removed in the second loop. This defers the channel rejection decision until after the data-driven artifact cleaning stage, allowing the criterion to be based on observed trial-loss impact rather than signal statistics alone. The loop logic is illustrated in <a href="#fig-channel_logistics" class="quarto-xref">Figure&nbsp;6</a>.</p>
+<p><strong>Proposed Pipeline</strong> We adopted the same loop structure and threshold. The iterative approach is preferable to manual inspection for reproducibility, and the 20% epoch-loss criterion provides a principled, data-driven basis for dropping channels rather than relying on subjective visual judgment.</p>
+<div id="fig-channel_logistics" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-channel_logistics-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="report_plots/channelDroppingLogistics.png" class="img-fluid figure-img" style="width:50.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-channel_logistics-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6: Channel Dropping Logic
+</figcaption>
+</figure>
+</div>
+<hr>
 </section>
-<section id="contribution-table" class="level1" data-number="6">
-<h1 data-number="6"><span class="header-section-number">6</span> Contribution Table</h1>
+<section id="step-03-epoch-rejection" class="level3" data-number="2.2.4">
+<h3 data-number="2.2.4" class="anchored" data-anchor-id="step-03-epoch-rejection"><span class="header-section-number">2.2.4</span> Step 03: Epoch Rejection</h3>
+<p><em>Refer to: <code>s03_07_trial_rejection.py</code></em></p>
+<p><strong>Purpose</strong> Even after channel-level rejection and ICA component removal, individual epochs may contain transient artifacts that would distort the averaged ERP if retained. Epoch rejection identifies and discards these trials before averaging.</p>
+<p><strong>Original Pipeline</strong> Trial rejection is applied at two points in the pipeline: once to the data used for ICA training (Step 03), and again after all preprocessing steps are complete (Step 07). In each pass, four criteria are applied to every epoch: a peak-to-peak amplitude threshold (500 µV for ICA; 150µV for ERP epochs), an absolute amplitude threshold (500 µV for ICA; 150µV for ERP epochs), a sample-to-sample gradient threshold (40 µV), and a minimum amplitude threshold (0.1 µV). An epoch failing any single criterion is rejected.</p>
+<p><strong>Proposed Pipeline</strong> MNE’s epoch rejection supports an absolute amplitude threshold and a minimum amplitude threshold, corresponding to the absolute and minimum criteria from Original. We applied these two criteria and omitted the peak-to-peak and gradient thresholds, accepting the trade-off between artifact sensitivity and implementation simplicity. Parameter values from Original are retained where criteria overlap. A practical benefit of MNE’s native rejection is that the full rejection log is accessible via <code>.drop_log</code>, making it straightforward to audit which trials were removed and why.</p>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Caution
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The epoch rejection applied to the main EEG signal is performed in Step 07, after epoching. It is described here for organizational clarity.</p>
+</div>
+</div>
+<hr>
+</section>
+<section id="step-04-ica" class="level3" data-number="2.2.5">
+<h3 data-number="2.2.5" class="anchored" data-anchor-id="step-04-ica"><span class="header-section-number">2.2.5</span> Step 04: ICA</h3>
+<p><em>Refer to: <code>s04_ICA.py</code></em></p>
+<p><strong>Purpose</strong> Independent component analysis (ICA) decomposes the multichannel EEG signal into statistically independent sources. Components corresponding to non-neural artifacts, such as eye blinks and heartbeat, can then be identified and removed before further analysis, without discarding entire trials or channels.</p>
+<p><strong>Original Pipeline</strong> Original runs Runica on epoched data time-locked to cue onset, preventing ICA from being driven by large transient distortions. Components are labelled using ICLabel in EEGLAB, and any component more likely to be eye-related than brain-related (P(eye) &gt; P(brain)) is removed from the continuous EEG signal.</p>
+<p><strong>Proposed Pipeline</strong> As in Original, we epoched <code>eeg_ICA</code> for ICA training and rejected epochs with excessive artifacts before decomposition, using the criteria described in Step 03. We used Picard rather than Runica <!-- TODO: add reasoning, e.g. convergence speed, numerical stability -->. We applied ICLabel for component classification.</p>
+<p>The key structural difference from Original is that rather than running ICA on the fully preprocessed signal, we created a separate copy of the data after downsampling (referred to as <code>eeg_ICA</code>) and applied a 1–100 Hz band-pass filter to this copy before ICA decomposition. A 1 Hz high-pass is recommended for ICA, as low-frequency drifts can distort the decomposition <span class="citation" data-cites="MNE_ICA">(<a href="#ref-MNE_ICA" role="doc-biblioref">MNE Contributors n.d.a</a>)</span>. Additionally, as ICLabel’s classifier was trained on data filtered to this range <!-- TODO: add ICLabel training citation -->, applying it to data filtered outside this range may reduce labelling accuracy. The ICA weights learned from <code>eeg_ICA</code> are then transferred to the main preprocessed signal.</p>
+<p>Manual inspection revealed that artifacts including heartbeat <!-- TODO: specify additional artifact types --> remained after applying Original’s rejection criterion, so we adopted a stricter threshold: components are excluded if their estimated probability of reflecting brain activity falls below 40%. This resulted in a substantially larger number of rejected components in Proposed compared to Original-MNE, as shown in <strong>?@fig-ica_comp</strong>.</p>
+<div id="cell-fig-ica-comp" class="cell" data-execution_count="1">
+<div class="cell-output cell-output-display">
+<div id="fig-ica-comp" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-ica-comp-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="report_files/figure-html/fig-ica-comp-output-1.png" width="1141" height="469" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ica-comp-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;7: Per-subject IC rejection count by pipeline. Dashed lines show group means.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<hr>
+</section>
+<section id="step-05-interpolation" class="level3" data-number="2.2.6">
+<h3 data-number="2.2.6" class="anchored" data-anchor-id="step-05-interpolation"><span class="header-section-number">2.2.6</span> Step 05: Interpolation</h3>
+<p><em>Refer to: <code>s05_interpolation.py</code></em></p>
+<p><strong>Purpose</strong> If one or more channels have been marked as bad and removed, the electrode locations they occupied are left empty. Interpolation reconstructs the missing channel signals from surrounding electrodes, restoring a complete channel set for subsequent analyses that depend on spatial completeness.</p>
+<p><strong>Original Pipeline</strong> Original used the default spherical interpolation method <span class="citation" data-cites="EEGLAB_interp">(<a href="#ref-EEGLAB_interp" role="doc-biblioref">EEGLAB Contributors n.d.a</a>)</span>.</p>
+<p><strong>Proposed Pipeline</strong> We used MNE’s default interpolation method, which is spherical spline <span class="citation" data-cites="MNE_interp">(<a href="#ref-MNE_interp" role="doc-biblioref">MNE Contributors n.d.b</a>)</span>, consistent with Original. We note that this choice was not deliberate as we were not aware of alternatives.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Sanity Check — Cleaning Inspection for Subject 27 (trial rejection not shown)
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div id="fig-cleaning" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-cleaning-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="report_plots/cleaning_compare.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-cleaning-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;8: EEG Signal before and after Cleaning
+</figcaption>
+</figure>
+</div>
+<div id="fig-iccomponent-27-prop" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-iccomponent-27-prop-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="report_plots/proposed_sub-27_excluded_ICs.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-iccomponent-27-prop-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;9: ICA Components Removed
+</figcaption>
+</figure>
+</div>
+<p>As shown in <a href="#fig-cleaning" class="quarto-xref">Figure&nbsp;8</a>, suspected artifacts from eye blinks (Fp1, Fp2), channel noise (TP9, TP10), and muscle activity (T7, T8), as identified by ICLabel (<a href="#fig-iccomponent-27-prop" class="quarto-xref">Figure&nbsp;9</a>), are largely attenuated after cleaning.</p>
+</div>
+</div>
+<hr>
+</section>
+<section id="step-06-early-trial-removal" class="level3" data-number="2.2.7">
+<h3 data-number="2.2.7" class="anchored" data-anchor-id="step-06-early-trial-removal"><span class="header-section-number">2.2.7</span> Step 06: Early Trial Removal</h3>
+<p><em>Refer to: <code>s06_early_trial_removal.py</code></em></p>
+<p><strong>Purpose</strong> At the start of each casino block, participants encountered a new set of slot machine cues for the first time. Early trials reflect initial familiarisation rather than stable cue–outcome learning, and including them would conflate learning-onset effects with the trained response patterns of interest.</p>
+<p><strong>Original Pipeline</strong> Original removes the first ten trials of each casino block to allow participants time to familiarise themselves with the new cue set.</p>
+<p><strong>Proposed Pipeline</strong> We retain the ten-trial cutoff. Given that each casino contains six distinct slot machines, the first ten trials provide only one to two exposures per cue, which is arguably insufficient to establish stable response tendencies before the removed trials end. A larger cutoff would be preferable from a signal quality standpoint, but given that we are working with less than half the original sample, further reducing trial counts risks leaving the analysis underpowered. We therefore follow the original authors’ decision as a deliberate compromise between data quality and quantity.</p>
+<hr>
+</section>
+</section>
+<section id="steps-07-09-making-erps" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="steps-07-09-making-erps"><span class="header-section-number">2.3</span> Steps 07 &amp; 09: Making ERPs</h2>
+<p><em>Refer to: <code>s07_epoching.py</code>, <code>s03_07_trial_rejection.py</code>, <code>s09_make_erps.py</code></em></p>
+<p><strong>Purpose</strong> ERPs are constructed by segmenting the continuous EEG into short epochs time-locked to events of interest, then averaging across trials within each condition. Averaging attenuates stochastic neural activity, leaving the stimulus-locked component that is consistent across trials.</p>
+<p><strong>Original Pipeline</strong> Original constructs 800 ms epochs (−200 to +600 ms relative to event onset) for feedback-locked analysis, with a 200 ms pre-stimulus baseline correction. Epochs are averaged within conditions to produce eight ERPs: Low-Low Win, Low-Low Loss, Mid-Low Win, Mid-Low Loss, Mid-High Win, Mid-High Loss, High-High Win, and High-High Loss. Win–loss difference waves are then computed within each of the four task × cue conditions, yielding the difference ERPs used for RewP quantification.</p>
+<p><strong>Proposed Pipeline</strong> We used the same epoch boundaries, baseline correction window, and difference-wave procedure. Rather than computing a simple mean across trials, however, we used a 5% trimmed mean, excluding the most extreme 5% of trials at each tail before averaging. With roughly half the original sample available, the arithmetic mean is more susceptible to distortion by individual outlier trials, while the trimmed mean may reduce this sensitivity and improve the robustness of the condition averages.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Sanity Check — Butterfly Plots
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div id="fig-butterfly-ori" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-butterfly-ori-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="report_plots/butterfly_original.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-butterfly-ori-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;10: Butterfly Plot for Evokeds across Conditions — Original (learners only)
+</figcaption>
+</figure>
+</div>
+<div id="fig-butterfly-prop" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-butterfly-prop-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="report_plots/butterfly_proposed.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-butterfly-prop-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;11: Butterfly Plot for Evokeds across Conditions — Proposed (learners only)
+</figcaption>
+</figure>
+</div>
+<p>As shown in <a href="#fig-butterfly-ori" class="quarto-xref">Figure&nbsp;10</a> and <a href="#fig-butterfly-prop" class="quarto-xref">Figure&nbsp;11</a>, all evokeds converge near zero in the baseline window (−200 to 0 ms) and diverge only after stimulus onset, confirming that baseline correction functioned correctly in both pipelines. <!-- TODO: add further observations if needed --></p>
+</div>
+</div>
+<hr>
+</section>
+<section id="step-10-rewp-calculation" class="level2" data-number="2.4">
+<h2 data-number="2.4" class="anchored" data-anchor-id="step-10-rewp-calculation"><span class="header-section-number">2.4</span> Step 10: RewP Calculation</h2>
+<p><em>Refer to: <code>s10_rewp_calculation.py</code></em></p>
+<p><strong>Purpose</strong> The reward positivity (RewP) is a positive-going ERP thought to index a reward prediction error signal generated in anterior cingulate cortex and is the primary dependent variable of the present analysis.</p>
+<p><strong>Original Pipeline</strong> Original quantifies the RewP as the peak voltage within the 240–340 ms window at channel FCz, taken from the win–loss difference ERPs, following the recommendations of <span class="citation" data-cites="SambrookGoslin2015">Sambrook and Goslin (<a href="#ref-SambrookGoslin2015" role="doc-biblioref">2015</a>)</span>.</p>
+<p><strong>Proposed Pipeline</strong> We compute the RewP using three methods — peak amplitude (as in Original), mean amplitude, and peak-to-peak amplitude, which captures the full deflection relative to the preceding negativity — to assess whether the choice of quantification approach affects the pattern of results. Following Original, we compute difference waves by subtracting the loss ERP from the win ERP within each condition, thereby minimising component overlap and allowing amplitude differences to be attributed to the RewP.</p>
+<hr>
+</section>
+<section id="step-11-statistical-analysis" class="level2" data-number="2.5">
+<h2 data-number="2.5" class="anchored" data-anchor-id="step-11-statistical-analysis"><span class="header-section-number">2.5</span> Step 11: Statistical Analysis</h2>
+<p><em>Refer to: <code>behavior_task_value</code>, <code>stats.rewp_sccores.py</code>, <code>stats.inerence_parametric.py</code>, <code>stats.inference_permutation_test.py</code></em></p>
+<p><strong>Purpose</strong> Statistical analysis provides a systematic framework for interpreting the derived results, allowing us to assess the direction and magnitude of condition differences and to evaluate whether conclusions are reliable given the available sample size.</p>
+<p><strong>Original Pipeline</strong> Inferential statistics in the original study were conducted on the main learner sample. For the behavioural data, the mean proportion of winning trials across the low-, mid-, and high-value tasks was analysed using a one-way repeated-measures ANOVA, and effect sizes were reported as partial and generalized eta-squared. In addition, mean performance was compared between the mid- and high-value tasks using a paired-samples t-test, where performance was defined as the proportion of correct responses to high-value cues.</p>
+<p>For the Rewp analysis, the original study used paired-samples t-tests on RewP scores. To avoid confounding task-value effects with differences in outcome frequency, only conditions with matched outcome frequencies were compared: (Low-Low vs Mid-Low), and (Mid-High vs High-High). Cohen’s d for paired-samples t-tests was also reported. For all t-tests, the authors assessed normality using the Shapiro–Wilk test on each variable separately rather than on paired difference scores, and no correction was applied when non-normality was observed because the t-test was considered sufficiently robust.</p>
+<p><strong>Proposed Pipeline</strong><br>
+We retained the original inferential structure but adapted it to our reduced sample size. Specifically, we reproduced the behavioural ANOVA and paired t-test, as well as the two planned RewP comparisons. Because only 12 participants were available, including 8 learners, we additionally analysed the full sample as a sensitivity analysis. We also evaluated Shapiro–Wilk normality on paired difference scores rather than on each variable separately, as this is more directly aligned with the assumptions of the paired t-test. Finally, we supplemented the paired t-tests with exact paired permutation tests to provide a non-parametric robustness check.</p>
+</section>
+</section>
+<section id="sec-results" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> Statistical Results</h1>
+<section id="behavioral-results" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="behavioral-results"><span class="header-section-number">3.1</span> Behavioral results</h2>
+<p><em>Main analysis (learners only).</em> In the learner-only sample (n = 8), the behavioral manipulation was preserved. The mean proportion of winning trials increased across task values, from 50.06% (95% CI [48.06, 52.06]) in the low-value task to 60.35% (95% CI [56.09, 64.60]) in the mid-value task and 64.72% (95% CI [59.02, 70.42]) in the high-value task, F(2,14) = 14.30, p &lt; .001, ηp² = 0.67, ηg² = 0.62. This pattern is qualitatively consistent with the original study, in which win rates also increased with task value (<a href="#fig-winrates_learner" class="quarto-xref">Figure&nbsp;12</a>).</p>
+<div id="fig-winrates_learner" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-winrates_learner-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/winrates_learner.png" class="img-fluid quarto-figure quarto-figure-center figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-winrates_learner-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;12: Mean proportion of wins in each task based on learners.
+</figcaption>
+</figure>
+</div>
+<p>Mean performance, defined as the proportion of correct responses to high-value cues, was numerically higher in the mid-value block (80.81%, 95% CI [73.96, 87.67]) than in the high-value block (74.77%, 95% CI [64.16, 85.37]), but this difference was not statistically significant, t(7) = 1.22, p = .263, Cohen’s d = 0.43. This is in line with the original study, which likewise reported no reliable difference between these two task contexts(<a href="#fig-performance_learner" class="quarto-xref">Figure&nbsp;13</a>).</p>
+<div id="fig-performance_learner" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-performance_learner-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/performance_learner.png" class="img-fluid quarto-figure quarto-figure-center figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-performance_learner-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;13: Mean proportion of correct responses with the mid-value and high-value tasks based on learners
+</figcaption>
+</figure>
+</div>
+<p>As a sensitivity analysis, we repeated the same behavioral tests in the full available sample (n = 12). The overall pattern was similar: win rates still differed across task values, F(2,22) = 14.08, p &lt; .001, ηp² = 0.56, ηg² = 0.42(<a href="#fig-winrates_all" class="quarto-xref">Figure&nbsp;14</a>), and mean performance remained numerically higher in the mid-value block (72.76%, 95% CI [63.64, 81.87]) than in the high-value block (66.92%, 95% CI [56.92, 76.93])(<strong>?@fig-performance_all</strong>), although this comparison again did not reach significance, t(11) = 1.55, p = .149, Cohen’s d = 0.45.</p>
+<div id="fig-winrates_all" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-winrates_all-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/winrates_all.png" class="img-fluid quarto-figure quarto-figure-center figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-winrates_all-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;14: Mean proportion of wins in each task based on all subjects.
+</figcaption>
+</figure>
+</div>
+<div id="fig-performancr_all" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-performancr_all-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/performance_all.png" class="img-fluid quarto-figure quarto-figure-center figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-performancr_all-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;15: Mean proportion of correct responses with the mid-value and high-value tasks based on all subjects
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="rewp-results" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="rewp-results"><span class="header-section-number">3.2</span> RewP results</h2>
+<p>For the learner-only sample, the planned RewP comparisons did not reveal reliable task-level differences. For high-value cues, the RewP was 0.94 μV (95% CI [-3.44, 5.32]) in the mid-value task and 1.94 μV (95% CI [-2.38, 6.26]) in the high-value task, with no evidence of a significant difference, t(7) = -0.87, p = .411, Cohen’s d = -0.31. The exact paired permutation test supported the same conclusion (p = .359). For low-value cues, the RewP was 2.85 μV (95% CI [-0.78, 6.49]) in the mid-value task and 2.76 μV (95% CI [-2.33, 7.86]) in the low-value task, again with no reliable difference, t(7) = 0.04, p = .967, Cohen’s d = 0.02; the paired permutation result was likewise non-significant (p = .992).</p>
+<p>The full-sample sensitivity analysis (n = 12) showed the same overall pattern. For high-value cues, the RewP was 0.89 μV (95% CI [-1.79, 3.57]) in the mid-value task and 2.57 μV (95% CI [-0.21, 5.34]) in the high-value task, yielding a non-significant comparison, t(11) = -2.04, p = .066, Cohen’s d = -0.59; the paired permutation test gave a nearly identical result (p = .064). For low-value cues, the RewP was 2.39 μV (95% CI [-0.10, 4.89]) in the mid-value task and 2.82 μV (95% CI [-0.31, 5.95]) in the low-value task, with no evidence of a difference, t(11) = -0.30, p = .771, Cohen’s d = -0.09; the paired permutation result was again non-significant (p = .806).</p>
+<p>Overall, these findings only partially match the original study. Similar to the original report, the low-value cue comparison did not show a reliable RewP difference. However, the critical high-value cue comparison was not replicated: whereas the original study found a larger RewP in the mid-value than in the high-value task, our data did not show a significant difference, and the numerical trend was in the opposite direction.</p>
+</section>
+<section id="relationship-between-rewp-and-performance" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="relationship-between-rewp-and-performance"><span class="header-section-number">3.3</span> Relationship between RewP and performance</h2>
+<p>Across all available participants (n = 12), the difference in RewP between the mid-value and high-value tasks was positively correlated with behavioral performance (r = 0.46, p = .135). Thus, the direction of the association matched the original study, but the effect was not statistically significant in the reduced sample. The original study reported a significant positive association across participants(<strong>?@fig-rewp_learner</strong>).</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/rewp_learner.png" class="img-fluid figure-img"></p>
+<figcaption>The reward positivity effect depends on performance</figcaption>
+</figure>
+</div>
+</section>
+</section>
+<section id="sec-discussion" class="level1" data-number="4">
+<h1 data-number="4"><span class="header-section-number">4</span> Discussion</h1>
+<p>A critical divergence exists between our findings and the original study regarding the High-Task, High-Cue condition. While the theoretical background suggests that the RewP should reflect a combination of reward and expectancy, our results and the authors’ results emphasize different aspects of this neural signal.</p>
+<p>According to the Reward Prediction Error (RPE) theory, the RewP is not merely a measure of “how much” was won, but rather “how much better” the outcome was than expected. In the authors’ study, the High-High condition elicited a lower amplitude than the Mid-High condition. This is theoretically consistent with RL models: in a high-value task, the participant develops a high baseline expectation. When the reward occurs, it matches that expectation, resulting in a smaller prediction error and, consequently, a reduced RewP. The authors’ results are more “reasonable” under the strict definition of the RewP as a violation of predictions. In contrast, our data showed a more linear relationship where higher task values led to higher RewP amplitudes.</p>
+<p>To investigate the discrepancy between our findings and the original study’s, we performed a verification process to ensure the integrity of our results: we replicated their pipeline in python (<a href="#fig-erp_all_concat" class="quarto-xref">Figure&nbsp;16</a>), and also executed their original script in Matlab (<a href="#fig-rewp_erp_matlab_authors" class="quarto-xref">Figure&nbsp;17</a>) to compare with our results.</p>
+<div id="fig-erp_all_concat" class="quarto-layout-panel">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-erp_all_concat-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><img src="images/ERP_all_original.png" class="img-fluid figure-img"></p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><img src="images/ERP_learners_original.png" class="img-fluid figure-img"></p>
+</div>
+</div>
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><img src="images/RewP_all_original.png" class="img-fluid figure-img"></p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><img src="images/RewP_learners_original.png" class="img-fluid figure-img"></p>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-erp_all_concat-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;16: ERP and RewP Results by Author’s Pipeline
+</figcaption>
+</figure>
+</div>
+<div id="fig-rewp_erp_matlab_authors" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-rewp_erp_matlab_authors-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/rewp_erp_matlab_authors.png" class="img-fluid quarto-figure quarto-figure-center figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-rewp_erp_matlab_authors-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;17: ERP and RewP Results by Author’s Code
+</figcaption>
+</figure>
+</div>
+<p>The verification methods yielded results consistent with our proposed Python pipeline, and similar to the plot of our “only learners” scenario, showing that high-high condition gave higher values than mid-high condition. It confirms that our analytical approach is reliable and suggests that the difference is a result of sample size. Because our sample size was smaller, the subtle interaction of expectancy may not be caught and covered by the main effect of reward. Our results found out the Reward component of the RewP, showing that win elicits stronger signals than loss, whereas the authors’ data captured subtle prediction error component.</p>
+</section>
+<section id="crosstime-analysis" class="level1" data-number="5">
+<h1 data-number="5"><span class="header-section-number">5</span> Crosstime Analysis</h1>
+<section id="introduction" class="level2" data-number="5.1">
+<h2 data-number="5.1" class="anchored" data-anchor-id="introduction"><span class="header-section-number">5.1</span> Introduction</h2>
+<p>The original paper reported that RewP amplitude is reduced in the high-value task relative to the mid-value task for high-value cues, interpreted as evidence that ACC evaluates trial-level outcomes relative to average task value. If this modulation reflects a learned representation of task value that strengthens with experience, RewP amplitude should change across the session as participants accumulate evidence about the reward environment. Specifically, we ask whether the RewP decreases over time in the High-High condition, where the discrepancy between trial reward and average task value diminishes as the task value estimate stabilizes, while remaining relatively stable in lower-value conditions. This constitutes an exploratory secondary analysis not conducted in the original paper.</p>
+</section>
+<section id="methods" class="level2" data-number="5.2">
+<h2 data-number="5.2" class="anchored" data-anchor-id="methods"><span class="header-section-number">5.2</span> Methods</h2>
+<p>Trials were divided into five chronological bins of approximately equal size, separately for each task group (low-value, mid-value, high-value). Binning was performed by trial count rather than time, since the duration of individual trials varies across participants and conditions. Corresponding bins across task groups were then concatenated, such that bin 1 contains the earliest trials from all three tasks and bin 5 contains the latest. RewP amplitude was extracted per participant per bin per condition using the same procedure as the main analysis.</p>
+<p><strong>Statistics</strong> Two complementary analyses were conducted. First, pairwise t-tests compared bin 1 against bin 5 for each condition separately, testing whether RewP amplitude at the start of the session differed from the end. Bonferroni correction was applied across the four comparisons to control the familywise error rate. Second, a two-way repeated-measures ANOVA with factors Condition (Low-Low, Mid-Low, Mid-High, High-High) and Bin (1–5) was fitted to test for main effects and the Condition × Bin interaction. Greenhouse-Geisser correction was applied to all effects given the likelihood of sphericity violations with five bin levels. One participant was excluded from the ANOVA due to a missing Mid-High observation in one bin. The t-tests used all available participants with NaN pairs removed.</p>
+</section>
+<section id="results" class="level2" data-number="5.3">
+<h2 data-number="5.3" class="anchored" data-anchor-id="results"><span class="header-section-number">5.3</span> Results</h2>
+<section id="bin-counts-summary" class="level3" data-number="5.3.1">
+<h3 data-number="5.3.1" class="anchored" data-anchor-id="bin-counts-summary"><span class="header-section-number">5.3.1</span> Bin counts summary</h3>
+<div id="fig-bin-prop" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-bin-prop-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="report_plots/bin_rewp_prop_learner.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-bin-prop-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;18: Binned RewP across Conditions - Proposed Pipeline. Shaded area indicate standard deviations.
+</figcaption>
+</figure>
+</div>
+<div id="340c1584" class="cell" data-execution_count="3">
+<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="3">
+<table class="caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 11%">
+<col style="width: 12%">
+<col style="width: 11%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 13%">
+<col style="width: 13%">
+<col style="width: 13%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Low-Low Win</th>
+<th style="text-align: left;">Low-Low Loss</th>
+<th style="text-align: left;">Mid-Low Win</th>
+<th style="text-align: left;">Mid-Low Loss</th>
+<th style="text-align: left;">Mid-High Win</th>
+<th style="text-align: left;">Mid-High Loss</th>
+<th style="text-align: left;">High-High Win</th>
+<th style="text-align: left;">High-High Loss</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">mean</td>
+<td style="text-align: left;">mean</td>
+<td style="text-align: left;">mean</td>
+<td style="text-align: left;">mean</td>
+<td style="text-align: left;">mean</td>
+<td style="text-align: left;">mean</td>
+<td style="text-align: left;">mean</td>
+<td style="text-align: left;">mean</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">11.9</td>
+<td style="text-align: left;">13.8</td>
+<td style="text-align: left;">5.9</td>
+<td style="text-align: left;">6.5</td>
+<td style="text-align: left;">9.2</td>
+<td style="text-align: left;">3.9</td>
+<td style="text-align: left;">14.6</td>
+<td style="text-align: left;">11.1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">13.9</td>
+<td style="text-align: left;">12.4</td>
+<td style="text-align: left;">6.9</td>
+<td style="text-align: left;">5.2</td>
+<td style="text-align: left;">8.9</td>
+<td style="text-align: left;">4.9</td>
+<td style="text-align: left;">17.0</td>
+<td style="text-align: left;">9.2</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">14.0</td>
+<td style="text-align: left;">12.2</td>
+<td style="text-align: left;">7.9</td>
+<td style="text-align: left;">6.0</td>
+<td style="text-align: left;">9.1</td>
+<td style="text-align: left;">2.9</td>
+<td style="text-align: left;">16.6</td>
+<td style="text-align: left;">9.5</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">12.9</td>
+<td style="text-align: left;">13.4</td>
+<td style="text-align: left;">5.6</td>
+<td style="text-align: left;">8.1</td>
+<td style="text-align: left;">8.2</td>
+<td style="text-align: left;">3.9</td>
+<td style="text-align: left;">18.2</td>
+<td style="text-align: left;">8.0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">12.8</td>
+<td style="text-align: left;">13.8</td>
+<td style="text-align: left;">6.6</td>
+<td style="text-align: left;">6.6</td>
+<td style="text-align: left;">10.0</td>
+<td style="text-align: left;">2.9</td>
+<td style="text-align: left;">18.8</td>
+<td style="text-align: left;">7.9</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>: Trial counts per chronological bin and condition {#tbl-bin-counts}</p>
+</section>
+<section id="pairwise-t-tests-bin-1-vs-bin-5" class="level3" data-number="5.3.2">
+<h3 data-number="5.3.2" class="anchored" data-anchor-id="pairwise-t-tests-bin-1-vs-bin-5"><span class="header-section-number">5.3.2</span> Pairwise t-tests (Bin 1 vs Bin 5)</h3>
+<div id="c05d6ed5" class="cell" data-execution_count="4">
+<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="4">
+<table class="caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: right;">t</th>
+<th style="text-align: right;">p</th>
+<th style="text-align: right;">d</th>
+<th style="text-align: right;">p_corrected</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Low-Low</td>
+<td style="text-align: right;">-0.22</td>
+<td style="text-align: right;">0.83</td>
+<td style="text-align: right;">-0.066</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Mid-Low</td>
+<td style="text-align: right;">0.608</td>
+<td style="text-align: right;">0.555</td>
+<td style="text-align: right;">0.183</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Mid-High</td>
+<td style="text-align: right;">-0.358</td>
+<td style="text-align: right;">0.728</td>
+<td style="text-align: right;">-0.113</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">High-High</td>
+<td style="text-align: right;">0.597</td>
+<td style="text-align: right;">0.563</td>
+<td style="text-align: right;">0.18</td>
+<td style="text-align: right;">1</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>: Paired t-test results comparing first and last bin per condition, with Bonferroni correction {#tbl-ttest}</p>
+</section>
+<section id="repeated-measures-anova" class="level3" data-number="5.3.3">
+<h3 data-number="5.3.3" class="anchored" data-anchor-id="repeated-measures-anova"><span class="header-section-number">5.3.3</span> Repeated-Measures ANOVA</h3>
+<div id="57fcd530" class="cell" data-execution_count="5">
+<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="5">
+<table class="caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 21%">
+<col style="width: 8%">
+<col style="width: 11%">
+<col style="width: 11%">
+<col style="width: 11%">
+<col style="width: 16%">
+<col style="width: 8%">
+<col style="width: 8%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Source</th>
+<th style="text-align: right;">F</th>
+<th style="text-align: right;">ddof1</th>
+<th style="text-align: right;">ddof2</th>
+<th style="text-align: right;">p-unc</th>
+<th style="text-align: right;">p-GG-corr</th>
+<th style="text-align: right;">np2</th>
+<th style="text-align: right;">eps</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">condition</td>
+<td style="text-align: right;">1.149</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">21</td>
+<td style="text-align: right;">0.353</td>
+<td style="text-align: right;">0.327</td>
+<td style="text-align: right;">0.141</td>
+<td style="text-align: right;">0.398</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">bin</td>
+<td style="text-align: right;">0.983</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">28</td>
+<td style="text-align: right;">0.433</td>
+<td style="text-align: right;">0.383</td>
+<td style="text-align: right;">0.123</td>
+<td style="text-align: right;">0.386</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">condition * bin</td>
+<td style="text-align: right;">0.802</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">84</td>
+<td style="text-align: right;">0.647</td>
+<td style="text-align: right;">0.464</td>
+<td style="text-align: right;">0.103</td>
+<td style="text-align: right;">0.159</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>: Repeated-measures ANOVA with Greenhouse-Geisser correction {#tbl-anova}</p>
+</section>
+</section>
+<section id="discussion" class="level2" data-number="5.4">
+<h2 data-number="5.4" class="anchored" data-anchor-id="discussion"><span class="header-section-number">5.4</span> Discussion</h2>
+<p>No significant effects were observed in either analysis. The pairwise t-tests found no evidence that RewP amplitude in bin 1 differed from bin 5 in any condition (p &gt; 0.56, |d| &lt; 0.23). The repeated-measure ANOVA yielded no significant main effect of Condition (F = 1.59, p = 0.25), Bin (F=0.74, p = 0.54), or Condition x Bin interaction (F = 1.33, p = 0.30).</p>
+<p>The results do not support the hypothesis that RewP amplitude in the High-High condition decreases over while remains stable in other conditions. In contrast, RewP appears to be relatively stable across the chronological bins. Same analysis is done on the original pipeline, yet no statistically significant results were found either so was omitted here.</p>
+<p>Admittedly, the current analysis is exploratory and is prone to many limitations. First of all, given that original data size was far from sufficiant, binning further divides it into smaller chunks and thus could hardly yield any significant result. Second, a warning is raised when calculating RM-ANOVA with Greenhouse-Geisser correction: <code>Epsilon values might be innaccurate in two-way repeated measures design where each factor has more than 2 levels.</code>. Therefore, the Greenhouse-Geisser corrected p-value for the Condition-Bin interaction should be treated with caution (need to check).</p>
+<p>Future work would benefit from a larger sample size. Single-trial regression is a potential alternative that avoids averaging within bins and may offer greater statistical power.</p>
+</section>
+</section>
+<section id="decoding" class="level1" data-number="6">
+<h1 data-number="6"><span class="header-section-number">6</span> Decoding</h1>
+<p>As an exploratory extension to the ERP analysis, we examined whether feedback outcome (win vs.&nbsp;loss) could be decoded from feedback-locked EEG in the mid-high and high-high contexts. Decoding used epochs derived from the same preprocessing pipeline as the main ERP analysis. To ensure that each feedback epoch was matched to the correct behavioural label, early familiarization trials were not removed immediately. Instead, feedback epochs were first aligned with the behavioural table, and only then were early familiarization trials excluded. This procedure preserved trial-by-trial correspondence between epochs and behavioural context/outcome labels.</p>
+<p>For the single-window analysis, decoding was performed on multichannel EEG data within the 240–340 ms interval, corresponding to the canonical RewP time window. Classification was implemented with logistic regression and cross-validation, and performance was quantified using ROC AUC, where chance level is 0.50. A complementary time-resolved analysis was also conducted to characterize when outcome information became decodable across the feedback epoch. Decoding is included here as an additional analysis alongside the main replication of the ERP results.</p>
+<section id="decoding-results" class="level2" data-number="6.1">
+<h2 data-number="6.1" class="anchored" data-anchor-id="decoding-results"><span class="header-section-number">6.1</span> Decoding Results</h2>
+<section id="all-subjects-results" class="level3" data-number="6.1.1">
+<h3 data-number="6.1.1" class="anchored" data-anchor-id="all-subjects-results"><span class="header-section-number">6.1.1</span> All subjects results</h3>
+<p>In the full sample (<code>n=12</code>), mean AUC within the 240–340 ms window was 0.538 for the mid-high context and 0.628 for the high-high context (<a href="#fig-window_all" class="quarto-xref">Figure&nbsp;19</a>), indicating above-chance decoding in both conditions and descriptively stronger decoding in the high-high context.</p>
+<div id="fig-window_all" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-window_all-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/output_window_decoding.png" class="img-fluid quarto-figure quarto-figure-center figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-window_all-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;19: FCz-window decoding based on all subjects. Thin grey lines connect paired observations from the same participant across the two contexts.
+</figcaption>
+</figure>
+</div>
+<p>The time-resolved analysis showed that decoding rose above chance shortly after feedback onset and reached its strongest values around 0.13–0.18s (<a href="#fig-time_resolved_all" class="quarto-xref">Figure&nbsp;20</a>), with the high-high context remaining descriptively higher across the predefined window.</p>
+<div id="fig-time_resolved_all" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-time_resolved_all-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/output_time_resolved_decoding.png" class="img-fluid quarto-figure quarto-figure-center figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-time_resolved_all-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;20: Time-resolved decoding based on all subjects.
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="learner-only-results" class="level3" data-number="6.1.2">
+<h3 data-number="6.1.2" class="anchored" data-anchor-id="learner-only-results"><span class="header-section-number">6.1.2</span> Learner-only results</h3>
+<p>A learner-only sensitivity analysis (<code>n=8</code>), howed a similar pattern. Mean AUC reached 0.605 in the mid-high context and 0.666 in the high-high context(<a href="#fig-window_learner" class="quarto-xref">Figure&nbsp;21</a>), again indicating above-chance decoding in both conditions and descriptively stronger decoding in the high-high context. The time-resolved learner-only analysis showed a broadly similar temporal profile to that observed in the full sample(<a href="#fig-time_resolved_learner" class="quarto-xref">Figure&nbsp;22</a>).</p>
+<div id="fig-window_learner" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-window_learner-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/learners_window_decoding.png" id="fig-window_learner" class="img-fluid quarto-figure quarto-figure-center anchored figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-window_learner-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;21
+</figcaption>
+</figure>
+</div>
+<div id="fig-time_resolved_learner" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-time_resolved_learner-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/learners_time_resolved.png" id="fig-time_resolved_learner" class="img-fluid quarto-figure quarto-figure-center anchored figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-time_resolved_learner-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;22
+</figcaption>
+</figure>
+</div>
+<p>Overall, these decoding results suggest that feedback outcome information was present in EEG activity during, and slightly before, the RewP interval. Because the analyses were exploratory and based on a limited sample, they are interpreted as complementary to the main ERP findings.</p>
+</section>
+</section>
+</section>
+<section id="limitation" class="level1" data-number="7">
+<h1 data-number="7"><span class="header-section-number">7</span> Limitation</h1>
+<p>The current project’s ability to draw meaningful conclusions is substantially limited by the small number of participants available from the Oxford site alone (N = 12 before exclusions). Beyond sample size, there are further issues in our pipeline design and analysis choices that we would like to address.</p>
+<section id="proposed-pipeline" class="level2" data-number="7.1">
+<h2 data-number="7.1" class="anchored" data-anchor-id="proposed-pipeline"><span class="header-section-number">7.1</span> Proposed Pipeline</h2>
+<p><strong>Use of 30 Hz Upper Bound</strong> We followed the original pipeline in using 30 Hz as the upper bound of the bandpass filter. However, a higher cutoff, such as 40 Hz, may better preserve relevant brain signals and is more widely adopted as a standard threshold in ERP research.</p>
+<p><strong>Use of Mastoid Re-reference</strong> We followed the original pipeline’s choice of re-referencing to the average of the mastoid signals. However, as documented in the EEGLAB re-referencing guide [https://eeglab.org/tutorials/ConceptsGuide/rereferencing_background.html], there are potentially preferable alternatives, such as average reference. It is worth noting that the authors’ choice may have been partly influenced by the challenges of harmonising data across two recording sites using different hardware, which could have constrained their referencing options (not sure).</p>
+<p><strong>IC Component Rejection</strong> We applied a strict IC component rejection criterion, removing all components for which the probability of being brain-related fell below 40%. While this is effective at artifact removal, it resulted in a large number of rejected components (more than 10 for most participants) and may have discarded components carrying genuine neural signal.</p>
+<p><strong>EEG Copy for ICA</strong></p>
+<p>The copy of the EEG used for ICA training was filtered between 1–100 Hz but did not have the 50 Hz line noise removed. We later recognised this as a potential issue, as the line noise may occupy IC components unnecessarily, even though it was largely filtered out from the main signal used for analysis.</p>
+</section>
+<section id="original-mne-pipeline" class="level2" data-number="7.2">
+<h2 data-number="7.2" class="anchored" data-anchor-id="original-mne-pipeline"><span class="header-section-number">7.2</span> Original-MNE Pipeline</h2>
+<p>The Original-MNE pipeline was intended as an auxiliary comparison to isolate discrepancies arising from toolkit differences, but several additional differences were inadvertently introduced as confounding factors.</p>
+<p>First, we omitted the channel-location remapping applied in the original pipeline for the Oxford site, along with the associated channel additions and deletions; this simplified implementation but may have introduced unmonitored differences in the channel layout. Second, MNE’s default filter settings use slightly different transition bands compared to EEGLAB, potentially resulting in different post-filtering signals. Third, we cannot confirm that EEGLAB’s RunICA algorithm is exactly equivalent to MNE’s Infomax ICA with <code>extended=True</code>. If they differ, this constitutes another uncontrolled source of discrepancy. Additionally, we cannot fully verify that the ‘eye’ label in EEGLAB’s ICLabel maps exactly onto the ‘eye movement’ and ‘eye blink’ categories in MNE-ICALabel. If there is a mismatch, the set of rejected components may differ between pipelines in ways that are difficult to quantify.</p>
+<p>These issues are concretely reflected in bad channel identification. The original pipeline marked T10 as a bad channel for subject 32, implying T10 contributed to at least 20% of trial rejections. In Original-MNE, fewer than 1% of trial rejections were attributed to T10, and it was therefore not flagged as bad. This discrepancy illustrates how upstream differences can propagate into qualitatively different preprocessing outcomes.</p>
+<p>We also acknowledge that our interpretation of the original EEGLAB script may have deviated from the authors’ intentions in ways we could not always verify, and that some implementation decisions in the MNE reimplementation rested on assumptions we were unable to fully validate.</p>
+</section>
+<section id="future-directions" class="level2" data-number="7.3">
+<h2 data-number="7.3" class="anchored" data-anchor-id="future-directions"><span class="header-section-number">7.3</span> Future Directions</h2>
+<p>Ideally, future work would isolate the effect of each individual pipeline step on the final results, enabling a more principled comparison. More detailed inspection of intermediate outputs, such as trial rejection rates at each stage across pipelines, would also help identify where and why results begin to diverge.</p>
+</section>
+</section>
+<section id="acknowledgment" class="level1" data-number="8">
+<h1 data-number="8"><span class="header-section-number">8</span> Acknowledgment</h1>
+<p>Generative AI tools (ChatGPT, Gemini, Claude) were used to support interpretation of the original EEGLAB pipeline, generate code for routine and repetitive data processing tasks, and review and correct analysis scripts and written reports. The content generated was reviewed by the authors.</p>
+
 </section>
 
-</main>
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-bush_cognitive_2000" class="csl-entry" role="listitem">
+Bush, George, Phan Luu, Michael I. Posner, George Bush, Phan Luu, Michael I. Posner, George Bush, Phan Luu, and Michael I. Posner. 2000. <span>“Cognitive and Emotional Influences in Anterior Cingulate Cortex.”</span> <em>Trends in Cognitive Sciences</em> 4 (6): 215–22. <a href="https://doi.org/10.1016/S1364-6613(00)01483-2">https://doi.org/10.1016/S1364-6613(00)01483-2</a>.
+</div>
+<div id="ref-cavanagh_reward_2026" class="csl-entry" role="listitem">
+Cavanagh, James F., and Clay B. Holroyd. 2026. <span>“The <span>Reward</span> <span>Positivity</span> Signals a Goal Prediction Error.”</span> <em>Trends in Cognitive Sciences</em> 0 (0). <a href="https://doi.org/10.1016/j.tics.2025.11.005">https://doi.org/10.1016/j.tics.2025.11.005</a>.
+</div>
+<div id="ref-cockburn_feedback_2018" class="csl-entry" role="listitem">
+Cockburn, Jeffrey, and Clay B. Holroyd. 2018. <span>“Feedback Information and the Reward Positivity.”</span> <em>International Journal of Psychophysiology</em>, Reward and <span>Feedback</span> <span>Processing</span>: <span>State</span> of the <span>Field</span>, <span>Best</span> <span>Practices</span> and <span>Future</span> <span>Directions</span>, 132 (October): 243–51. <a href="https://doi.org/10.1016/j.ijpsycho.2017.11.017">https://doi.org/10.1016/j.ijpsycho.2017.11.017</a>.
+</div>
+<div id="ref-EEGLAB_interp" class="csl-entry" role="listitem">
+EEGLAB Contributors. n.d.a. <span>“Eeg_interp.m — <span>EEGLAB</span> Source.”</span> Accessed March 31, 2026. <a href="https://github.com/sccn/eeglab/blob/develop/functions/popfunc/eeg_interp.m">https://github.com/sccn/eeglab/blob/develop/functions/popfunc/eeg_interp.m</a>.
+</div>
+<div id="ref-EEGLAB_ICA" class="csl-entry" role="listitem">
+———. n.d.b. <span>“Run <span>ICA</span> — <span>EEGLAB</span> Tutorial.”</span> Accessed March 31, 2026. <a href="https://eeglab.org/tutorials/06_RejectArtifacts/RunICA.html#run-ica">https://eeglab.org/tutorials/06_RejectArtifacts/RunICA.html#run-ica</a>.
+</div>
+<div id="ref-hassall_task-level_2022" class="csl-entry" role="listitem">
+Hassall, Cameron D., Laurence T. Hunt, and Clay B. Holroyd. 2022. <span>“Task-Level Value Affects Trial-Level Reward Processing.”</span> <em>NeuroImage</em> 260 (October): 119456. <a href="https://doi.org/10.1016/j.neuroimage.2022.119456">https://doi.org/10.1016/j.neuroimage.2022.119456</a>.
+</div>
+<div id="ref-holroyd_best_2020" class="csl-entry" role="listitem">
+Holroyd, Clay B., and Tom Verguts. 2020. <span>“The Best Laid Plans: <span>Computational</span> Principles of <span>ACC</span>.”</span> PsyArXiv. <a href="https://doi.org/10.31234/osf.io/3df8y">https://doi.org/10.31234/osf.io/3df8y</a>.
+</div>
+<div id="ref-MNE_ICA" class="csl-entry" role="listitem">
+MNE Contributors. n.d.a. <span>“<span>ICA</span> — <span>MNE</span> 1.0 Documentation.”</span> Accessed March 31, 2026. <a href="https://mne.tools/stable/generated/mne.preprocessing.ICA.html">https://mne.tools/stable/generated/mne.preprocessing.ICA.html</a>.
+</div>
+<div id="ref-MNE_interp" class="csl-entry" role="listitem">
+———. n.d.b. <span>“Interpolate Bad Channels — <span>MNE</span> Documentation.”</span> Accessed March 31, 2026. <a href="https://mne.tools/stable/auto_examples/preprocessing/interpolate_bad_channels.html">https://mne.tools/stable/auto_examples/preprocessing/interpolate_bad_channels.html</a>.
+</div>
+<div id="ref-rolls_emotion_2023" class="csl-entry" role="listitem">
+Rolls, Edmund T. 2023. <span>“Emotion, Motivation, Decision-Making, the Orbitofrontal Cortex, Anterior Cingulate Cortex, and the Amygdala.”</span> <em>Brain Structure and Function</em> 228 (5): 1201–57. <a href="https://doi.org/10.1007/s00429-023-02644-9">https://doi.org/10.1007/s00429-023-02644-9</a>.
+</div>
+<div id="ref-SambrookGoslin2015" class="csl-entry" role="listitem">
+Sambrook, Thomas D., and Jeremy Goslin. 2015. <span>“A Neural Reward Prediction Error Revealed by a Meta-Analysis of <span>ERPs</span> Using Great Grand Averages.”</span> <em>Psychological Bulletin</em> 141 (1): 213–35. <a href="https://doi.org/10.1037/bul0000006">https://doi.org/10.1037/bul0000006</a>.
+</div>
+<div id="ref-Tanner2015" class="csl-entry" role="listitem">
+Tanner, Darren, Kara Morgan-Short, and Steven J. Luck. 2015. <span>“How Inappropriate High-Pass Filters Can Produce Artifactual Effects and Incorrect Conclusions in <span>ERP</span> Studies of Language and Cognition.”</span> <em>Psychophysiology</em> 52 (8): 997–1009. <a href="https://doi.org/10.1111/psyp.12437">https://doi.org/10.1111/psyp.12437</a>.
+</div>
+</div></section></div></main>
 <!-- /main column -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {

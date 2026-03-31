@@ -8,23 +8,6 @@ This repository reproduces the ERP analysis from *Task-level value affects trial
 
 ## Quick Start
 
-Create the environment with either `conda` or `pip`.
-
-Option 1: `conda`
-
-```bash
-conda env create -f environment.yml
-conda activate eeg_reward
-```
-
-Option 2: `pip`
-
-```bash
-python -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-```
-
 Download dataset
 
 This project utilizes the `ds004147` dataset from Nemar, which contains EEG recordings from 12 participants performing the "Casino Task". The original paper uses dataset from 38 participants, recorded from 2 locations (UVic and Oxford). However, participants from the UVic testing site did not consent for their data to be publicly shared, so only data from location 2 could be accessed. 
@@ -35,7 +18,7 @@ Then:
 
 1. Edit `scripts/config.py` so `BIDS_ROOT` points to your local `ds004147` path.
 2. Run `scripts/single_subject_processing.ipynb` or `scripts/multi_subject_processing.ipynb`.
-3. Run `scripts/decoding/make_feedback_epochs.ipynb`.
+3. Run `scripts/decoding/make_feedback_epochs.ipynb` to save epochs.
 4. Run `scripts/decoding/time_resolved_decoding.ipynb` and/or `scripts/decoding/window_decoding.ipynb`.
 
 ## What This Repository Contains
@@ -48,9 +31,8 @@ Then:
 ## Repository Structure
 
 ```text
-eeg_reward/
-├── README.md
-├── ds004147/                  # BIDS dataset
+EEG_Reward-Processing_ERP/               
+├── ds004147/                 # BIDS dataset
 ├── scripts/
 │   ├── config.py             # local paths and analysis parameters
 │   ├── pipeline/             # preprocessing steps
@@ -68,6 +50,8 @@ eeg_reward/
 ├── report/                   # Quarto report and rendered output
 ├── presentation/
 └── research/
+└── README.md 
+└── requirements.txt          # List of modules and packages that are used for this 
 ```
 
 
@@ -111,3 +95,5 @@ Then run one or both:
 ## Useful Resource
 
 - [COBIDAS MEEG: how to report EEG/MEG processing clearly](https://cobidasmeeg.wordpress.com/)
+- [mne.preprocessing.ICA](https://mne.tools/stable/generated/mne.preprocessing.ICA.html#mne.preprocessing.ICA)
+- [Overview of artifact detection](https://mne.tools/stable/auto_tutorials/preprocessing/10_preprocessing_overview.html#tut-artifact-overview)

@@ -1,9 +1,3 @@
----
-title: "Pipeline Comparison"
-format: html
-bibliography: bibliography.bib
----
-
 Even given the same EEG data, different pipelines could lead to very different results depending on the toolkit used, preprocessing steps, and type of analyses performed. For instance, if one pipeline deployed strict preprocessing steps to remove as much noise as possible while the other retained the original signal, they might yield very different ERPs and conclusions. Even though there are some generally agreed-upon steps in EEG signal processing, there is still considerable flexibility, with many caveats as each decision carrying its own advantages and disadvantages. One principle holds across this variability: results are more reliable and valid when they replicate across independent pipelines.
 
 *Toolkit difference:* One key difference between the original pipeline, referred to as **Original**, and our proposed pipeline, referred to as **Proposed**, lies in the toolkit used: the former is implemented in EEGLAB for MATLAB, while the latter uses MNE-Python. To isolate the effect of this toolkit change from genuine methodological differences, we also replicated the original pipeline in MNE-Python, referred to as **Original-MNE**. Any discrepancy between Original and Original-MNE results can therefore be attributed to toolkit differences rather than processing decisions, while discrepancies between Original-MNE and Proposed reflect deliberate methodological changes. For completeness, we also ran the original EEGLAB script restricted to Oxford-site participants, which is not described here separately, as its steps are identical to those of Original.
@@ -111,8 +105,8 @@ Since we have access only to Oxford-site data, the notch filter is uniformly set
 
 ![Comparison between Notch and ZapLine Filtering](report_plots/notch_zapline_comp.png){#fig-zap_notch width="70%"}
 
-### To reproduce the plots
 
+**To reproduce the plots**
 ```yaml         
 With <single_subject_processing.ipynb> open:
     Set:
@@ -125,7 +119,7 @@ With <single_subject_processing.ipynb> open:
 
 ------------------------------------------------------------------------
 
-### Step 02: Channel Rejection
+### Step 02/08: Channel Rejection
 
 *Refer to: `s02_drop_bad_channels.py`, `s08_find_bad_channels.py`*
 

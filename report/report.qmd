@@ -1,6 +1,6 @@
 ---
-title: "Reward task EEG"
-
+title: "EEG Reward Processing Analysis"
+subtitle: "Does the Pipeline Change the Story? From EEGLAB to MNE-Python: A Pipeline Comparison in RewP Research"
 
 number-sections: true
 date: today
@@ -10,12 +10,13 @@ title-block-banner: true
 title-block-style: default
 
 bibliography: bibliography.bib
-csl: apa.csl
+
 
 author: 
 - name: Qianyue Li
 - name: Zheng Lin
 - name: Yanhong Xu
+
 
 format: 
   html:
@@ -43,22 +44,24 @@ jupyter: python3
 # Introduction {#sec-introduction}
 {{< include _introduction.qmd >}}
 
-# Experiment {#sec-experiment}
+# Pipeline {#sec-experiment}
+{{< include _pipeline.qmd >}}
 
-{{< include _experiment.qmd >}}
-
-# Analysis Methods {#sec-analysis}
-{{< include _analysis-methods.qmd >}}
-
-# Results {#sec-results}
-
+# Statistical Results {#sec-results}
 {{< include _results.qmd >}}
 
 # Discussion {#sec-discussion}
-
 {{< include _discussion.qmd >}}
 
-# Contribution Table
+# Crosstime Analysis
+{{< include _crosstime-analysis.qmd >}}
 
-{{< include _contribution-table.qmd >}}
+# Decoding
+{{< include _extension-analysis.qmd >}}
+
+# Limitation
+{{< include _limitation.qmd >}}
+
+# Acknowledgment
+{{< include _acknowledgment.qmd >}}
 

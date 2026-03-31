@@ -1,4 +1,4 @@
-## Decoding
+
 As an exploratory extension to the ERP analysis, we examined whether feedback outcome (win vs. loss) could be decoded from feedback-locked EEG in the mid-high and high-high contexts.
 Decoding used epochs derived from the same preprocessing pipeline as the main ERP analysis. To ensure that each feedback epoch was matched to the correct behavioural label, early familiarization trials were not removed immediately. Instead, feedback epochs were first aligned with the behavioural table, and only then were early familiarization trials excluded. This procedure preserved trial-by-trial correspondence between epochs and behavioural context/outcome labels.
 

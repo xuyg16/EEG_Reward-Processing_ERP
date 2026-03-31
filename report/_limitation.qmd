@@ -1,7 +1,4 @@
----
-title: "Limitation"
-format: html
----
+
 
 The current project's ability to draw meaningful conclusions is substantially limited by the small number of participants available from the Oxford site alone (N = 12 before exclusions). Beyond sample size, there are further issues in our pipeline design and analysis choices that we would like to address.
 

@@ -1,4 +1,4 @@
-# Statistical results
+
 
 ## Behavioral results
 *Main analysis (learners only).*

@@ -11,7 +11,7 @@ def _close_logger_handlers(logger):
 
 
 def log(logger, msg, *args, level="info"):
-    """Print if no logger; otherwise send the message to the chosen log level."""
+    """Do nothing if logger is None; otherwise log at the chosen level."""
     if logger is None:
         return 
     if isinstance(level, str):

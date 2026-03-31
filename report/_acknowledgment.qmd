@@ -1,0 +1,1 @@
+Generative AI tools (ChatGPT, Gemini, Claude) were used to support interpretation of the original EEGLAB pipeline, generate code for routine and repetitive data processing tasks, and review and correct analysis scripts and written reports. The content generated was reviewed by the authors. 
