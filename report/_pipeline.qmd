@@ -291,10 +291,18 @@ As shown in @fig-butterfly-ori and @fig-butterfly-prop, all evokeds converge nea
 
 ## Step 11: Statistical Analysis
 
-*Refer to: `s11a_stats_prep.py`, `s11b_stats.py`, `s12_permutation_bootstrap.py`*
+*Refer to: `behavior_task_value`, `stats.rewp_sccores.py`, `stats.inerence_parametric.py`, `stats.inference_permutation_test.py`*
 
 **Purpose** Statistical analysis provides a systematic framework for interpreting the derived results, allowing us to assess the direction and magnitude of condition differences and to evaluate whether conclusions are reliable given the available sample size.
 
-**Original Pipeline** Original applied paired t-tests to RewP data, comparing the Mid-High and High-High conditions. A one-way repeated-measures ANOVA was used on behavioral data to examine win rates across tasks (Low, Mid, High), and a paired t-test was used to compare performance, which is defined as the proportion of correct arm selections, between the Mid- and High-value tasks.
 
-**Proposed Pipeline** We replicated the original statistical tests and additionally applied permutation t-tests to mitigate the reduced statistical power resulted from our smaller sample size.
+
+**Original Pipeline** Inferential statistics in the original study were conducted on the main learner sample. For the behavioural data, the mean proportion of winning trials across the low-, mid-, and high-value tasks was analysed using a one-way repeated-measures ANOVA, and effect sizes were reported as partial and generalized eta-squared. In addition, mean performance was compared between the mid- and high-value tasks using a paired-samples t-test, where performance was defined as the proportion of correct responses to high-value cues.
+
+
+For the Rewp analysis, the original study used paired-samples t-tests on RewP scores. To avoid confounding task-value effects with differences in outcome frequency, only conditions with matched outcome frequencies were compared: (Low-Low vs Mid-Low), and (Mid-High vs High-High). Cohen’s d for paired-samples t-tests was also reported. For all t-tests, the authors assessed normality using the Shapiro–Wilk test on each variable separately rather than on paired difference scores, and no correction was applied when non-normality was observed because the t-test was considered sufficiently robust.
+
+
+**Proposed Pipeline**  
+We retained the original inferential structure but adapted it to our reduced sample size. Specifically, we reproduced the behavioural ANOVA and paired t-test, as well as the two planned RewP comparisons. Because only 12 participants were available, including 8 learners, we additionally analysed the full sample as a sensitivity analysis. We also evaluated Shapiro–Wilk normality on paired difference scores rather than on each variable separately, as this is more directly aligned with the assumptions of the paired t-test. Finally, we supplemented the paired t-tests with exact paired permutation tests to provide a non-parametric robustness check.
+

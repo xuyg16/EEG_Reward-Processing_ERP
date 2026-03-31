@@ -1,27 +1,103 @@
-# EEG_Reward-Processing_ERP
-# Reproduce ERP analysis from *Task-level value affects trial-level reward processing*
+# EEG Reward Processing ERP
 
-**Author:** *Qianyue Li*, *Zheng Lin*, *Yanhong Xu*
+**Authors:** *Qianyue Li*, *Zheng Lin*, *Yanhong Xu*  
+**Course:** *Signal Processing and Analysis of Human Brain Potentials (EEG)*  
+**Semester:** *Winter semester 2025/2026*
 
-**Year:** *2025*
+This repository reproduces the ERP analysis from *Task-level value affects trial-level reward processing* and includes additional decoding analyses based on saved feedback-locked epochs.
 
-## Project Description
-This project aims to reproduce the ERP analysis from the study titled *Task-level value affects trial-level reward processing*. The analysis focuses on understanding how task-level value influences reward processing at the trial level using EEG data.
+## Quick Start
 
-## Folder Structure
+Create the environment with either `conda` or `pip`.
 
-```
-projectdir 
-└── research 
-    ├── Li
-    ├── Lin
-    ├── Xu
-└── plots
-└── report
-└── presentation
-└── scripts
-└── data <- sample data, git ignored
+Option 1: `conda`
+
+```bash
+conda env create -f environment.yml
+conda activate eeg_reward
 ```
 
-## Usefuld resources
-[how to explain your data processing in a good manner](https://cobidasmeeg.wordpress.com/)
+Option 2: `pip`
+
+```bash
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+```
+
+Then:
+
+1. Edit `scripts/config.py` so `BIDS_ROOT` points to your local `ds004147` path.
+2. Run `scripts/single_subject_processing.ipynb` or `scripts/multi_subject_processing.ipynb`.
+3. Run `scripts/decoding/make_feedback_epochs.ipynb`.
+4. Run `scripts/decoding/time_resolved_decoding.ipynb` and/or `scripts/decoding/window_decoding.ipynb`.
+
+## What This Repository Contains
+
+- EEG preprocessing and ERP/RewP analysis notebooks
+- Shared pipeline, utility, and statistics modules under `scripts/`
+- Decoding notebooks that reuse saved feedback epochs
+- A Quarto report with methods, results, and discussion in `report/`
+
+## Repository Structure
+
+```text
+eeg_reward/
+├── README.md
+├── ds004147/                  # BIDS dataset
+├── scripts/
+│   ├── config.py             # local paths and analysis parameters
+│   ├── pipeline/             # preprocessing steps
+│   ├── utils/                # helper functions and logging
+│   ├── stats/                # RewP/statistical analysis code
+│   ├── decoding/             # epoch I/O and decoding notebooks
+│   ├── single_subject_processing.ipynb
+│   └── multi_subject_processing.ipynb
+├── output_mne/               # generated epochs, decoding outputs, logs, stats
+├── ICA_objects/              # saved ICA objects
+├── plots/                    # exported figures
+├── report/                   # Quarto report and rendered output
+├── presentation/
+└── research/
+```
+
+
+## Recommended Reproduction Order
+
+### 1. ERP / RewP preprocessing
+
+Use one of the main notebooks in `scripts/`:
+
+- `single_subject_processing.ipynb`: inspect and process one participant
+- `multi_subject_processing.ipynb`: run group-level ERP/RewP analysis and summary statistics
+
+In the notebooks, check:
+
+- `USER`: selects the path key used in `config.BIDS_ROOT`
+- `ACTIVE_PIPELINE`: choose `original` or `proposed`
+- subject selection if you only want a subset
+
+### 2. Save feedback-locked epochs for decoding
+
+Run:
+
+- `scripts/decoding/make_feedback_epochs.ipynb`
+
+This creates reusable feedback epochs with metadata under `output_mne/epochs/`.
+
+### 3. Run decoding analyses
+
+Then run one or both:
+
+- `scripts/decoding/time_resolved_decoding.ipynb`
+- `scripts/decoding/window_decoding.ipynb`
+
+
+## Suggested Rule of Thumb
+- If a reader asks "How do I run this project?", the answer belongs in `README.md`.  
+- If a reader asks "What did you do, why, and what did you find?", the answer belongs in the report.
+
+
+## Useful Resource
+
+- [COBIDAS MEEG: how to report EEG/MEG processing clearly](https://cobidasmeeg.wordpress.com/)

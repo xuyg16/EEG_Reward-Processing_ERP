@@ -290,6 +290,7 @@ def plot_task_winrates(df, title="Behavioral manipulation check", figsize=(6, 4)
 
     ax.set_xticks(x)
     ax.set_xticklabels(labels)
+    ax.set_xlabel("Task value")
     ax.set_ylabel("Reward (% wins)")
     ax.set_title(title)
     ax.set_ylim(0, 100)
@@ -327,6 +328,7 @@ def plot_mean_performance(df, title="Performance on high-value cues", figsize=(5
 
     ax.set_xticks(x)
     ax.set_xticklabels(labels)
+    ax.set_xlabel("Task value")
     ax.set_ylabel("Performance (% correct)")
     ax.set_title(title)
     ax.set_ylim(0, 100)
