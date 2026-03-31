@@ -190,10 +190,68 @@ def plot_topo_serires(evokeds, times = [0.18, 0.22, 0.26, 0.30, 0.34, 0.38], vli
 
 
 
-def plot_binning_results(rewp_differences, title='RewP Mean Amplitude Across Chronological Bins', figsize=(12, 6)):
+def plot_butterfly_evokeds(evokeds_dict, title=None):
+    '''
+    Plot butterfly plot for evoked data across all conditions.
+    :param evokeds_dict: Dictionary of MNE Evoked objects
+    :param title: Title for the plot
+    '''
+    all_condition_evoked = mne.grand_average(list(evokeds_dict.values()))
+    all_condition_evoked.plot(titles=title);
+
+
+
+def plot_cleaning_compare(before_eeg, after_eeg, tmin=100, tmax=105, title=None):
+    mask_before = (before_eeg.times >= tmin) & (before_eeg.times <= tmax)
+    mask_after = (after_eeg.times >= tmin) & (after_eeg.times <= tmax)
+
+    data_before = before_eeg.get_data()[:, mask_before] * 1e6
+    data_after = after_eeg.get_data()[:, mask_after] * 1e6
+
+    times_before = before_eeg.times[mask_before]
+    times_after = after_eeg.times[mask_after]
+
+    n_channels = data_before.shape[0]
+    ch_names = before_eeg.ch_names
+
+    fig, axes = plt.subplots(n_channels, 1, figsize=(14, n_channels * 0.4), sharex=True)
+    fig.subplots_adjust(hspace=0)
+
+    for i, ax in enumerate(axes):
+        ch_std = np.std(data_after[i])
+        ylim = (-15 * ch_std, 15 * ch_std)
+        
+        # demean each channel so DC offset doesn't push lines off scale
+        before_demeaned = data_before[i] - np.mean(data_before[i])
+        after_demeaned = data_after[i] - np.mean(data_after[i])
+        
+        ax.plot(times_after, after_demeaned, color="blue", alpha=0.4, linewidth=0.5, clip_on=False)
+        ax.plot(times_before, before_demeaned, color="red", alpha=0.7, linewidth=0.5, clip_on=False)
+        ax.set_ylim(ylim)
+        ax.set_ylabel(ch_names[i], rotation=0, labelpad=40, fontsize=7)
+        ax.set_yticks([])
+        for spine in ax.spines.values():
+            spine.set_visible(False)
+
+    axes[0].set_title(title)
+    axes[-1].set_xlabel("Time (s)")
+    axes[0].plot([], color="red", label="before")
+    axes[0].plot([], color="blue", label="after")
+    axes[0].legend(fontsize=7, loc="upper right")
+
+    plt.tight_layout()
+    plt.show()
+
+
+def plot_binning_results(rewp_per_subject_binned, title='RewP Mean Amplitude Across Chronological Bins', figsize=(12, 6), std=False):
     plt.figure(figsize=figsize)
 
-    target_conditions = ['Low-Low', 'Mid-Low', 'Mid-High', 'High-High']
+    conditions = ['Low-Low', 'Mid-Low', 'Mid-High', 'High-High']
+
+    # grand average and std error across subjects for each condition and bin
+    rewp_means = {cond: np.nanmean(rewp_per_subject_binned[cond], axis=0) for cond in conditions}
+    rewp_stds  = {cond: np.nanstd(rewp_per_subject_binned[cond], axis=0) / np.sqrt(np.sum(~np.isnan(rewp_per_subject_binned[cond]), axis=0)) for cond in conditions}
+    
     colors = {
         'Low-Low': '#4C72B0',   # Muted Blue
         'Mid-Low': '#64B5CD',   # Soft Cyan
@@ -201,38 +259,38 @@ def plot_binning_results(rewp_differences, title='RewP Mean Amplitude Across Chr
         'High-High': '#C44E52'  # Muted Crimson 
         }
     
-    for i, cond in enumerate(target_conditions):
+    for cond in conditions:
         # 1. Extract the bin-by-bin means
-        y_values = [bin_res[cond]['mean'] for bin_res in rewp_differences if cond in bin_res]
+        y_values = rewp_means[cond]
         x_values = list(range(1, len(y_values) + 1))
-        
-        if y_values:
-            color = colors[cond]
-            
-            # 2. Calculate the global average for this condition across all bins
-            avg_value = np.mean(y_values)
-            
-            # 3. Plot the "Average" line (Lower Saturation / Faint)
-            # alpha=0.3 makes it transparent/desaturated
-            plt.axhline(y=avg_value, color=color, linestyle='--', alpha=0.3, 
-                        label=f'{cond} Avg') # Labeling first one as example
+        color = colors[cond]
 
-            # 4. Plot the main "Trend" line (Full Saturation)
-            plt.plot(x_values, y_values, marker='o', label=cond, 
-                    linewidth=2.5, markersize=8, color=color)
+        # Global average line (faint)
+        avg_value = np.mean(y_values)
+        plt.axhline(y=avg_value, color=color, linestyle='--', alpha=0.3, label=f'{cond} Avg')
+
+        # Trend line
+        plt.plot(x_values, y_values, marker='o', label=cond,
+                 linewidth=2.5, markersize=8, color=color)
+
+        # Optional std shading
+        if std:
+            rewp_stds_cond = rewp_stds[cond]
+            plt.fill_between(x_values,
+                             y_values - rewp_stds_cond,
+                             y_values + rewp_stds_cond,
+                             color=color, alpha=0.15)
+
 
     # Formatting
     plt.title(title, fontsize=14, fontweight='bold')
     plt.xlabel('Chronological Bin', fontsize=12)
     plt.ylabel('Mean Amplitude (µV)', fontsize=12)
-    plt.xticks(range(1, len(y_values) + 1))
-    plt.axhline(0, color='black', alpha=0.2) # Zero baseline
-
-    # Refined Legend
+    plt.xticks(x_values)
+    plt.axhline(0, color='black', alpha=0.2)
     plt.legend(title='Reward Level', loc='upper left', bbox_to_anchor=(1, 1))
     plt.grid(True, linestyle=':', alpha=0.4)
     plt.tight_layout()
-
     plt.show()
 
 
