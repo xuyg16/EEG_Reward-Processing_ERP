@@ -5,7 +5,7 @@ format: html
 
 # Introduction
 
-Hassall et al. (2022) report that RewP amplitude is reduced in the high-value task relative to the mid-value task for high-value cues, interpreted as evidence that ACC evaluates trial-level outcomes relative to average task value. If this modulation reflects a learned representation of task value that strengthens with experience, RewP amplitude should change across the session as participants accumulate evidence about the reward environment. Specifically, we ask whether the RewP decreases over time in the High-High condition, where the discrepancy between trial reward and average task value diminishes as the task value estimate stabilizes, while remaining relatively stable in lower-value conditions. This constitutes an exploratory secondary analysis not conducted in the original paper.
+The original paper reported that RewP amplitude is reduced in the high-value task relative to the mid-value task for high-value cues, interpreted as evidence that ACC evaluates trial-level outcomes relative to average task value. If this modulation reflects a learned representation of task value that strengthens with experience, RewP amplitude should change across the session as participants accumulate evidence about the reward environment. Specifically, we ask whether the RewP decreases over time in the High-High condition, where the discrepancy between trial reward and average task value diminishes as the task value estimate stabilizes, while remaining relatively stable in lower-value conditions. This constitutes an exploratory secondary analysis not conducted in the original paper.
 
 # Methods
 
@@ -22,12 +22,12 @@ Trials were divided into five chronological bins of approximately equal size, se
 import pandas as pd
 from IPython.display import Markdown
 
-df_bin_summary = pd.read_csv('../output_mne/bin_counts_summary_ori_learner.csv', index_col=0)
-df_ttest = pd.read_csv('../output_mne/ttest_binning_prop_learner.csv', index_col=0)
-df_anova = pd.read_csv('../output_mne/anova_binning_prop_learner.csv', index_col=0)
+df_bin_summary = pd.read_csv('../output_mne/stats/bin_counts_summary_prop_learner.csv', index_col=0)
+df_ttest = pd.read_csv('../output_mne/stats/ttest_binning_prop_learner.csv', index_col=0)
+df_anova = pd.read_csv('../output_mne/stats/anova_binning_prop_learner.csv', index_col=0)
 ```
 
-![Binned RewP across Conditions - Proposed Pipeline. Shaded area indicate standard deviations.](../plots_report/bin_rewp_prop_learner.png){#fig-bin-prop}
+![Binned RewP across Conditions - Proposed Pipeline. Shaded area indicate standard deviations.](report_plots/bin_rewp_prop_learner.png){#fig-bin-prop}
 
 ```{python}
 #| echo: false
@@ -59,15 +59,9 @@ Markdown(df_anova_display.to_markdown())
 
 # Discussion
 
-No significant effects were observed in either analysis.
+No significant effects were observed in either analysis. The pairwise t-tests found no evidence that RewP amplitude in bin 1 differed from bin 5 in any condition (p \> 0.56, \|d\| \< 0.23). The repeated-measure ANOVA yielded no significant main effect of Condition (F = 1.59, p = 0.25), Bin (F=0.74, p = 0.54), or Condition x Bin interaction (F = 1.33, p = 0.30).
 
-The pairwise t-tests found no evidence that RewP amplitude in bin 1 differed from bin 5 in any condition (p \> 0.56, \|d\| \< 0.23).
-
-The repeated-measure ANOVA yielded no significant main effect of Condition (F = 1.59, p = 0.25), Bin (F=0.74, p = 0.54), or Condition x Bin interaction (F = 1.33, p = 0.30).
-
-The results do not support the hypothesis that RewP amplitude in the High-High condition decreases over while remains stable in other conditions. In contrast, RewP appears to be relatively stable across the chronological bins.
-
-Same analysis is done on the original pipeline, yet no statistically significant results were found either so was omitted here. Results could be found in (`file`)
+The results do not support the hypothesis that RewP amplitude in the High-High condition decreases over while remains stable in other conditions. In contrast, RewP appears to be relatively stable across the chronological bins. Same analysis is done on the original pipeline, yet no statistically significant results were found either so was omitted here.
 
 Admittedly, the current analysis is exploratory and is prone to many limitations. First of all, given that original data size was far from sufficiant, binning further divides it into smaller chunks and thus could hardly yield any significant result. Second, a warning is raised when calculating RM-ANOVA with Greenhouse-Geisser correction: `Epsilon values might be innaccurate in two-way repeated measures design where each factor has more than 2 levels.`. Therefore, the Greenhouse-Geisser corrected p-value for the Condition-Bin interaction should be treated with caution (need to check).
 
