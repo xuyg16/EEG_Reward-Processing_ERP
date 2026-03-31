@@ -1,0 +1,53 @@
+2026-03-31 18:15:55,455 - stats_prop_learner - INFO - Logger initialized -> /Users/xuyg/GitHub/EEG_Reward-Processing_ERP/output_mne/logs/stats_prop_learner.log
+2026-03-31 18:15:55,456 - stats_prop_learner - INFO - Output dir: /Users/xuyg/GitHub/EEG_Reward-Processing_ERP/output_mne
+2026-03-31 18:15:55,456 - stats_prop_learner - INFO - Check log file: /Users/xuyg/GitHub/EEG_Reward-Processing_ERP/output_mne/logs/stats_prop_learner.log
+2026-03-31 18:16:03,752 - stats_prop_learner - INFO - Output dir: /Users/xuyg/GitHub/EEG_Reward-Processing_ERP/output_mne
+2026-03-31 18:16:03,752 - stats_prop_learner - INFO - Check log file: /Users/xuyg/GitHub/EEG_Reward-Processing_ERP/output_mne/logs/stats_prop_learner.log
+2026-03-31 18:16:08,218 - stats_prop_learner - INFO - Collected behavior summary for 8 subjects
+2026-03-31 18:16:08,222 - stats_prop_learner - INFO - RM ANOVA: F(2,14) = 14.3, p = 0.0004142
+2026-03-31 18:16:08,222 - stats_prop_learner - INFO - partial eta^2 = 0.6713
+2026-03-31 18:16:08,224 - stats_prop_learner - INFO - generalized eta^2 = 0.6238
+2026-03-31 18:16:08,226 - stats_prop_learner - INFO - The proportion of winning trials among different tasks (n=8):
+• low-value: 50.06%, 95% CI [48.06, 52.06]
+• mid-value: 60.35%, 95% CI [56.09, 64.60]
+• high-value: 64.72%, 95% CI [59.02, 70.42]
+F(2,14) = 14.30, p < .001, ηp² = 0.67, ηg² = 0.62
+2026-03-31 18:16:08,399 - stats_prop_learner - INFO - Shapiro-Wilk on paired differences: p = 0.6542
+2026-03-31 18:16:08,401 - stats_prop_learner - INFO - Paired t-test: t(7) = 1.217, p = 0.263
+2026-03-31 18:16:08,402 - stats_prop_learner - INFO - Mean difference = 0.06048
+2026-03-31 18:16:08,403 - stats_prop_learner - INFO - Cohen's dz = 0.4303
+2026-03-31 18:16:08,404 - stats_prop_learner - INFO - mid-value block: 80.81%, 95% CI [73.96, 87.67]
+high-value block: 74.77%, 95% CI [64.16, 85.37]
+t(7) = 1.22, p = 0.263, Cohen's d = 0.43
+2026-03-31 18:26:30,843 - stats_prop_learner - INFO - Output dir: /Users/xuyg/GitHub/EEG_Reward-Processing_ERP/output_mne
+2026-03-31 18:26:30,843 - stats_prop_learner - INFO - Check log file: /Users/xuyg/GitHub/EEG_Reward-Processing_ERP/output_mne/logs/stats_prop_learner.log
+2026-03-31 18:26:34,904 - stats_prop_learner - INFO - Collected behavior summary for 8 subjects
+2026-03-31 18:26:34,906 - stats_prop_learner - INFO - RM ANOVA: F(2,14) = 14.3, p = 0.0004142
+2026-03-31 18:26:34,907 - stats_prop_learner - INFO - partial eta^2 = 0.6713
+2026-03-31 18:26:34,907 - stats_prop_learner - INFO - generalized eta^2 = 0.6238
+2026-03-31 18:26:34,908 - stats_prop_learner - INFO - The proportion of winning trials among different tasks (n=8):
+• low-value: 50.06%, 95% CI [48.06, 52.06]
+• mid-value: 60.35%, 95% CI [56.09, 64.60]
+• high-value: 64.72%, 95% CI [59.02, 70.42]
+F(2,14) = 14.30, p < .001, ηp² = 0.67, ηg² = 0.62
+2026-03-31 18:26:35,055 - stats_prop_learner - INFO - Shapiro-Wilk on paired differences: p = 0.6542
+2026-03-31 18:26:35,055 - stats_prop_learner - INFO - Paired t-test: t(7) = 1.217, p = 0.263
+2026-03-31 18:26:35,056 - stats_prop_learner - INFO - Mean difference = 0.06048
+2026-03-31 18:26:35,056 - stats_prop_learner - INFO - Cohen's dz = 0.4303
+2026-03-31 18:26:35,057 - stats_prop_learner - INFO - mid-value block: 80.81%, 95% CI [73.96, 87.67]
+high-value block: 74.77%, 95% CI [64.16, 85.37]
+t(7) = 1.22, p = 0.263, Cohen's d = 0.43
+2026-03-31 18:26:40,059 - stats_prop_learner - INFO - Saved RewP scores -> /Users/xuyg/GitHub/EEG_Reward-Processing_ERP/output_mne/stats/rewp_scores_prop_learner.csv
+2026-03-31 18:26:40,061 - stats_prop_learner - INFO - [High-value cues | MH vs HH]
+mid-value task: 0.94 μV, 95% CI [-3.44, 5.32]
+high-value task: 1.94 μV, 95% CI [-2.38, 6.26]
+t(7) = -0.87, p = .411, Cohen's d = -0.31
+Exact paired permutation: p = .359
+2026-03-31 18:26:40,061 - stats_prop_learner - INFO - 
+
+2026-03-31 18:26:40,066 - stats_prop_learner - INFO - [Low-value cues | ML vs LL]
+mid-value task: 2.85 μV, 95% CI [-0.78, 6.49]
+low-value task: 2.76 μV, 95% CI [-2.33, 7.86]
+t(7) = 0.04, p = .967, Cohen's d = 0.02
+Exact paired permutation: p = .992
+2026-03-31 18:27:03,256 - stats_prop_learner - INFO - ΔRewP-performance correlation: r = 0.426, p = 0.2924, n = 8

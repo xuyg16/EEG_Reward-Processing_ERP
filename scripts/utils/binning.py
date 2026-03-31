@@ -1,5 +1,8 @@
 import numpy as np
 import mne
+import pandas as pd
+import config
+from pipeline.s10_rewp_calculation import rewp_calculation
 
 def binning(epochs, conditions_dict, bin_num=4):
     '''
@@ -60,5 +63,39 @@ def binning(epochs, conditions_dict, bin_num=4):
 
     for bin_index in binned_epochs_combined:
         binned_epochs_combined[bin_index] = mne.concatenate_epochs(binned_epochs_combined[bin_index])
-                    
-    return binned_epochs_combined
+
+
+    # Count trials per condition per bin
+    bin_trial_counts = {}
+    for bin_idx, bin_epochs in binned_epochs_combined.items():
+        bin_trial_counts[bin_idx] = {}
+        for cond, markers in conditions_dict.items():
+            # select using the raw stimulus string(s)
+            available_markers = [m for m in markers if m in bin_epochs.event_id]
+            if available_markers:
+                bin_trial_counts[bin_idx][cond] = len(bin_epochs[available_markers])
+            else:
+                bin_trial_counts[bin_idx][cond] = 0
+
+        df_counts = pd.DataFrame(bin_trial_counts).T
+        df_counts.index.name = 'bin'  
+
+    return binned_epochs_combined, df_counts
+
+
+
+def get_group_binned_rewp(n_bins, subjects, epoch_dict, binned_group_evokeds, learners_only=False):
+    # calculate RewP results for each bin and subject 
+    conditions = ['Low-Low', 'Mid-Low', 'Mid-High', 'High-High']
+    rewp_per_subject_binned= {cond: np.zeros((len(subjects), n_bins)) for cond in conditions}
+
+    for s_idx, subj in enumerate(subjects):
+        if learners_only and not config.SUBJECT_INFO[subj]['learner']:
+            continue
+        for i in range(n_bins):
+            subj_evokeds = binned_group_evokeds[subj][i]
+            subj_results = rewp_calculation(subj_evokeds, epoch_dict, verbose=False)
+            for cond in conditions:
+                rewp_per_subject_binned[cond][s_idx, i] = subj_results[cond]['mean']
+   
+    return rewp_per_subject_binned
