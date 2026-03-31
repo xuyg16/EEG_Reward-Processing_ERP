@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.26">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Pipeline Comparison</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="_pipeline_files/libs/clipboard/clipboard.min.js"></script>
+<script src="_pipeline_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="_pipeline_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="_pipeline_files/libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="_pipeline_files/libs/quarto-html/popper.min.js"></script>
+<script src="_pipeline_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="_pipeline_files/libs/quarto-html/anchor.min.js"></script>
+<link href="_pipeline_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="_pipeline_files/libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="_pipeline_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="_pipeline_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="_pipeline_files/libs/bootstrap/bootstrap-d6a003b94517c951b2d65075d42fb01b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="fullcontent quarto-light">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Pipeline Comparison</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Even given the same EEG data, different pipelines could lead to very different results depending on the toolkit used, preprocessing steps, and type of analyses performed. For instance, if one pipeline deployed strict preprocessing steps to remove as much noise as possible while the other retained the original signal, they might yield very different ERPs and conclusions. Even though there are some generally agreed-upon steps in EEG signal processing, there is still considerable flexibility, with many caveats as each decision carrying its own advantages and disadvantages. One principle holds across this variability: results are more reliable and valid when they replicate across independent pipelines.</p>
+<p><em>Toolkit difference:</em> One key difference between the original pipeline, referred to as <strong>Original</strong>, and our proposed pipeline, referred to as <strong>Proposed</strong>, lies in the toolkit used: the former is implemented in EEGLAB for MATLAB, while the latter uses MNE-Python. To isolate the effect of this toolkit change from genuine methodological differences, we also replicated the original pipeline in MNE-Python, referred to as <strong>Original-MNE</strong>. Any discrepancy between Original and Original-MNE results can therefore be attributed to toolkit differences rather than processing decisions, while discrepancies between Original-MNE and Proposed reflect deliberate methodological changes. For completeness, we also ran the original EEGLAB script restricted to Oxford-site participants, which is not described here separately, as its steps are identical to those of Original.</p>
+<p><em>Learners vs.&nbsp;non-learners:</em> The Original pipeline included only ‘learners’ in the final ERP analysis — those who paid attention and learned, defined as participants who achieved a win rate &gt; 60% on high-value cues. We operated the pipelines on all subjects as well as the leaners only.</p>
+<p><em>Access to participant data:</em> The original study includes participants from two different sites, with 24 from the University of Victoria (UVic) and 12 from the University of Oxford (Oxford). Since we worked exclusively with data from the Oxford site, steps that map electrode locations across different recording caps to common locations were omitted.</p>
+<section id="pipeline-overview" class="level2">
+<h2 class="anchored" data-anchor-id="pipeline-overview">Pipeline Overview</h2>
+<div id="tbl-pipeline" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-pipeline-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;1: Pipeline comparison across preprocessing approaches.
+</figcaption>
+<div aria-describedby="tbl-pipeline-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 14%">
+<col style="width: 42%">
+<col style="width: 23%">
+<col style="width: 18%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Step</th>
+<th style="text-align: left;">Original</th>
+<th style="text-align: left;">Proposed</th>
+<th style="text-align: left;">Original-MNE</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><strong>00: Reference channel</strong></td>
+<td style="text-align: left;">Fz reinserted</td>
+<td style="text-align: left;">—</td>
+<td style="text-align: left;">—</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>00: Montage</strong></td>
+<td style="text-align: left;">site1/2.locs → common.locs</td>
+<td style="text-align: left;">site2.locs</td>
+<td style="text-align: left;">site2.locs</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>00: Re-referencing</strong></td>
+<td style="text-align: left;">Linked mastoids (T9, T10)</td>
+<td style="text-align: left;">—</td>
+<td style="text-align: left;">—</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>01: Downsampling</strong></td>
+<td style="text-align: left;">1000 Hz → 250 Hz</td>
+<td style="text-align: left;">—</td>
+<td style="text-align: left;">—</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>01: Band-pass filter</strong></td>
+<td style="text-align: left;">0.1–30 Hz</td>
+<td style="text-align: left;">—</td>
+<td style="text-align: left;">—</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>01: Line noise removal</strong></td>
+<td style="text-align: left;">Notch at 50/60 Hz</td>
+<td style="text-align: left;">Notch at 50 Hz</td>
+<td style="text-align: left;">Notch at 50 Hz</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>02: Channel rejection</strong></td>
+<td style="text-align: left;">Automatic, iterative (&gt;20% epoch loss)</td>
+<td style="text-align: left;">—</td>
+<td style="text-align: left;">—</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>03/07: Trial rejection</strong></td>
+<td style="text-align: left;"><p>For ICA: Peak-to-peak (500 µV); absolute (500 µV); gradient (40 µV); minimum (0.1 µV)</p>
+<p>For main EEG: peak-to-peak (150 µV); absolute (150 µV); gradient (40 µV); minimum (0.1 µV)</p></td>
+<td style="text-align: left;"><p>For ICA: Absolute (500 µV); minimum (0.1 µV)</p>
+<p>For main EEG: Absolute (150 µV); minimum (0.1 µV)</p></td>
+<td style="text-align: left;">—</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>04: ICA algorithm</strong></td>
+<td style="text-align: left;">Runica</td>
+<td style="text-align: left;">Picard</td>
+<td style="text-align: left;">Infomax (extended)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>04: IC rejection</strong></td>
+<td style="text-align: left;">ICLabel; P(eye) &gt; P(brain)</td>
+<td style="text-align: left;">ICLabel on 1–100 Hz copy; P(brain) &lt; 40%</td>
+<td style="text-align: left;">—</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>05: Interpolation</strong></td>
+<td style="text-align: left;">Spherical spline</td>
+<td style="text-align: left;">—</td>
+<td style="text-align: left;">—</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>06: Early trial removal</strong></td>
+<td style="text-align: left;">First 10 trials per task</td>
+<td style="text-align: left;">—</td>
+<td style="text-align: left;">—</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>09: Trial-level averaging</strong></td>
+<td style="text-align: left;">Mean</td>
+<td style="text-align: left;">5% trimmed mean</td>
+<td style="text-align: left;">—</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>10: ERP quantification</strong></td>
+<td style="text-align: left;">Peak amplitude (240–340 ms, FCz)</td>
+<td style="text-align: left;">Peak, mean, and peak-to-peak amplitude</td>
+<td style="text-align: left;">Peak, mean, and peak-to-peak amplitude</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>11: Statistics</strong></td>
+<td style="text-align: left;">Paired t-test (RewP); one-way ANOVA + t-test (behavioral)</td>
+<td style="text-align: left;">+ permutation t-test (RewP)</td>
+<td style="text-align: left;">+ permutation t-test (RewP)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>12: Further Analysis</strong></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Decoding; Cross-time analysis</td>
+<td style="text-align: left;"></td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Notes:</p>
+<ol type="1">
+<li>“—” in the Proposed and Original-MNE columns indicates the step follows Original unless otherwise specified. Differences between Original and Original-MNE reflect toolkit constraints; differences between Original-MNE and Proposed reflect deliberate methodological choices.</li>
+<li>Infomax in MNE is equivalent to Runica in EEGLAB <span class="citation" data-cites="EEGLAB_ICA">(<a href="#ref-EEGLAB_ICA" role="doc-biblioref">EEGLAB Contributors n.d.b</a>)</span>. The extended variant was used as recommended by an MNE warning, though it is unclear whether this matches the version used in Original.</li>
+<li>ICLabel is implemented slightly differently between EEGLAB and MNE: ‘eye blinks’ and ‘eye movements’ are listed as separate categories in MNE but aggregated as ‘eye’ in EEGLAB.</li>
+</ol>
+</div>
+</div>
+</section>
+<section id="steps-0006-preprocessing" class="level2">
+<h2 class="anchored" data-anchor-id="steps-0006-preprocessing">Steps 00–06: Preprocessing</h2>
+<section id="step-00-adding-reference-channel-setting-montage-and-re-referencing" class="level3">
+<h3 class="anchored" data-anchor-id="step-00-adding-reference-channel-setting-montage-and-re-referencing">Step 00: Adding Reference Channel, Setting Montage, and Re-referencing</h3>
+<p><em>Refer to: <code>s00_add_reference.py</code></em></p>
+<p><strong>Purpose</strong> Raw EEG data is recorded relative to one or more reference electrode(s). Before any preprocessing, the electrode layout (montage) must be established so that MNE can interpret the spatial relationships between channels, which is required for later steps such as ICA, interpolation, and topographic visualization. Because the reference channel is recorded as all zeros and may not be stored in the raw data file, it must be reinserted manually before re-referencing can be applied. Re-referencing is standard practice in EEG signal processing, as the online reference may not be optimal for subsequent analysis.</p>
+<p><strong>Original Pipeline</strong> For the Oxford site, the channel ‘Fz’ is reinserted as the reference channel, yielding 32 channels in total. Original used the montage stored in <code>site1channellocations.locs</code> for the UVic site and <code>site2channellocations.locs</code> for the Oxford site. Because different recording caps were used at the two sites, signals were subsequently remapped to <code>common.locs</code> with channels added or removed accordingly. Original used linked mastoids (channels T9 and T10) for re-referencing, as mastoid positions are assumed to pick up little neural signal. If either T9 or T10 was rejected during channel dropping, only the remaining electrode was used as the reference.</p>
+<p><strong>Proposed Pipeline</strong> We followed the same reference channel and montage scheme as Original. Since we work exclusively with Oxford-site data, the cross-site remapping step is not required and has been omitted. The choice of mastoid referencing is not well motivated here and will be discussed further in the limitations section.</p>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Caution
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Re-referencing occurs after bad-channel dropping in Original, and consequently in Proposed as well. As we think this ordering is arbitrary for linked-mastoid referencing, it is described here for organizational clarity.</p>
+</div>
+</div>
+<hr>
+</section>
+<section id="step-01-downsampling-and-filtering" class="level3">
+<h3 class="anchored" data-anchor-id="step-01-downsampling-and-filtering">Step 01: Downsampling and Filtering</h3>
+<p><em>Refer to: <code>s01_downsample_filter.py</code></em></p>
+<p><strong>Purpose</strong> Raw EEG is sampled at a high frequency during recording, 1000 Hz in our case, which exceeds what is needed to resolve the neural signals of interest. Downsampling reduces memory and computation demands for all subsequent steps, while band-pass filtering confines the signal to the frequency range of interest and removes low- and high-frequency noise that would otherwise obscure the component.</p>
+<p><strong>Original Pipeline</strong> Original downsampled from 1000 Hz to 250 Hz, then applied a 0.1–30 Hz band-pass filter, followed by a notch filter at 50 Hz (Oxford site) or 60 Hz (UVic site) to suppress electrical line noise.</p>
+<p><strong>Proposed Pipeline</strong> We adopted the same parameters. A target rate of 250 Hz is well-suited to the analysis: it meaningfully reduces data size and satisfies the Nyquist criterion for the 30 Hz bandpass upper bound. MNE’s <code>.resample()</code> applies an anti-aliasing low-pass filter at 125 Hz automatically prior to downsampling, which serves the same purpose as the equivalent EEGLAB step and ensures no aliasing artifacts are introduced.</p>
+<p>A lower bound of 0.1 Hz is a well-established threshold suitable for attenuating slow drifts while preserving statistical power and minimising filter-induced artifacts <span class="citation" data-cites="Tanner2015">(<a href="#ref-Tanner2015" role="doc-biblioref">Tanner, Morgan-Short, and Luck 2015</a>)</span>. We retained 30 Hz as the upper bandpass bound rather than the more commonly used 40 Hz, following the original authors, as we thought RewP should fall well below this threshold.</p>
+<p>Since we have access only to Oxford-site data, the notch filter is uniformly set to 50 Hz.</p>
+<p><em>Ordering of downsampling and band-pass filtering:</em> We downsampled before applying the band-pass filter, matching Original. Applying multiple sequential filters in principle risks introducing more ringing artifacts. In practice, however, the 125 Hz anti-aliasing filter applied at downsampling is sufficiently far from the 30 Hz bandpass boundary that any interaction is negligible, so the ordering does not produce a meaningful difference here.</p>
+<p><em>Line noise filter choice:</em> We evaluated both a notch filter and a ZapLine filter and retained the notch filter. ZapLine was slower and left visible residual artifacts in some cases (<a href="#fig-zap_notch" class="quarto-xref">Figure&nbsp;5</a>). The necessity of any line-noise removal step after a 30 Hz bandpass is not self-evident, as 50 Hz lies well above the passband. However, we observed residual 50 Hz contamination in the power spectrum of several subjects after bandpass filtering alone (<a href="#fig-subject32-linenoise" class="quarto-xref">Figure&nbsp;3</a>), consistent with sub-harmonic leakage. The notch filter reliably resolved this, as shown in (<a href="#fig-subject32-no-linenoise" class="quarto-xref">Figure&nbsp;4</a>).</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Sanity Check — Filtering
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div id="fig-subject32-raw" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-subject32-raw-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="report_plots/raw_subject32.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-subject32-raw-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Subject 32 Raw PSD
+</figcaption>
+</figure>
+</div>
+<div id="fig-subject32-down" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-subject32-down-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="report_plots/downsampled_subject32.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-subject32-down-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Subject 32 Downsampled PSD
+</figcaption>
+</figure>
+</div>
+<div id="fig-subject32-linenoise" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-subject32-linenoise-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="report_plots/bandpass_only_subject32.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-subject32-linenoise-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: Subject 32 PSD without Line Noise Removal
+</figcaption>
+</figure>
+</div>
+<div id="fig-subject32-no-linenoise" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-subject32-no-linenoise-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="report_plots/bandpass_notch_subject32.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-subject32-no-linenoise-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: Subject 32 PSD with Line Noise Removed
+</figcaption>
+</figure>
+</div>
+<div id="fig-zap_notch" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-zap_notch-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="report_plots/notch_zapline_comp.png" class="img-fluid figure-img" style="width:70.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-zap_notch-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5: Comparison between Notch and ZapLine Filtering
+</figcaption>
+</figure>
+</div>
+<section id="to-reproduce-the-plots" class="level3">
+<h3 class="anchored" data-anchor-id="to-reproduce-the-plots">To reproduce the plots</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">With &lt;single_subject_processing.ipynb&gt; open</span><span class="kw">:</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">Set</span><span class="kw">:</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">SUBJECT</span><span class="kw">:</span><span class="at"> </span><span class="dv">32</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">INSPECTION_MODE</span><span class="kw">:</span><span class="at"> </span><span class="ch">TRUE</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">Navigate to</span><span class="kw">:</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="at">        Section — Examine Results of Filtering</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+</div>
+</div>
+<hr>
+</section>
+<section id="step-02-channel-rejection" class="level3">
+<h3 class="anchored" data-anchor-id="step-02-channel-rejection">Step 02: Channel Rejection</h3>
+<p><em>Refer to: <code>s02_drop_bad_channels.py</code>, <code>s08_find_bad_channels.py</code></em></p>
+<p><strong>Purpose</strong> Channels with poor signal quality due to, e.g., electrode displacement, high impedance, or persistent noise, can contaminate neighbouring channels and degrade ICA decomposition, and are therefore unacceptable even if they are not the direct target of analysis. Identifying and removing them before further processing prevents these artifacts from propagating through the pipeline.</p>
+<p><strong>Original Pipeline</strong> Rather than applying a fixed threshold or relying on manual inspection, Original uses an iterative two-loop structure. Bad channels are not identified upfront. Instead, after the first pass of ICA component rejection, any channel responsible for more than 20% of epoch rejections is flagged as bad and removed in the second loop. This defers the channel rejection decision until after the data-driven artifact cleaning stage, allowing the criterion to be based on observed trial-loss impact rather than signal statistics alone. The loop logic is illustrated in <a href="#fig-channel_logistics" class="quarto-xref">Figure&nbsp;6</a>.</p>
+<p><strong>Proposed Pipeline</strong> We adopted the same loop structure and threshold. The iterative approach is preferable to manual inspection for reproducibility, and the 20% epoch-loss criterion provides a principled, data-driven basis for dropping channels rather than relying on subjective visual judgment.</p>
+<div id="fig-channel_logistics" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-channel_logistics-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="report_plots/channelDroppingLogistics.png" class="img-fluid figure-img" style="width:50.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-channel_logistics-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6: Channel Dropping Logic
+</figcaption>
+</figure>
+</div>
+<hr>
+</section>
+<section id="step-03-epoch-rejection" class="level3">
+<h3 class="anchored" data-anchor-id="step-03-epoch-rejection">Step 03: Epoch Rejection</h3>
+<p><em>Refer to: <code>s03_07_trial_rejection.py</code></em></p>
+<p><strong>Purpose</strong> Even after channel-level rejection and ICA component removal, individual epochs may contain transient artifacts that would distort the averaged ERP if retained. Epoch rejection identifies and discards these trials before averaging.</p>
+<p><strong>Original Pipeline</strong> Trial rejection is applied at two points in the pipeline: once to the data used for ICA training (Step 03), and again after all preprocessing steps are complete (Step 07). In each pass, four criteria are applied to every epoch: a peak-to-peak amplitude threshold (500 µV for ICA; 150µV for ERP epochs), an absolute amplitude threshold (500 µV for ICA; 150µV for ERP epochs), a sample-to-sample gradient threshold (40 µV), and a minimum amplitude threshold (0.1 µV). An epoch failing any single criterion is rejected.</p>
+<p><strong>Proposed Pipeline</strong> MNE’s epoch rejection supports an absolute amplitude threshold and a minimum amplitude threshold, corresponding to the absolute and minimum criteria from Original. We applied these two criteria and omitted the peak-to-peak and gradient thresholds, accepting the trade-off between artifact sensitivity and implementation simplicity. Parameter values from Original are retained where criteria overlap. A practical benefit of MNE’s native rejection is that the full rejection log is accessible via <code>.drop_log</code>, making it straightforward to audit which trials were removed and why.</p>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Caution
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The epoch rejection applied to the main EEG signal is performed in Step 07, after epoching. It is described here for organizational clarity.</p>
+</div>
+</div>
+<hr>
+</section>
+<section id="step-04-ica" class="level3">
+<h3 class="anchored" data-anchor-id="step-04-ica">Step 04: ICA</h3>
+<p><em>Refer to: <code>s04_ICA.py</code></em></p>
+<p><strong>Purpose</strong> Independent component analysis (ICA) decomposes the multichannel EEG signal into statistically independent sources. Components corresponding to non-neural artifacts, such as eye blinks and heartbeat, can then be identified and removed before further analysis, without discarding entire trials or channels.</p>
+<p><strong>Original Pipeline</strong> Original runs Runica on epoched data time-locked to cue onset, preventing ICA from being driven by large transient distortions. Components are labelled using ICLabel in EEGLAB, and any component more likely to be eye-related than brain-related (P(eye) &gt; P(brain)) is removed from the continuous EEG signal.</p>
+<p><strong>Proposed Pipeline</strong> As in Original, we epoched <code>eeg_ICA</code> for ICA training and rejected epochs with excessive artifacts before decomposition, using the criteria described in Step 03. We used Picard rather than Runica <!-- TODO: add reasoning, e.g. convergence speed, numerical stability -->. We applied ICLabel for component classification.</p>
+<p>The key structural difference from Original is that rather than running ICA on the fully preprocessed signal, we created a separate copy of the data after downsampling (referred to as <code>eeg_ICA</code>) and applied a 1–100 Hz band-pass filter to this copy before ICA decomposition. A 1 Hz high-pass is recommended for ICA, as low-frequency drifts can distort the decomposition <span class="citation" data-cites="MNE_ICA">(<a href="#ref-MNE_ICA" role="doc-biblioref">MNE Contributors n.d.a</a>)</span>. Additionally, as ICLabel’s classifier was trained on data filtered to this range <!-- TODO: add ICLabel training citation -->, applying it to data filtered outside this range may reduce labelling accuracy. The ICA weights learned from <code>eeg_ICA</code> are then transferred to the main preprocessed signal.</p>
+<p>Manual inspection revealed that artifacts including heartbeat <!-- TODO: specify additional artifact types --> remained after applying Original’s rejection criterion, so we adopted a stricter threshold: components are excluded if their estimated probability of reflecting brain activity falls below 40%. This resulted in a substantially larger number of rejected components in Proposed compared to Original-MNE, as shown in <strong>?@fig-ica_comp</strong>.</p>
+<div id="cell-fig-ica-comp" class="cell" data-execution_count="1">
+<div class="cell-output cell-output-display">
+<div id="fig-ica-comp" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-ica-comp-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="_pipeline_files/figure-html/fig-ica-comp-output-1.png" width="1142" height="470" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ica-comp-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;7: Per-subject IC rejection count by pipeline. Dashed lines show group means.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<hr>
+</section>
+<section id="step-05-interpolation" class="level3">
+<h3 class="anchored" data-anchor-id="step-05-interpolation">Step 05: Interpolation</h3>
+<p><em>Refer to: <code>s05_interpolation.py</code></em></p>
+<p><strong>Purpose</strong> If one or more channels have been marked as bad and removed, the electrode locations they occupied are left empty. Interpolation reconstructs the missing channel signals from surrounding electrodes, restoring a complete channel set for subsequent analyses that depend on spatial completeness.</p>
+<p><strong>Original Pipeline</strong> Original used the default spherical interpolation method <span class="citation" data-cites="EEGLAB_interp">(<a href="#ref-EEGLAB_interp" role="doc-biblioref">EEGLAB Contributors n.d.a</a>)</span>.</p>
+<p><strong>Proposed Pipeline</strong> We used MNE’s default interpolation method, which is spherical spline <span class="citation" data-cites="MNE_interp">(<a href="#ref-MNE_interp" role="doc-biblioref">MNE Contributors n.d.b</a>)</span>, consistent with Original. We note that this choice was not deliberate as we were not aware of alternatives.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Sanity Check — Cleaning Inspection for Subject 27 (trial rejection not shown)
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div id="fig-cleaning" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-cleaning-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="report_plots/cleaning_compare.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-cleaning-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;8: EEG Signal before and after Cleaning
+</figcaption>
+</figure>
+</div>
+<div id="fig-iccomponent-27-prop" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-iccomponent-27-prop-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="report_plots/proposed_sub-27_excluded_ICs.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-iccomponent-27-prop-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;9: ICA Components Removed
+</figcaption>
+</figure>
+</div>
+<p>As shown in <a href="#fig-cleaning" class="quarto-xref">Figure&nbsp;8</a>, suspected artifacts from eye blinks (Fp1, Fp2), channel noise (TP9, TP10), and muscle activity (T7, T8), as identified by ICLabel (<a href="#fig-iccomponent-27-prop" class="quarto-xref">Figure&nbsp;9</a>), are largely attenuated after cleaning.</p>
+</div>
+</div>
+<hr>
+</section>
+<section id="step-06-early-trial-removal" class="level3">
+<h3 class="anchored" data-anchor-id="step-06-early-trial-removal">Step 06: Early Trial Removal</h3>
+<p><em>Refer to: <code>s06_early_trial_removal.py</code></em></p>
+<p><strong>Purpose</strong> At the start of each casino block, participants encountered a new set of slot machine cues for the first time. Early trials reflect initial familiarisation rather than stable cue–outcome learning, and including them would conflate learning-onset effects with the trained response patterns of interest.</p>
+<p><strong>Original Pipeline</strong> Original removes the first ten trials of each casino block to allow participants time to familiarise themselves with the new cue set.</p>
+<p><strong>Proposed Pipeline</strong> We retain the ten-trial cutoff. Given that each casino contains six distinct slot machines, the first ten trials provide only one to two exposures per cue, which is arguably insufficient to establish stable response tendencies before the removed trials end. A larger cutoff would be preferable from a signal quality standpoint, but given that we are working with less than half the original sample, further reducing trial counts risks leaving the analysis underpowered. We therefore follow the original authors’ decision as a deliberate compromise between data quality and quantity.</p>
+<hr>
+</section>
+</section>
+<section id="steps-07-09-making-erps" class="level2">
+<h2 class="anchored" data-anchor-id="steps-07-09-making-erps">Steps 07 &amp; 09: Making ERPs</h2>
+<p><em>Refer to: <code>s07_epoching.py</code>, <code>s03_07_trial_rejection.py</code>, <code>s09_make_erps.py</code></em></p>
+<p><strong>Purpose</strong> ERPs are constructed by segmenting the continuous EEG into short epochs time-locked to events of interest, then averaging across trials within each condition. Averaging attenuates stochastic neural activity, leaving the stimulus-locked component that is consistent across trials.</p>
+<p><strong>Original Pipeline</strong> Original constructs 800 ms epochs (−200 to +600 ms relative to event onset) for feedback-locked analysis, with a 200 ms pre-stimulus baseline correction. Epochs are averaged within conditions to produce eight ERPs: Low-Low Win, Low-Low Loss, Mid-Low Win, Mid-Low Loss, Mid-High Win, Mid-High Loss, High-High Win, and High-High Loss. Win–loss difference waves are then computed within each of the four task × cue conditions, yielding the difference ERPs used for RewP quantification.</p>
+<p><strong>Proposed Pipeline</strong> We used the same epoch boundaries, baseline correction window, and difference-wave procedure. Rather than computing a simple mean across trials, however, we used a 5% trimmed mean, excluding the most extreme 5% of trials at each tail before averaging. With roughly half the original sample available, the arithmetic mean is more susceptible to distortion by individual outlier trials, while the trimmed mean may reduce this sensitivity and improve the robustness of the condition averages.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Sanity Check — Butterfly Plots
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div id="fig-butterfly-ori" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-butterfly-ori-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="report_plots/butterfly_original.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-butterfly-ori-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;10: Butterfly Plot for Evokeds across Conditions — Original (learners only)
+</figcaption>
+</figure>
+</div>
+<div id="fig-butterfly-prop" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-butterfly-prop-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="report_plots/butterfly_proposed.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-butterfly-prop-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;11: Butterfly Plot for Evokeds across Conditions — Proposed (learners only)
+</figcaption>
+</figure>
+</div>
+<p>As shown in <a href="#fig-butterfly-ori" class="quarto-xref">Figure&nbsp;10</a> and <a href="#fig-butterfly-prop" class="quarto-xref">Figure&nbsp;11</a>, all evokeds converge near zero in the baseline window (−200 to 0 ms) and diverge only after stimulus onset, confirming that baseline correction functioned correctly in both pipelines. <!-- TODO: add further observations if needed --></p>
+</div>
+</div>
+<hr>
+</section>
+<section id="step-10-rewp-calculation" class="level2">
+<h2 class="anchored" data-anchor-id="step-10-rewp-calculation">Step 10: RewP Calculation</h2>
+<p><em>Refer to: <code>s10_rewp_calculation.py</code></em></p>
+<p><strong>Purpose</strong> The reward positivity (RewP) is a positive-going ERP thought to index a reward prediction error signal generated in anterior cingulate cortex and is the primary dependent variable of the present analysis.</p>
+<p><strong>Original Pipeline</strong> Original quantifies the RewP as the peak voltage within the 240–340 ms window at channel FCz, taken from the win–loss difference ERPs, following the recommendations of <span class="citation" data-cites="SambrookGoslin2015">Sambrook and Goslin (<a href="#ref-SambrookGoslin2015" role="doc-biblioref">2015</a>)</span>.</p>
+<p><strong>Proposed Pipeline</strong> We compute the RewP using three methods — peak amplitude (as in Original), mean amplitude, and peak-to-peak amplitude, which captures the full deflection relative to the preceding negativity — to assess whether the choice of quantification approach affects the pattern of results. Following Original, we compute difference waves by subtracting the loss ERP from the win ERP within each condition, thereby minimising component overlap and allowing amplitude differences to be attributed to the RewP.</p>
+<hr>
+</section>
+<section id="step-11-statistical-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="step-11-statistical-analysis">Step 11: Statistical Analysis</h2>
+<p><em>Refer to: <code>behavior_task_value</code>, <code>stats.rewp_sccores.py</code>, <code>stats.inerence_parametric.py</code>, <code>stats.inference_permutation_test.py</code></em></p>
+<p><strong>Purpose</strong> Statistical analysis provides a systematic framework for interpreting the derived results, allowing us to assess the direction and magnitude of condition differences and to evaluate whether conclusions are reliable given the available sample size.</p>
+<p><strong>Original Pipeline</strong> Inferential statistics in the original study were conducted on the main learner sample. For the behavioural data, the mean proportion of winning trials across the low-, mid-, and high-value tasks was analysed using a one-way repeated-measures ANOVA, and effect sizes were reported as partial and generalized eta-squared. In addition, mean performance was compared between the mid- and high-value tasks using a paired-samples t-test, where performance was defined as the proportion of correct responses to high-value cues.</p>
+<p>For the Rewp analysis, the original study used paired-samples t-tests on RewP scores. To avoid confounding task-value effects with differences in outcome frequency, only conditions with matched outcome frequencies were compared: (Low-Low vs Mid-Low), and (Mid-High vs High-High). Cohen’s d for paired-samples t-tests was also reported. For all t-tests, the authors assessed normality using the Shapiro–Wilk test on each variable separately rather than on paired difference scores, and no correction was applied when non-normality was observed because the t-test was considered sufficiently robust.</p>
+<p><strong>Proposed Pipeline</strong><br>
+We retained the original inferential structure but adapted it to our reduced sample size. Specifically, we reproduced the behavioural ANOVA and paired t-test, as well as the two planned RewP comparisons. Because only 12 participants were available, including 8 learners, we additionally analysed the full sample as a sensitivity analysis. We also evaluated Shapiro–Wilk normality on paired difference scores rather than on each variable separately, as this is more directly aligned with the assumptions of the paired t-test. Finally, we supplemented the paired t-tests with exact paired permutation tests to provide a non-parametric robustness check.</p>
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-EEGLAB_interp" class="csl-entry" role="listitem">
+EEGLAB Contributors. n.d.a. <span>“Eeg_interp.m — <span>EEGLAB</span> Source.”</span> Accessed March 31, 2026. <a href="https://github.com/sccn/eeglab/blob/develop/functions/popfunc/eeg_interp.m">https://github.com/sccn/eeglab/blob/develop/functions/popfunc/eeg_interp.m</a>.
+</div>
+<div id="ref-EEGLAB_ICA" class="csl-entry" role="listitem">
+———. n.d.b. <span>“Run <span>ICA</span> — <span>EEGLAB</span> Tutorial.”</span> Accessed March 31, 2026. <a href="https://eeglab.org/tutorials/06_RejectArtifacts/RunICA.html#run-ica">https://eeglab.org/tutorials/06_RejectArtifacts/RunICA.html#run-ica</a>.
+</div>
+<div id="ref-MNE_ICA" class="csl-entry" role="listitem">
+MNE Contributors. n.d.a. <span>“<span>ICA</span> — <span>MNE</span> 1.0 Documentation.”</span> Accessed March 31, 2026. <a href="https://mne.tools/stable/generated/mne.preprocessing.ICA.html">https://mne.tools/stable/generated/mne.preprocessing.ICA.html</a>.
+</div>
+<div id="ref-MNE_interp" class="csl-entry" role="listitem">
+———. n.d.b. <span>“Interpolate Bad Channels — <span>MNE</span> Documentation.”</span> Accessed March 31, 2026. <a href="https://mne.tools/stable/auto_examples/preprocessing/interpolate_bad_channels.html">https://mne.tools/stable/auto_examples/preprocessing/interpolate_bad_channels.html</a>.
+</div>
+<div id="ref-SambrookGoslin2015" class="csl-entry" role="listitem">
+Sambrook, Thomas D., and Jeremy Goslin. 2015. <span>“A Neural Reward Prediction Error Revealed by a Meta-Analysis of <span>ERPs</span> Using Great Grand Averages.”</span> <em>Psychological Bulletin</em> 141 (1): 213–35. <a href="https://doi.org/10.1037/bul0000006">https://doi.org/10.1037/bul0000006</a>.
+</div>
+<div id="ref-Tanner2015" class="csl-entry" role="listitem">
+Tanner, Darren, Kara Morgan-Short, and Steven J. Luck. 2015. <span>“How Inappropriate High-Pass Filters Can Produce Artifactual Effects and Incorrect Conclusions in <span>ERP</span> Studies of Language and Cognition.”</span> <em>Psychophysiology</em> 52 (8): 997–1009. <a href="https://doi.org/10.1111/psyp.12437">https://doi.org/10.1111/psyp.12437</a>.
+</div>
+</div></section></div></main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

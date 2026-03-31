@@ -10,6 +10,7 @@ title-block-banner: true
 title-block-style: default
 
 bibliography: bibliography.bib
+csl: apa.csl
 
 author: 
 - name: Qianyue Li

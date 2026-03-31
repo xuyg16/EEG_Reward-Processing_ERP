@@ -1,21 +1,28 @@
-Reward processing in the anterior cingulate cortex (ACC) has been extensively studied, yet its precise role in decision-making remains a matter of ongoing debate. As part of the course Signal Processing and Analysis of Human Brain Potentials (EEG), this project seeks to reproduce the ERP analysis from the study Task-level Value Affects Trial-level Reward Processing(ref). The study focuses on how task-level value modulates trial-level reward processing in EEG data. In this report, we outline our proposed analysis pipeline, present our findings, and further describe an extension involving decoding analysis. In addition, we provide access to the GitHub code repository, along with code documentation, configuration files, and environment setup instructions.
+---
+title: "Introduction"
+format: html
+bibliography: bibliography.bib
+---
+
+
+Reward processing in the anterior cingulate cortex (ACC) has been extensively studied, yet its precise role in decision-making remains a matter of ongoing debate. As part of the course Signal Processing and Analysis of Human Brain Potentials (EEG), this project seeks to reproduce the *ERP analysis from the study Task-level Value Affects Trial-level Reward Processing*[-@hassall_task-level_2022]. The study focuses on how task-level value modulates trial-level reward processing in EEG data. In this report, we outline our proposed analysis pipeline, present our findings, and further describe an extension involving decoding analysis. In addition, we provide access to the GitHub code repository, along with code documentation, configuration files, and environment setup instructions.
 
 ## Background
-ACC, as part of the frontal cortex, comprises complex mechanisms and interacts closely with other cortical structures. Its precise cognitive role remains under ongoing debate (George et al., 2000; Rolls, 2023). Nevertheless, existing literature strongly suggests that the ACC is involved in action-outcome learning, particularly in relation to reward processing (James, 2026). These action-outcome learning properties can be understood within a reinforcement learning (RL) framework, in which learning is driven by feedback that is better or worse than expected (Sutton & Barto, 2018). Within this account, reward prediction error (RPE) magnitude has been linked to the reward positivity (RewP), an event-related potential (ERP) component thought to reflect reward-related ACC activity (The Reward James, 2026).
+ACC, as part of the frontal cortex, comprises complex mechanisms and interacts closely with other cortical structures. Its precise cognitive role remains under ongoing debate [-@bush_cognitive_2000; -@rolls_emotion_2023]. Nevertheless, existing literature strongly suggests that the ACC is involved in action-outcome learning, particularly in relation to reward processing. These action-outcome learning properties can be understood within a reinforcement learning (RL) framework [-@holroyd_best_2020], in which learning is driven by feedback that is better or worse than expected. Within this account, reward prediction error (RPE) magnitude has been linked to the reward positivity (RewP), an event-related potential (ERP) component thought to reflect reward-related ACC activity [-@cavanagh_reward_2026; -@cockburn_feedback_2018].
+
 In the context of win/loss decision-making, different RL frameworks assign different roles to the ACC, ranging from standard trial-based RL accounts to model-based and hierarchical RL accounts. An important question is how the global environment and the current task influence RPEs, and how the RewP changes in the context of a task or a series of tasks.
 
 
 ## Overview of the Replication Study
-The study by Hassall et al. investigated a fundamental question: Whether and how reward-related ACC activity, as indexed by RewP, varies with task value. While traditional reinforcement learning models focus on trial-by-trial outcomes, the authors hypothesized that average task value would significantly modulate the neural response to individual feedback. 
+The study by Hassall et al [-@hassall_task-level_2022]investigated a fundamental question: Whether and how reward-related ACC activity, as indexed by RewP, varies with task value. While traditional reinforcement learning models focus on trial-by-trial outcomes, the authors hypothesized that average task value would significantly modulate the neural response to individual feedback. 
 
 To isolate the effect of task value from trial-level expectancy, the authors designed a "Casino" task where participants gambled in three distinct environments: 
 •	Low-Value Task: Contained only low-value "slot machines" (50% win probability and no preferred right arm). 
 •	Mid-Value Task: Contained a mixture of high-value (80% win probability if choosing the right arm) and low-value machines. 
 •	High-Value Task: Contained only high-value slot machines. 
-•	
 Crucially, the reward magnitude remained identical across all tasks. By including the same high-value cue in both the Mid-Value and High-Value tasks, the researchers could compare the neural response to the exact same objective outcome in different global contexts. 
 
-The primary neural metric was the Reward Positivity (RewP), an Event-Related Potential (ERP) component typically recorded at electrode FCz between 240 and 340 ms following feedback. The RewP is widely considered a "readout" of the midbrain dopamine system's response to outcomes, indicating whether events are better or worse than expected. 
+The primary neural metric was RewP, an ERP component typically recorded at electrode FCz between 240 and 340 ms following feedback. The RewP is widely considered a "readout" of the midbrain dopamine system's response to outcomes, indicating whether events are better or worse than expected. 
 
 The authors found that the RewP was significantly reduced when the average task value was high. Specifically, the RewP following high-value cues was smaller in the High-Value task than in the Mid-Value task, despite the reward expectancy being the same in both. The authors proposed that high average reward rates increase tonic dopamine, which suppresses the phasic dopamine response (the RewP) to individual wins. 
 

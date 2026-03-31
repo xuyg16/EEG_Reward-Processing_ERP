@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>results</title>
+<title>introduction</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -23,18 +23,18 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="_results_files/libs/clipboard/clipboard.min.js"></script>
-<script src="_results_files/libs/quarto-html/quarto.js" type="module"></script>
-<script src="_results_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="_results_files/libs/quarto-html/axe/axe-check.js" type="module"></script>
-<script src="_results_files/libs/quarto-html/popper.min.js"></script>
-<script src="_results_files/libs/quarto-html/tippy.umd.min.js"></script>
-<script src="_results_files/libs/quarto-html/anchor.min.js"></script>
-<link href="_results_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="_results_files/libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="_results_files/libs/bootstrap/bootstrap.min.js"></script>
-<link href="_results_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="_results_files/libs/bootstrap/bootstrap-d6a003b94517c951b2d65075d42fb01b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="_introduction_files/libs/clipboard/clipboard.min.js"></script>
+<script src="_introduction_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="_introduction_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="_introduction_files/libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="_introduction_files/libs/quarto-html/popper.min.js"></script>
+<script src="_introduction_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="_introduction_files/libs/quarto-html/anchor.min.js"></script>
+<link href="_introduction_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="_introduction_files/libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="_introduction_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="_introduction_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="_introduction_files/libs/bootstrap/bootstrap-d6a003b94517c951b2d65075d42fb01b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 
 
 </head>
@@ -48,37 +48,20 @@ ul.task-list li input[type="checkbox"] {
 
 
 
-<section id="statistical-results" class="level1">
-<h1>Statistical results</h1>
-<section id="behavioral-results" class="level2">
-<h2 class="anchored" data-anchor-id="behavioral-results">Behavioral results</h2>
-<p><em>Main analysis (learners only).</em> In the learner-only sample (n = 8), the behavioral manipulation was preserved. The mean proportion of winning trials increased across task values, from 50.06% (95% CI [48.06, 52.06]) in the low-value task to 60.35% (95% CI [56.09, 64.60]) in the mid-value task and 64.72% (95% CI [59.02, 70.42]) in the high-value task, F(2,14) = 14.30, p &lt; .001, ηp² = 0.67, ηg² = 0.62. This pattern is qualitatively consistent with the original study, in which win rates also increased with task value. <img src="images/winrates_learner.png" class="img-fluid"></p>
-<p>Mean performance, defined as the proportion of correct responses to high-value cues, was numerically higher in the mid-value block (80.81%, 95% CI [73.96, 87.67]) than in the high-value block (74.77%, 95% CI [64.16, 85.37]), but this difference was not statistically significant, t(7) = 1.22, p = .263, Cohen’s d = 0.43. This is in line with the original study, which likewise reported no reliable difference between these two task contexts.</p>
-<p>As a sensitivity analysis, we repeated the same behavioral tests in the full available sample (n = 12). The overall pattern was similar: win rates still differed across task values, F(2,22) = 14.08, p &lt; .001, ηp² = 0.56, ηg² = 0.42, and mean performance remained numerically higher in the mid-value block (72.76%, 95% CI [63.64, 81.87]) than in the high-value block (66.92%, 95% CI [56.92, 76.93]), although this comparison again did not reach significance, t(11) = 1.55, p = .149, Cohen’s d = 0.45.</p>
+<p>Reward processing in the anterior cingulate cortex (ACC) has been extensively studied, yet its precise role in decision-making remains a matter of ongoing debate. As part of the course Signal Processing and Analysis of Human Brain Potentials (EEG), this project seeks to reproduce the <em>ERP analysis from the study Task-level Value Affects Trial-level Reward Processing</em><span class="citation" data-cites="hassall_task-level_2022">[-@hassall_task-level_2022]</span>. The study focuses on how task-level value modulates trial-level reward processing in EEG data. In this report, we outline our proposed analysis pipeline, present our findings, and further describe an extension involving decoding analysis. In addition, we provide access to the GitHub code repository, along with code documentation, configuration files, and environment setup instructions.</p>
+<section id="background" class="level2">
+<h2 class="anchored" data-anchor-id="background">Background</h2>
+<p>ACC, as part of the frontal cortex, comprises complex mechanisms and interacts closely with other cortical structures. Its precise cognitive role remains under ongoing debate <span class="citation" data-cites="bush_cognitive_2000 rolls_emotion_2023">[-@bush_cognitive_2000; -@rolls_emotion_2023]</span>. Nevertheless, existing literature strongly suggests that the ACC is involved in action-outcome learning, particularly in relation to reward processing. These action-outcome learning properties can be understood within a reinforcement learning (RL) framework <span class="citation" data-cites="holroyd_best_2020">[-@holroyd_best_2020]</span>, in which learning is driven by feedback that is better or worse than expected. Within this account, reward prediction error (RPE) magnitude has been linked to the reward positivity (RewP), an event-related potential (ERP) component thought to reflect reward-related ACC activity <span class="citation" data-cites="cavanagh_reward_2026 cockburn_feedback_2018">[-@cavanagh_reward_2026; -@cockburn_feedback_2018]</span>.</p>
+<p>In the context of win/loss decision-making, different RL frameworks assign different roles to the ACC, ranging from standard trial-based RL accounts to model-based and hierarchical RL accounts. An important question is how the global environment and the current task influence RPEs, and how the RewP changes in the context of a task or a series of tasks.</p>
 </section>
-<section id="rewp-results" class="level2">
-<h2 class="anchored" data-anchor-id="rewp-results">RewP results</h2>
-<p>For the learner-only sample, the planned RewP comparisons did not reveal reliable task-level differences. For high-value cues, the RewP was 0.94 μV (95% CI [-3.44, 5.32]) in the mid-value task and 1.94 μV (95% CI [-2.38, 6.26]) in the high-value task, with no evidence of a significant difference, t(7) = -0.87, p = .411, Cohen’s d = -0.31. The exact paired permutation test supported the same conclusion (p = .359). For low-value cues, the RewP was 2.85 μV (95% CI [-0.78, 6.49]) in the mid-value task and 2.76 μV (95% CI [-2.33, 7.86]) in the low-value task, again with no reliable difference, t(7) = 0.04, p = .967, Cohen’s d = 0.02; the paired permutation result was likewise non-significant (p = .992).</p>
-<p>The full-sample sensitivity analysis (n = 12) showed the same overall pattern. For high-value cues, the RewP was 0.89 μV (95% CI [-1.79, 3.57]) in the mid-value task and 2.57 μV (95% CI [-0.21, 5.34]) in the high-value task, yielding a non-significant comparison, t(11) = -2.04, p = .066, Cohen’s d = -0.59; the paired permutation test gave a nearly identical result (p = .064). For low-value cues, the RewP was 2.39 μV (95% CI [-0.10, 4.89]) in the mid-value task and 2.82 μV (95% CI [-0.31, 5.95]) in the low-value task, with no evidence of a difference, t(11) = -0.30, p = .771, Cohen’s d = -0.09; the paired permutation result was again non-significant (p = .806).</p>
-<p>Overall, these findings only partially match the original study. Similar to the original report, the low-value cue comparison did not show a reliable RewP difference. However, the critical high-value cue comparison was not replicated: whereas the original study found a larger RewP in the mid-value than in the high-value task, our data did not show a significant difference, and the numerical trend was in the opposite direction.</p>
-</section>
-<section id="relationship-between-rewp-and-performance" class="level2">
-<h2 class="anchored" data-anchor-id="relationship-between-rewp-and-performance">Relationship between RewP and performance</h2>
-<p>Across all available participants (n = 12), the difference in RewP between the mid-value and high-value tasks was positively correlated with behavioral performance (r = 0.46, p = .135). Thus, the direction of the association matched the original study, but the effect was not statistically significant in the reduced sample. The original study reported a significant positive association across participants.</p>
-</section>
-</section>
-<section id="rewp-results-1" class="level1">
-<h1>RewP results</h1>
-<section id="feedback-locked-eegrewp" class="level2">
-<h2 class="anchored" data-anchor-id="feedback-locked-eegrewp">Feedback-locked EEG(Rewp)</h2>
-<p>As illustrated in the figures comparing all subjects (<span class="citation" data-cites="Fig">@Fig</span> ERP_All_Proposed) and the subgroup of learners (<span class="citation" data-cites="Fig">@Fig</span> ERP_Learners_Proposed), a consistent trend in ERP morphology was observed. Within the specified Reward Positivity window (240-340ms), win events (red) exhibited a more positive-going trend compared to loss events (blue), consistent with the expected RewP effect.</p>
-<p>Another finding is this positivity by task value. Specifically, for win outcomes, the Mid-Low Win condition demonstrated a greater positivity than the Low-Low Win, and the High-High Win trended higher than the Mid-High Win. This suggests a positive relationship between the increase in task value and RewP amplitude when cue values remain constant.</p>
-<p>While loss conditions followed a similar trend (Mid-Low Loss being more positive than Low-Low Loss), the difference between Mid-High Loss and High-High Loss was negligible. These trends were maintained when filtering the data to include only learners, suggesting that the physiological response to reward prediction error is robust across these samples.</p>
-<p>To isolate the brain response specific to reward, difference waves were calculated by subtracting the Loss ERPs from the Win ERPs for each condition (<span class="citation" data-cites="Fig">@Fig</span> Rewp_all_proposed, <span class="citation" data-cites="Rewp_learners_proposed">@Rewp_learners_proposed</span>). While the raw ERPs showed a clear positive relationship between task value and amplitude, this relationship appears weaker in the difference waves.</p>
-<p>In the learners’ group (<span class="citation" data-cites="Fig">@Fig</span> Rewp_learners_proposed), the High-High and Mid-High conditions show a distinct separation within the observed window, suggesting that higher task values still modulate the RewP even after calculating difference waves (Win minus Loss). However, in the Low-Low and Mid-Low conditions, the difference waves exhibit greater fluctuation and overlap. This likely reflects higher participant engagement or a greater number of retained trials in these two conditions, whereas the lower trial count in low-value cue conditions reduced the Signal-to-Noise Ratio (SNR), making the ERP morphology less stable.</p>
-<p>While our results replicate the general presence of a RewP (greater positivity for Wins vs.&nbsp;Losses), several nuances differ from the original study. The original authors reported that the RewP following high-value cues was reduced in high-value tasks compared to mid-value tasks (<span class="citation" data-cites="Fig">@Fig</span> Rewp_plot_from_paper). In contrast, our smaller dataset showed a more linear relationship, where higher absolute task values generally maintained higher amplitudes.</p>
-<p>Additionally, we observed a distinct peak at approximately 300ms for the Mid-Low condition, whereas the original study showed a smoother wave with low amplitude. These differences are likely attributable to the sample size. With half the original participants, our results are more susceptible to individual variability and lower SNR, which can emphasize local peaks that are typically smoothed out in larger dataset.</p>
-</section>
+<section id="overview-of-the-replication-study" class="level2">
+<h2 class="anchored" data-anchor-id="overview-of-the-replication-study">Overview of the Replication Study</h2>
+<p>The study by Hassall et al <span class="citation" data-cites="hassall_task-level_2022">[-@hassall_task-level_2022]</span>investigated a fundamental question: Whether and how reward-related ACC activity, as indexed by RewP, varies with task value. While traditional reinforcement learning models focus on trial-by-trial outcomes, the authors hypothesized that average task value would significantly modulate the neural response to individual feedback.</p>
+<p>To isolate the effect of task value from trial-level expectancy, the authors designed a “Casino” task where participants gambled in three distinct environments: • Low-Value Task: Contained only low-value “slot machines” (50% win probability and no preferred right arm). • Mid-Value Task: Contained a mixture of high-value (80% win probability if choosing the right arm) and low-value machines. • High-Value Task: Contained only high-value slot machines. Crucially, the reward magnitude remained identical across all tasks. By including the same high-value cue in both the Mid-Value and High-Value tasks, the researchers could compare the neural response to the exact same objective outcome in different global contexts.</p>
+<p>The primary neural metric was RewP, an ERP component typically recorded at electrode FCz between 240 and 340 ms following feedback. The RewP is widely considered a “readout” of the midbrain dopamine system’s response to outcomes, indicating whether events are better or worse than expected.</p>
+<p>The authors found that the RewP was significantly reduced when the average task value was high. Specifically, the RewP following high-value cues was smaller in the High-Value task than in the Mid-Value task, despite the reward expectancy being the same in both. The authors proposed that high average reward rates increase tonic dopamine, which suppresses the phasic dopamine response (the RewP) to individual wins.</p>
+<p>This study provided critical evidence that the human brain does not process rewards in a vacuum but the ACC tracks the task value to determine how much weight to give to individual successes and failures.</p>
+<p>Building on the author’s ERP pipelines, we propose our own pipelines to assess whether we can replicate the paper’s results. Noted that we can not get access to all the data. Given the situation that we just have only the data from half of the participants, our results came out differently. Furthermore, by implementing both single-window and time-resolved decoding analyses, we aimed to provide an extended, albeit limited, perspective on reward processing.  </p>
 </section>
 
 </main>
