@@ -59,13 +59,17 @@ eeg_reward/
 │   ├── decoding/             # epoch I/O and decoding notebooks
 │   ├── single_subject_processing.ipynb
 │   └── multi_subject_processing.ipynb
-├── output_mne/               # generated epochs, decoding outputs, logs, stats
-├── ICA_objects/              # saved ICA objects
-├── plots/                    # exported figures
+├── output_mne/               # generated outputs
+│   ├── logs/                 # runtime logs, cleared on a fresh rerun
+│   ├── stats/                # saved result tables / summaries
+│   ├── epochs/               # reusable saved epochs
+│   ├── ICA_objects/          # saved ICA decompositions
+│   └── plots/                # exported figures
 ├── report/                   # Quarto report and rendered output
 ├── presentation/
 └── research/
 ```
+
 
 
 ## Recommended Reproduction Order
