@@ -8,12 +8,6 @@ import mne
 def show_single_psd(eeg_data, y_min=-50, y_max=50, picks=None, title=None):
     '''
     Plot the power spectral density (PSD) of EEG data.
-
-    :param eeg_data: MNE Raw or Epochs object
-    :param y_min: Minimum y-axis value for the plot
-    :param y_max: Maximum y-axis value for the plot
-    :param picks: Channels to include in the plot
-    :param title: Title for the plot
     '''
     eeg_psd = eeg_data.compute_psd().plot(picks=picks, show=False)
     ax = eeg_psd.axes[0]
@@ -28,16 +22,6 @@ def show_single_psd(eeg_data, y_min=-50, y_max=50, picks=None, title=None):
 def psd_compare(eegs, labels, title, figsize=(8, 6), picks=['FCz'], y_min=-46.4, y_max=-46, x_min=49.5, x_max=50.5):
     '''
     Compare power spectral density (PSD) of EEG data across different preprocessing strategies.
-
-    :param eegs: List of MNE Raw or Epochs objects
-    :param labels: List of labels for each EEG object
-    :param title: Title for the plot
-    :param figsize: Figure size tuple (width, height)
-    :param picks: Channels to include in the plot
-    :param y_min: Minimum y-axis value for the plot
-    :param y_max: Maximum y-axis value for the plot
-    :param x_min: Minimum x-axis value for the plot
-    :param x_max: Maximum x-axis value for the plot
     '''
     fig, ax = plt.subplots(1, 1, figsize=figsize)
     freqs = eegs[0].compute_psd(picks=picks).freqs  # assuming the same sfreq
@@ -76,10 +60,6 @@ def psd_compare(eegs, labels, title, figsize=(8, 6), picks=['FCz'], y_min=-46.4,
 def iclabel_visualize(ica, ic_labels, exclude_idx=None, show=False, trials=None, save_path=None):
     '''
     Visualize Independent Component Analysis (ICA) components with their corresponding labels and probabilities.
-    
-    :param ica: ica object
-    :param ic_labels: Dictionary containing 'labels' and 'y_pred_proba'
-    :param trials: MNE Epochs object for plotting components. Only needed if want interactive plot with topographies.
     '''
     label_dict = ['brain', 'muscle', 'eye blink', 'eye movement', 'heart', 'line noise', 'channel noise', 'other']
 
@@ -126,13 +106,6 @@ def iclabel_visualize(ica, ic_labels, exclude_idx=None, show=False, trials=None,
 def plot_erp(evokeds, channel='FCz', mean_window=[0.240, 0.340], ylim=[-5, 10], diff=False, title=None):
     '''
     Plot ERP waveforms with mean amplitude window shading.
-    
-    :param evokeds: Dictionary of MNE Evoked objects
-    :param channel: Channel name to plot
-    :param mean_window: Tuple indicating the start and end of the mean amplitude window (in seconds)
-    :param colors: colors for each condition
-    :param linestyles: linestyles for each condition
-    :param title: Title for the plot
     '''
     if diff:
         colors = {
@@ -175,14 +148,10 @@ def plot_erp(evokeds, channel='FCz', mean_window=[0.240, 0.340], ylim=[-5, 10], 
     axes.axvspan(mean_window[0], mean_window[1], color='gray', alpha=0.2, label=f'Mean Window ({mean_window[0]*1000:.0f}-{mean_window[1]*1000:.0f}ms)')
     plt.show();
 
-# NOTE: need to change to average calculation instead of timepoints
+
 def plot_topo_serires(evokeds, times = [0.18, 0.22, 0.26, 0.30, 0.34, 0.38], vlimit = (-5, 5)):
     '''
     Plot topo sereies for the grand average erps
-    
-    :param evokeds: input grand averages
-    :param times: time points for each single topography
-    :param vlimit: amplitude limites for the topographies
     '''
     for condition, evoked in evokeds.items():
         print(f"Plotting Topomap for: {condition}")
@@ -193,8 +162,6 @@ def plot_topo_serires(evokeds, times = [0.18, 0.22, 0.26, 0.30, 0.34, 0.38], vli
 def plot_butterfly_evokeds(evokeds_dict, title=None):
     '''
     Plot butterfly plot for evoked data across all conditions.
-    :param evokeds_dict: Dictionary of MNE Evoked objects
-    :param title: Title for the plot
     '''
     all_condition_evoked = mne.grand_average(list(evokeds_dict.values()))
     all_condition_evoked.plot(titles=title);
@@ -202,6 +169,9 @@ def plot_butterfly_evokeds(evokeds_dict, title=None):
 
 
 def plot_cleaning_compare(before_eeg, after_eeg, tmin=100, tmax=105, title=None):
+    '''
+    Plot butterfly plot comparing EEG data before and after cleaning.
+    '''
     mask_before = (before_eeg.times >= tmin) & (before_eeg.times <= tmax)
     mask_after = (after_eeg.times >= tmin) & (after_eeg.times <= tmax)
 
@@ -244,6 +214,9 @@ def plot_cleaning_compare(before_eeg, after_eeg, tmin=100, tmax=105, title=None)
 
 
 def plot_binning_results(rewp_per_subject_binned, title='RewP Mean Amplitude Across Chronological Bins', figsize=(12, 6), std=False):
+    '''
+    Plot the mean RewP amplitude across chronological bins for each condition, with optional standard error shading.
+    '''
     plt.figure(figsize=figsize)
 
     conditions = ['Low-Low', 'Mid-Low', 'Mid-High', 'High-High']
@@ -295,6 +268,9 @@ def plot_binning_results(rewp_per_subject_binned, title='RewP Mean Amplitude Acr
 
 
 def plot_behavior_task_value(df, title='Behavioral manipulation check: win rate by task value', figsize=(8, 5)):
+    '''
+    Plot behavioral manipulation check for win rate by task value.
+    '''
     required = ['low', 'mid', 'high']
     missing = [col for col in required if col not in df.columns]
     if missing:

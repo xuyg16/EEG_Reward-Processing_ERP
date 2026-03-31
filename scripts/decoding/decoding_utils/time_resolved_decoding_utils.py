@@ -19,6 +19,9 @@ except ImportError:
 
 
 def decode_context(epochs: mne.Epochs, context: str, n_splits: int = 5):
+    '''
+    Perform time-resolved decoding of feedback outcome (win vs. loss) for a single context.
+    '''
     mask = epochs.metadata["context"] == context
     if int(mask.sum()) == 0:
         raise RuntimeError(f"No epochs available for context '{context}'.")
@@ -57,6 +60,9 @@ def decode_context(epochs: mne.Epochs, context: str, n_splits: int = 5):
 
 
 def summarize_subject(subject_id: str, context: str, result: dict, window_start: float, window_end: float) -> dict:
+    '''
+    Extract summary metrics for a single subject-context decoding result, focusing on a specified time window.
+    '''
     times = result["times"]
     window_mask = (times >= window_start) & (times <= window_end)
     if not np.any(window_mask):
@@ -80,6 +86,9 @@ def summarize_subject(subject_id: str, context: str, result: dict, window_start:
 
 
 def compute_group_stats(summary_df: pd.DataFrame, contexts: list[str]) -> dict:
+    '''
+    Compute group-level statistics from the summary DataFrame, including means, stds, and paired comparisons if applicable.
+    '''
     group_stats = {
         "contexts": contexts,
         "subjects": sorted(summary_df["subject_id"].unique().tolist()),
@@ -115,6 +124,9 @@ def save_outputs(
     group_stats: dict,
     timecourse_store: dict,
 ):
+    '''
+    Save the summary DataFrame, group statistics, and time-resolved decoding results to disk in a structured format.
+    '''
     output_dir = Path(output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
 
@@ -146,6 +158,9 @@ def run_group_decoding(
     root_dir: Path | None = None,
     logger=None,
 ):
+    '''
+    Run the full group-level time-resolved decoding analysis, including loading epochs, performing decoding, summarizing results, and computing group statistics.
+    '''
     summary_rows = []
     timecourse_store = {}
 

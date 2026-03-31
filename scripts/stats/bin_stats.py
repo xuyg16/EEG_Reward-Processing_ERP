@@ -6,13 +6,16 @@ import pingouin as pg
 
 
 def bin1_vs_bin5_stats(rewp_per_subject, conditions):
+    '''
+    Perform paired t-tests comparing bin 1 vs bin 5 for each condition, with Bonferroni correction.
+    '''
     results = {}
     pvals = []
     
     for cond in conditions:
         bin1 = rewp_per_subject[cond][:, 0]
         bin5 = rewp_per_subject[cond][:, -1]
-        mask = ~np.isnan(bin1) & ~np.isnan(bin5)
+        mask = ~np.isnan(bin1) & ~np.isnan(bin5)    # Only include subjects with valid data in both bins
         bin1_clean, bin5_clean = bin1[mask], bin5[mask]
         
         t, p = stats.ttest_rel(bin1_clean, bin5_clean)
@@ -35,6 +38,9 @@ def bin1_vs_bin5_stats(rewp_per_subject, conditions):
 
 
 def rm_anova_stats(rewp_per_subject, conditions, n_bins, subjects):
+    '''
+    Perform repeated measures ANOVA with factors condition and bin, using pingouin.
+    '''
     records = []
     for s_idx, subj in enumerate(subjects):
         for cond in conditions:

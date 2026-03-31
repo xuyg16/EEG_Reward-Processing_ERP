@@ -7,6 +7,9 @@ from stats.inference_permutation_test import paired_permutation_test
 
 
 def mean_ci_t(x, alpha=0.05):
+    '''
+    Compute mean and confidence interval using t-distribution.
+    '''
     x = np.asarray(x, float)
     x = x[np.isfinite(x)]
     n = x.size
@@ -25,6 +28,9 @@ def mean_ci_t(x, alpha=0.05):
 
 
 def _format_p_value(p):
+    '''
+    Format p-value for display.
+    '''
     if not np.isfinite(p):
         return "NaN"
     if p < 0.001:
@@ -44,6 +50,9 @@ def summarize_rewp_comparison(
     comparison_name,
     logger=None,
 ):
+    '''
+    Summarize comparison between two conditions (e.g. MH vs HH) with mean, CI, t-test, and permutation test.
+    '''
     scores = np.asarray(scores, float)
     x1 = scores[:, idx_a]
     x2 = scores[:, idx_b]
@@ -215,6 +224,9 @@ def plot_rewp_performance_correlation(
     figsize=(6.5, 5.5),
     title="ΔRewP vs performance",
 ):
+    '''
+    Updated version with nicer aesthetics and more robust handling of edge cases.
+    '''
     scores = np.asarray(scores, float)
 
     rewp_df = pd.DataFrame({

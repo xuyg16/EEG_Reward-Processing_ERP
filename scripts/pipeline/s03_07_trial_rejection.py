@@ -18,6 +18,9 @@ def trial_rejection_cust(eeg, stim_dict, maxMin=500e-6, level=500e-6, step=40e-6
     :param level: amplitude level threshold
     :param step: step threshold
     :param lowest: lowest amplitude threshold
+    :param tmin: start time of the epoch
+    :param tmax: end time of the epoch
+    :param baseline: baseline period (None for no baseline correction)
 
     :return trials: trials after rejecting bad trials
     :return rejected_info: dictionary containing the info of rejected trials: reason(channel name) for each dropped trial
@@ -90,7 +93,6 @@ def find_artifacts(trials, maxMin, level, step, lowest):
 
 
 ### ------------- Trial Rejection by MNE Methods------------------
-### NOTE: need some adjustments to fit our data structure
 def trial_rejection_mne(eeg, stim_dict, max=500e-6, min=0.1e-6, tmin=0, tmax=3, baseline=None):
     '''
     Trial rejection using MNE built-in methods based on peak-to-peak amplitude and flat signal checks.

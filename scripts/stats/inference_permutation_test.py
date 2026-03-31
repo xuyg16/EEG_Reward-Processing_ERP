@@ -149,6 +149,9 @@ def plot_rewp_performance_correlation(
     figsize=(6.5, 5.5),
     title="ΔRewP vs performance",
 ):
+    '''
+    Plot the correlation between ΔRewP (MH - HH) and behavioral performance.
+    '''
     import numpy as np
     import pandas as pd
     import matplotlib.pyplot as plt

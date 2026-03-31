@@ -79,21 +79,23 @@ def calculate_peak_to_peak(evoked, channel_name, tmin, tmax):
 
 
 
-def rewp_calculation(all_evokeds, epoch_dict, verbose=True, channel='FCz', mean_window=(0.240, 0.340)):
+def rewp_calculation(all_evokeds, channel='FCz', mean_window=(0.240, 0.340), verbose=True):
     """
     Calculate RewP metrics (Mean Amplitude and Peak-to-Peak) based on difference waves (Win - Loss).
 
     :param all_evokeds: Dictionary of MNE Evoked objects for all conditions
     :param epoch_dict: Dictionary defining the epoch conditions
+    :param channel: Name of the channel to analyze (default 'FCz')
+    :param mean_window: Tuple defining the time window for mean amplitude calculation (default 240
+    :param verbose: If True, prints the results to the console
     
-    :return: None (prints the RewP metrics)"""
+    :return: Dictionary with RewP metrics for each condition pair"""
     condition_pairs = [
         ('Low-Low',   'Low-Low Win',   'Low-Low Loss'),
         ('Mid-Low',   'Mid-Low Win',   'Mid-Low Loss'),
         ('Mid-High',  'Mid-High Win',  'Mid-High Loss'),
         ('High-High', 'High-High Win', 'High-High Loss')
     ]
-
 
     results = {}
 

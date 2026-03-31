@@ -43,6 +43,7 @@ def epoching_cust(conditions_dict, eeg, maxMin=150e-6, level=150e-6, step=40e-6,
     :param baseline: tuple defining the baseline correction period
 
     :return: MNE Epochs object containing the epoched and cleaned data
+    :return: dictionary containing information about rejected trials
     '''
 
     # get all the feedback-locked stimulus

@@ -9,8 +9,9 @@ def exclude_early_trials(data, num_to_exclude=10, verbose=True):
         'S 21' = start of mixed task fixation(high cue)
         'S 31' = start of high-value task fixation(all high cue)
 
-    :param data: Raw data
+    :param data: Raw eeg data
     :param num_to_exclude: Number of early trials to exclude per task type
+    :verbose: whether to print out which referencing method is being used
 
     :return: Raw data with early trials excluded
     '''

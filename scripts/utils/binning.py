@@ -6,11 +6,7 @@ from pipeline.s10_rewp_calculation import rewp_calculation
 
 def binning(epochs, conditions_dict, bin_num=4):
     '''
-    Docstring for binning
-    
-    :param epochs: Description
-    :param conditions_dict: Description
-    :param bin_num: Description
+    This function takes in the epochs and the conditions dictionary, and returns a dictionary of binned epochs and a dataframe of trial counts per condition per bin.
     '''
     
     binned_epochs = []
@@ -85,7 +81,9 @@ def binning(epochs, conditions_dict, bin_num=4):
 
 
 def get_group_binned_rewp(n_bins, subjects, epoch_dict, binned_group_evokeds, learners_only=False):
-    # calculate RewP results for each bin and subject 
+    '''
+    This function takes in the binned group evokeds and calculates the RewP for each bin and subject, returning a dictionary of RewP values per condition per bin.
+    '''
     conditions = ['Low-Low', 'Mid-Low', 'Mid-High', 'High-High']
     rewp_per_subject_binned= {cond: np.zeros((len(subjects), n_bins)) for cond in conditions}
 

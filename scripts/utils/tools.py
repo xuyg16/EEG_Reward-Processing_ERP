@@ -3,6 +3,9 @@ import re
 
 
 def _normalize_event_key(key):
+    '''
+    Normalize an event key by stripping whitespace, replacing "Stimulus/" with "Stimulus:", and collapsing multiple spaces.
+    '''
     key = str(key).strip()
     key = key.replace("Stimulus/", "Stimulus:").replace("Stimulus :", "Stimulus:")
     if key.startswith("Stimulus:"):
@@ -14,6 +17,9 @@ def _normalize_event_key(key):
 
 
 def _flatten_conditions(condition_dict):
+    '''
+    Flatten a condition dictionary which may contain nested dicts or lists of conditions.
+    '''
     if isinstance(condition_dict, dict):
         items = []
         for v in condition_dict.values():
@@ -30,12 +36,6 @@ def _flatten_conditions(condition_dict):
 def get_event_dict(eeg, condition_dict):
     '''
     get the dictionary for the events under specified conditions
-    
-    :param eeg: input eeg data in mne.Raw format
-    :param condition_dict: conditions for epoching
-
-    :return evts: identity and timing of the epochs. 
-    :return conidtion_dict: events dictionary filtered by conditions
     '''
     evts, evts_dict = mne.events_from_annotations(eeg)
 

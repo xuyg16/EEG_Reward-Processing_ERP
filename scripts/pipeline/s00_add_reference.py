@@ -1,6 +1,13 @@
 import mne
 
 def add_reference_channel(raw, new_ref='Fz'):
+    '''
+    Add a new reference channel to the raw data. This is necessary for re-referencing later on.
+
+    :param raw: raw EEG data to which the reference channel will be added
+    :param new_ref: name of the new reference channel to be added
+
+    :return: raw data with the new reference channel added'''
     mne.add_reference_channels(raw, new_ref, copy=False)  # add new_ref as reference channel
     return raw
 
@@ -10,6 +17,7 @@ def reref(eeg, verbose=True):
     Reference EEG data to average of mastoids (TP9, TP10). If one mastoid is missing, reference to the other. If both are missing, raise an error.
 
     :param eeg: eeg data to be re-referenced
+    :verbose: whether to print out which referencing method is being used
 
     :return: re-referenced eeg data
     '''

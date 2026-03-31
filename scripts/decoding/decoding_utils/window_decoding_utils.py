@@ -25,6 +25,8 @@ def decode_context_window(
     window_end: float = 0.34,
     n_splits: int = 5,
 ):
+    '''
+    Perform window-decoding for a single subject and context.'''
     mask = epochs.metadata["context"] == context
     if int(mask.sum()) == 0:
         raise RuntimeError(f"No epochs available for context '{context}'.")
@@ -71,6 +73,9 @@ def decode_context_window(
 
 
 def summarize_subject_window(subject_id: str, context: str, result: dict) -> dict:
+    '''
+    Create a summary dictionary for a single subject-context decoding result.
+    '''
     return {
         "subject_id": subject_id,
         "context": context,
@@ -86,6 +91,9 @@ def summarize_subject_window(subject_id: str, context: str, result: dict) -> dic
 
 
 def compute_group_stats_window(summary_df: pd.DataFrame, contexts: list[str]) -> dict:
+    '''
+    Compute group-level statistics for window-decoding results.
+    '''
     group_stats = {
         "contexts": contexts,
         "subjects": sorted(summary_df["subject_id"].unique().tolist()),
@@ -121,6 +129,9 @@ def save_outputs_window(
     group_stats: dict,
     auc_store: dict,
 ):
+    '''
+    Save window-decoding outputs to disk, including summary CSV, group stats JSON, and fold AUCs in NPZ format.
+    '''
     output_dir = Path(output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
 
@@ -150,6 +161,9 @@ def run_group_decoding_window(
     root_dir: Path | None = None,
     logger=None,
 ):
+    '''
+    Run window-decoding for a group of subjects and contexts, returning summary DataFrame, group stats, and AUC store.
+    '''
     summary_rows = []
     auc_store = {}
 

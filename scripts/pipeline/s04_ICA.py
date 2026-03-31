@@ -1,12 +1,10 @@
 import mne
-from mne_icalabel import label_components
+# from mne_icalabel import label_components NOTE: only shows the component with the highest probability
 from mne_icalabel.iclabel import iclabel_label_components
 from utils.logger import log_ica_exclusion
 from utils.visualization import iclabel_visualize
 import config
 
-
-### TO DO LIST: add the code to show which components are removed ###
 
 def get_ica(trials, method='picard', save_path=None):
     '''
@@ -14,6 +12,7 @@ def get_ica(trials, method='picard', save_path=None):
     
     :param trials_mne: MNE Epochs object containing EEG data.
     :param method: ICA method to use.
+    :param save_path: path to save the fitted ICA object. If None, the ICA object will not be saved.
 
     :return: Fitted ICA object.
     '''
@@ -32,12 +31,15 @@ def get_ica(trials, method='picard', save_path=None):
 
 def iccomponent_removal(eeg, trials, ica, subject_id, active_pipeline, logger=None, save_path=None):
     '''
-    Remove bad IC components based on the given criteria.
+    Remove bad IC components based on the given criteria. 
 
     :param eeg: MNE Raw object containing EEG data.
     :param trials: MNE Epochs object for ICA fitting.
     :param ica: Fitted ICA object.
-    :param exclude_idx: List of component indices to exclude. If None, find the components to exclude
+    :param subject_id: ID of the subject being processed.
+    :param active_pipeline: the name of the active pipeline, used to determine the criteria for excluding components.
+    :param logger: Logger object for logging the exclusion process. If None, logging will be skipped.
+    :param save_path: path to save the visualization of excluded components. If None, the visualization will not be saved.
 
     :return: Cleaned MNE Raw object.
     '''

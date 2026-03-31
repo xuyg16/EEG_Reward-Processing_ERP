@@ -10,6 +10,9 @@ from utils.logger import log
 
 
 def _normalize_subject_id(subject) -> str:
+    '''
+    Normalize subject ID to a consistent format (e.g., "01", "02", ..., "10", "11", etc.)
+    '''
     subject = str(subject).strip()
     if subject.startswith("sub-"):
         subject = subject[4:]
@@ -33,12 +36,18 @@ def outcome_to_win01(series: pd.Series) -> np.ndarray:
 
 
 def masked_mean(values: np.ndarray, keep_rows) -> float:
+    '''
+    Compute mean of values where keep_rows is True, ignoring NaNs.
+    '''
     keep_rows = np.asarray(keep_rows, dtype=bool)
     selected = values[keep_rows]
     return float(np.nanmean(selected)) if selected.size else np.nan
 
 
 def mean_ci_t(x, alpha=0.05):
+    '''
+    Compute mean and confidence interval using t-distribution.
+    '''
     x = np.asarray(x, float)
     x = x[np.isfinite(x)]
     n = x.size
@@ -54,6 +63,9 @@ def mean_ci_t(x, alpha=0.05):
 
 
 def compute_subject_behavior_summary(beh_path: str | Path):
+    '''
+    Compute summary of subject behavior from the casino task.
+    '''
     beh_path = Path(beh_path)
     df = pd.read_csv(beh_path, sep="\t")
 
@@ -95,6 +107,9 @@ def compute_subject_behavior_summary(beh_path: str | Path):
 
 
 def collect_subject_behavior_summary(bids_root: str | Path, subjects, logger=None):
+    '''
+    Collect behavior summary for each subject from the casino task.
+    '''
     bids_root = Path(bids_root)
 
     rows = []
@@ -125,6 +140,9 @@ def collect_subject_behavior_summary(bids_root: str | Path, subjects, logger=Non
 
 
 def run_behavior_stats(df, logger=None):
+    '''
+    Run stats on behavior summary:
+    '''
     x = df[["low", "mid", "high"]].to_numpy(float)
     mask = np.all(np.isfinite(x), axis=1)
     x_use = x[mask]
@@ -262,6 +280,9 @@ def summarize_mean_performance(df, decimals=2, logger=None):
 
 
 def plot_task_winrates(df, title="Behavioral manipulation check", figsize=(6, 4)):
+    '''
+    Plot mean win rates for low/mid/high task conditions with 95% CIs.
+    '''
     cols = ["low", "mid", "high"]
     labels = ["Low", "Mid", "High"]
     x = np.arange(1, 4)
@@ -300,6 +321,9 @@ def plot_task_winrates(df, title="Behavioral manipulation check", figsize=(6, 4)
 
 
 def plot_mean_performance(df, title="Performance on high-value cues", figsize=(5, 4)):
+    '''
+    Plot mean performance on high-value cues in mid/high blocks with CIs.
+    '''
     cols = ["mid_high_acc", "high_high_acc"]
     labels = ["Mid", "High"]
     x = np.arange(1, 3)

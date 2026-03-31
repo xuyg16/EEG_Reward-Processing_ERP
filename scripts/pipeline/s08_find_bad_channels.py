@@ -6,7 +6,11 @@ def find_bad_channels(epochs, reject_criteria, subject_id, custom=False, rejecti
 
     :param epochs: MNE Epochs object
     :param reject_criteria: rejection criteria (e.g., 0.2 for 20%)
+    :param subject_id: identifier for the subject (used for logging)
     :param custom: boolean indicating whether custom trial rejection was used (default: False)
+    :param rejection_info: dictionary containing information about rejected trials (used when custom is True)
+    :param logger: logger object for logging bad channels
+    :param verbose: boolean indicating whether to print detailed information
 
     :return: List of bad channels exceeding the rejection criteria
     '''

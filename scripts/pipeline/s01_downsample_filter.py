@@ -7,6 +7,7 @@ def down_sampling(eeg, new_sfreq=250, verbose=True):
     
     :param eeg: eeg signal to be processed
     :param new_sfreq: the frequency after downsampling
+    :verbose: whether to print out which referencing method is being used
 
     :return: downsampled eeg signal
     '''
@@ -18,7 +19,6 @@ def down_sampling(eeg, new_sfreq=250, verbose=True):
     return eeg_down
 
 
-# NOTE: add and manipulate the cutoff frequencies if needed
 def band_filter(eeg, f_low=0.1, f_high=30):
     '''
     Perform bandpass filtering on the downsampled eeg signal.

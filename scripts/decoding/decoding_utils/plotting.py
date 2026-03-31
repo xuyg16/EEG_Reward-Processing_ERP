@@ -13,6 +13,9 @@ def plot_window_decoding_summary(
     figsize: tuple[float, float] = (10, 4.8),
     random_seed: int = 42,
 ):
+    '''
+    Plots a summary of window-decoding results across subjects and contexts.
+    '''
     pivot = summary_df.pivot(index="subject_id", columns="context", values="mean_auc").dropna()
     if pivot.empty:
         raise RuntimeError("No paired window-decoding results are available to plot.")
@@ -115,6 +118,9 @@ def plot_time_resolved_decoding_summary(
     *,
     figsize: tuple[float, float] = (8, 5),
 ):
+    '''
+    Plots a summary of time-resolved decoding results across subjects and contexts.
+    '''
     fig, ax = plt.subplots(figsize=figsize)
     plotted_contexts: list[str] = []
 

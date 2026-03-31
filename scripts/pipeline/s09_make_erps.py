@@ -8,8 +8,6 @@ def get_trimmed_mean(epochs, proportiontocut):
 
     :param epochs: MNE Epochs object
     :param proportiontocut: Proportion of trials to cut from each end of the distribution
-    :return: MNE EvokedArray object containing the trimmed mean ERP
-    :rtype: mne.EvokedArray
 
     :returns: trimmed_evoked -- the trimmed mean ERP as an Evoked object
     '''
@@ -39,6 +37,7 @@ def get_evoked(conditions_dict, epochs, proportiontocut=0.05, verbose=True):
     :param conditions_dict: dictionary mapping condition names to event markers
     :param epochs: MNE Epochs object
     :param proportiontocut: Proportion of trials to cut from each end of the distribution
+    :param verbose: Whether to print warnings for conditions with no trials
 
     :return: Dictionary of Evoked objects for each condition
     '''

@@ -15,6 +15,7 @@ from pipeline.s05_interpolation import interpolation
 from pipeline.s07_epoching import epoching, epoching_cust
 import config
 
+
 REPO_ROOT = Path(__file__).resolve().parents[2] # Adjust as needed to point to the root of the repository
 EPOCHS_DIR = REPO_ROOT / "output_mne" / "epochs" 
 ICA_DIR_CANDIDATES = (
@@ -22,11 +23,13 @@ ICA_DIR_CANDIDATES = (
     REPO_ROOT / "ICA_objects",
 )
 
+
 TASK_LABELS = {
     1: "low_task",
     2: "mid_task",
     3: "high_task",
 }
+
 
 CONTEXT_LABELS = {
     (1, 50): "low_low",
@@ -34,6 +37,7 @@ CONTEXT_LABELS = {
     (2, 80): "mid_high",
     (3, 80): "high_high",
 }
+
 
 FEEDBACK_CODE_MAP = {
     6: {"context": "low_low", "outcome": 1, "outcome_label": "win"},
@@ -46,17 +50,25 @@ FEEDBACK_CODE_MAP = {
     37: {"context": "high_high", "outcome": 0, "outcome_label": "loss"},
 }
 
+
 LOCK_TO_CONDITIONS = {
     "feedback": "feedback_locked",
     "onset": "onset_locked",
 }
 
+
 @lru_cache(maxsize=None)
 def _load_site2_montage(montage_path: str):
+    '''
+    Load the custom montage for site 2. Caches the result to avoid redundant file reads.
+    '''
     return mne.channels.read_custom_montage(montage_path)
 
 
 def _get_ica_path(subject_id: str, pipeline_name: str) -> Path:
+    '''
+    Search for the ICA file corresponding to the given subject and pipeline in the candidate directories.
+    '''
     for base_dir in ICA_DIR_CANDIDATES:
         candidate = base_dir / f"{pipeline_name}-sub{subject_id}_ica.fif"
         if candidate.exists():
@@ -72,6 +84,9 @@ def _fit_or_load_ica(
     subject_id: str,
     pipeline_name: str,
 ):
+    '''
+    Attempt to load a pre-fitted ICA object for the given subject and pipeline. If not found, fit a new ICA on the provided trials and save it for future use.
+    '''
     try:
         return mne.preprocessing.read_ica(_get_ica_path(subject_id, pipeline_name))
     except FileNotFoundError:
@@ -86,6 +101,9 @@ def _fit_or_load_ica(
 
 
 def _load_bids_raw(subject_id: str, bids_root: Path, pipeline_name: str = "proposed") -> mne.io.BaseRaw:
+    '''
+    Load the raw EEG data for a given subject from the BIDS directory, apply the custom montage, and perform initial preprocessing steps (downsampling, filtering, bad channel handling, and re-referencing) according to the specified pipeline.
+    '''
     bids_root = Path(bids_root)
     bids_path = BIDSPath(
         subject=subject_id,
@@ -151,6 +169,9 @@ def build_feedback_epochs_from_raw(
     raw: mne.io.BaseRaw,
     pipeline_name: str = "proposed",
 ):
+    '''
+    Build feedback-locked epochs from the preprocessed raw data according to the specified pipeline. Applies epoching and trial rejection steps as defined in the pipeline configuration.
+    '''
     cfg = config.PIPELINES[pipeline_name]
     rejection_params = cfg["rejection_params"]["erp"]
 
@@ -180,6 +201,9 @@ def build_and_save_feedback_epochs(
     logger=None,
     overwrite: bool = True,
 ):
+    '''
+    Build feedback-locked epochs from the raw data, attach metadata from the behavior table, and save the epochs to disk according to the specified pipeline and directory structure.
+    '''
     epochs, rejection_info = build_feedback_epochs_from_raw(
         raw=raw,
         pipeline_name=pipeline_name,
@@ -209,6 +233,9 @@ def build_and_save_feedback_epochs(
 
 
 def get_epochs_path(subject_id: str, pipeline_name: str, lock: str, root_dir: Path | None = None) -> Path:
+    '''
+    Construct the file path for saving/loading epochs based on the subject ID, pipeline name, lock type, and optional root directory.
+    '''
     if lock not in LOCK_TO_CONDITIONS:
         raise ValueError(f"Unknown lock '{lock}'. Expected one of {sorted(LOCK_TO_CONDITIONS)}")
     base_dir = EPOCHS_DIR if root_dir is None else Path(root_dir)
@@ -216,6 +243,9 @@ def get_epochs_path(subject_id: str, pipeline_name: str, lock: str, root_dir: Pa
 
 
 def load_behavior_table(subject_id: str, early_trials_to_exclude: int, bids_root: Path | None = None) -> pd.DataFrame:
+    '''
+    Load the behavior table for a given subject from the BIDS directory, perform necessary preprocessing steps (e.g., converting columns to numeric, creating new columns for trial indexing and validity), and return a cleaned DataFrame ready for merging with EEG metadata.
+    '''
     if bids_root is None:
         raise ValueError("bids_root must be provided explicitly.")
     bids_root = Path(bids_root)
@@ -243,6 +273,9 @@ def load_behavior_table(subject_id: str, early_trials_to_exclude: int, bids_root
 
 
 def build_feedback_metadata(raw: mne.io.BaseRaw, behavior: pd.DataFrame) -> pd.DataFrame:
+    '''
+    Build a metadata DataFrame for feedback-locked epochs by aligning the feedback events extracted from the raw EEG data with the corresponding rows in the behavior DataFrame. Validates that the contexts and outcomes match between the two sources and constructs a comprehensive metadata table for downstream analysis.
+    '''
     events, event_id = mne.events_from_annotations(raw, verbose=False)
 
     event_code_map = {}
@@ -285,6 +318,9 @@ def build_feedback_metadata(raw: mne.io.BaseRaw, behavior: pd.DataFrame) -> pd.D
 
 
 def exclude_early_trials_epochs(epochs:mne.Epochs) -> mne.Epochs:
+    '''
+    Exclude epochs corresponding to early familiarization trials based on the 'is_early_familiarization' column in the epochs metadata. This function assumes that the metadata has already been attached to the epochs and contains the necessary column for identifying early trials.
+    '''
     if epochs.metadata is None or "is_early_familiarization" not in epochs.metadata.columns:
         raise ValueError("Epochs metadata must contain 'is_early_familiarization' column to exclude early trials.")
 
@@ -302,6 +338,9 @@ def attach_feedback_metadata(
     bids_root: Path | None = None,
     logger=None,
 ) -> mne.Epochs:
+    '''
+    Attach feedback-related metadata to the epochs by merging the behavior table with the event information extracted from the raw EEG data. Validates that the number of epochs matches the number of metadata entries and that the event samples align correctly before attaching the metadata to the epochs object.
+    '''
     cfg = config.PIPELINES[pipeline_name]
     behavior = load_behavior_table(subject_id, cfg["early_trial_deletion"], bids_root=bids_root)
     metadata_full = build_feedback_metadata(raw, behavior)
@@ -332,6 +371,9 @@ def attach_feedback_metadata(
 
 def save_epochs(epochs: mne.Epochs, subject_id: str, pipeline_name: str, lock: str = "feedback",
                 overwrite: bool = False, root_dir: Path | None = None, logger=None) -> Path:
+    '''
+    Save the given epochs to disk at a path determined by the subject ID, pipeline name, and lock type. Creates the necessary directories if they do not exist and optionally logs the saving action.
+'''
     path = get_epochs_path(subject_id, pipeline_name, lock, root_dir=root_dir)
     path.parent.mkdir(parents=True, exist_ok=True)
     epochs.save(path, overwrite=overwrite)
@@ -342,6 +384,9 @@ def save_epochs(epochs: mne.Epochs, subject_id: str, pipeline_name: str, lock: s
 
 def load_epochs(subject_id: str, pipeline_name: str, lock: str = "feedback", preload: bool = True,
                 root_dir: Path | None = None, logger=None) -> mne.Epochs:
+    '''
+    Load epochs from disk for a given subject, pipeline, and lock type. Validates that the epochs file exists and optionally logs the loading action.
+'''
     path = get_epochs_path(subject_id, pipeline_name, lock, root_dir=root_dir)
     if not path.exists():
         raise FileNotFoundError(f"Epochs file not found: {path}")
