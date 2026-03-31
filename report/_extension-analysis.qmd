@@ -8,7 +8,7 @@ For the single-window analysis, decoding was performed on multichannel EEG data 
 ### All subjects results
 In the full sample (`n=12`), mean AUC within the 240–340 ms window was 0.538 for the mid-high context and 0.628 for the high-high context (@fig-window_all), indicating above-chance decoding in both conditions and descriptively stronger decoding in the high-high context. 
 
-![FCz-window decoding based on all subjects.](images/output_window_decoding.png){#fig-window_all fig-align="center"}
+![FCz-window decoding based on all subjects. Thin grey lines connect paired observations from the same participant across the two contexts.](images/output_window_decoding.png){#fig-window_all fig-align="center"}
 
 
 

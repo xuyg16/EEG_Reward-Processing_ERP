@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>extension-analysis</title>
+<title>discussion</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -23,18 +23,18 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="_extension-analysis_files/libs/clipboard/clipboard.min.js"></script>
-<script src="_extension-analysis_files/libs/quarto-html/quarto.js" type="module"></script>
-<script src="_extension-analysis_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="_extension-analysis_files/libs/quarto-html/axe/axe-check.js" type="module"></script>
-<script src="_extension-analysis_files/libs/quarto-html/popper.min.js"></script>
-<script src="_extension-analysis_files/libs/quarto-html/tippy.umd.min.js"></script>
-<script src="_extension-analysis_files/libs/quarto-html/anchor.min.js"></script>
-<link href="_extension-analysis_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="_extension-analysis_files/libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="_extension-analysis_files/libs/bootstrap/bootstrap.min.js"></script>
-<link href="_extension-analysis_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="_extension-analysis_files/libs/bootstrap/bootstrap-d6a003b94517c951b2d65075d42fb01b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="_discussion_files/libs/clipboard/clipboard.min.js"></script>
+<script src="_discussion_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="_discussion_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="_discussion_files/libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="_discussion_files/libs/quarto-html/popper.min.js"></script>
+<script src="_discussion_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="_discussion_files/libs/quarto-html/anchor.min.js"></script>
+<link href="_discussion_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="_discussion_files/libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="_discussion_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="_discussion_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="_discussion_files/libs/bootstrap/bootstrap-d6a003b94517c951b2d65075d42fb01b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 
 
 </head>
@@ -48,64 +48,45 @@ ul.task-list li input[type="checkbox"] {
 
 
 
-<section id="decoding" class="level2">
-<h2 class="anchored" data-anchor-id="decoding">Decoding</h2>
-<p>As an exploratory extension to the ERP analysis, we examined whether feedback outcome (win vs.&nbsp;loss) could be decoded from feedback-locked EEG in the mid-high and high-high contexts. Decoding used epochs derived from the same preprocessing pipeline as the main ERP analysis. To ensure that each feedback epoch was matched to the correct behavioural label, early familiarization trials were not removed immediately. Instead, feedback epochs were first aligned with the behavioural table, and only then were early familiarization trials excluded. This procedure preserved trial-by-trial correspondence between epochs and behavioural context/outcome labels.</p>
-<p>For the single-window analysis, decoding was performed on multichannel EEG data within the 240–340 ms interval, corresponding to the canonical RewP time window. Classification was implemented with logistic regression and cross-validation, and performance was quantified using ROC AUC, where chance level is 0.50. A complementary time-resolved analysis was also conducted to characterize when outcome information became decodable across the feedback epoch. Decoding is included here as an additional analysis alongside the main replication of the ERP results.</p>
-</section>
-<section id="decoding-results" class="level2">
-<h2 class="anchored" data-anchor-id="decoding-results">Decoding Results</h2>
-<section id="all-subjects-results" class="level3">
-<h3 class="anchored" data-anchor-id="all-subjects-results">All subjects results</h3>
-<p>In the full sample (<code>n=12</code>), mean AUC within the 240–340 ms window was 0.538 for the mid-high context and 0.628 for the high-high context (<a href="#fig-window_all" class="quarto-xref">Figure&nbsp;1</a>), indicating above-chance decoding in both conditions and descriptively stronger decoding in the high-high context.</p>
-<div id="fig-window_all" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<p>A critical divergence exists between our findings and the original study regarding the High-Task, High-Cue condition. While the theoretical background suggests that the RewP should reflect a combination of reward and expectancy, our results and the authors’ results emphasize different aspects of this neural signal.</p>
+<p>According to the Reward Prediction Error (RPE) theory, the RewP is not merely a measure of “how much” was won, but rather “how much better” the outcome was than expected. In the authors’ study, the High-High condition elicited a lower amplitude than the Mid-High condition. This is theoretically consistent with RL models: in a high-value task, the participant develops a high baseline expectation. When the reward occurs, it matches that expectation, resulting in a smaller prediction error and, consequently, a reduced RewP. The authors’ results are more “reasonable” under the strict definition of the RewP as a violation of predictions. In contrast, our data showed a more linear relationship where higher task values led to higher RewP amplitudes.</p>
+<p>To investigate the discrepancy between our findings and the original study’s, we performed a verification process to ensure the integrity of our results: we replicated their pipeline in python (<a href="#fig-erp_all_concat" class="quarto-xref">Figure&nbsp;1</a>), and also executed their original script in Matlab (<a href="#fig-rewp_erp_matlab_authors" class="quarto-xref">Figure&nbsp;2</a>) to compare with our results.</p>
+<div id="fig-erp_all_concat" class="quarto-layout-panel">
 <figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-window_all-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="images/output_window_decoding.png" class="img-fluid quarto-figure quarto-figure-center figure-img">
+<div aria-describedby="fig-erp_all_concat-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><img src="images/ERP_all_original.png" class="img-fluid figure-img"></p>
 </div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-window_all-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;1: FCz-window decoding based on all subjects. Thin grey lines connect paired observations from the same participant across the two contexts.
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><img src="images/ERP_learners_original.png" class="img-fluid figure-img"></p>
+</div>
+</div>
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><img src="images/RewP_all_original.png" class="img-fluid figure-img"></p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><img src="images/RewP_learners_original.png" class="img-fluid figure-img"></p>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-erp_all_concat-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: ERP and RewP Results by Author’s Pipeline
 </figcaption>
 </figure>
 </div>
-<p>The time-resolved analysis showed that decoding rose above chance shortly after feedback onset and reached its strongest values around 0.13–0.18s (<a href="#fig-time_resolved_all" class="quarto-xref">Figure&nbsp;2</a>), with the high-high context remaining descriptively higher across the predefined window.</p>
-<div id="fig-time_resolved_all" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<div id="fig-rewp_erp_matlab_authors" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
 <figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-time_resolved_all-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="images/output_time_resolved_decoding.png" class="img-fluid quarto-figure quarto-figure-center figure-img">
+<div aria-describedby="fig-rewp_erp_matlab_authors-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/rewp_erp_matlab_authors.png" id="fig-rewp_erp_matlab_authors" class="img-fluid quarto-figure quarto-figure-center anchored figure-img">
 </div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-time_resolved_all-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;2: Time-resolved decoding based on all subjects.
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-rewp_erp_matlab_authors-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2
 </figcaption>
 </figure>
 </div>
-</section>
-<section id="learner-only-results" class="level3">
-<h3 class="anchored" data-anchor-id="learner-only-results">Learner-only results</h3>
-<p>A learner-only sensitivity analysis (<code>n=8</code>), howed a similar pattern. Mean AUC reached 0.605 in the mid-high context and 0.666 in the high-high context(<a href="#fig-window_learner" class="quarto-xref">Figure&nbsp;3</a>), again indicating above-chance decoding in both conditions and descriptively stronger decoding in the high-high context. The time-resolved learner-only analysis showed a broadly similar temporal profile to that observed in the full sample(<a href="#fig-time_resolved_learner" class="quarto-xref">Figure&nbsp;4</a>).</p>
-<div id="fig-window_learner" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-window_learner-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="images/learners_window_decoding.png" id="fig-window_learner" class="img-fluid quarto-figure quarto-figure-center anchored figure-img">
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-window_learner-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;3
-</figcaption>
-</figure>
-</div>
-<div id="fig-time_resolved_learner" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-time_resolved_learner-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="images/learners_time_resolved.png" id="fig-time_resolved_learner" class="img-fluid quarto-figure quarto-figure-center anchored figure-img">
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-time_resolved_learner-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;4
-</figcaption>
-</figure>
-</div>
-<p>Overall, these decoding results suggest that feedback outcome information was present in EEG activity during, and slightly before, the RewP interval. Because the analyses were exploratory and based on a limited sample, they are interpreted as complementary to the main ERP findings.</p>
-</section>
-</section>
+<p>The verification methods yielded results consistent with our proposed Python pipeline, and similar to the plot of our “only learners” scenario, showing that high-high condition gave higher values than mid-high condition. It confirms that our analytical approach is reliable and suggests that the difference is a result of sample size. Because our sample size was smaller, the subtle interaction of expectancy may not be caught and covered by the main effect of reward. Our results found out the Reward component of the RewP, showing that win elicits stronger signals than loss, whereas the authors’ data captured subtle prediction error component.</p>
 
 </main>
 <!-- /main column -->
